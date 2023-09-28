@@ -1,0 +1,4 @@
+Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
+"/home/seraph/Contraband/LD54/Content/Audio/piri & tommy_on & on.mp3","/home/seraph/Contraband/LD54/Content/bin/DesktopGL/Audio/piri & tommy_on & on.xnb","SongProcessor","SongContent",5840882,138,2.199484
+"/home/seraph/Contraband/LD54/Content/Sprites/FLCL Wallpapers.jpg","/home/seraph/Contraband/LD54/Content/bin/DesktopGL/Sprites/FLCL Wallpapers.xnb","TextureProcessor","Texture2DContent",336842,8660405,0.3307653
+"/home/seraph/Contraband/LD54/Content/Sprites/liberia.jpg","/home/seraph/Contraband/LD54/Content/bin/DesktopGL/Sprites/liberia.xnb","TextureProcessor","Texture2DContent",52298,1217317,0.170049

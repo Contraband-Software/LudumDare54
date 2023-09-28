@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SourceFileCollection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Profile>Reach</Profile>
+  <Platform>DesktopGL</Platform>
+  <Config />
+  <SourceFiles>
+    <File>/home/seraph/Contraband/LD54/Content/Audio/piri &amp; tommy_on &amp; on.mp3</File>
+    <File>/home/seraph/Contraband/LD54/Content/Sprites/FLCL Wallpapers.jpg</File>
+    <File>/home/seraph/Contraband/LD54/Content/Sprites/liberia.jpg</File>
+  </SourceFiles>
+  <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+  </DestFiles>
+</SourceFileCollection>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <SourceFile>/home/seraph/Contraband/LD54/Content/Audio/piri &amp; tommy_on &amp; on.mp3</SourceFile>
+  <SourceTime>2023-08-18T23:33:54.7900826+01:00</SourceTime>
+  <DestFile>/home/seraph/Contraband/LD54/Content/bin/DesktopGL/Content/Audio/piri &amp; tommy_on &amp; on.xnb</DestFile>
+  <DestTime>2023-09-27T14:38:31.6482901+01:00</DestTime>
+  <Importer>Mp3Importer</Importer>
+  <ImporterTime>2022-07-26T12:44:56+01:00</ImporterTime>
+  <Processor>SongProcessor</Processor>
+  <ProcessorTime>2022-07-26T12:44:56+01:00</ProcessorTime>
+  <Parameters>
+    <Key>Quality</Key>
+    <Value>Best</Value>
+  </Parameters>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput>
+    <string>/home/seraph/Contraband/LD54/Content/bin/DesktopGL/Content/Audio/piri &amp; tommy_on &amp; on.ogg</string>
+  </BuildOutput>
+</PipelineBuildEvent>
