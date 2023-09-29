@@ -4,8 +4,6 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 
-using GlmNet;
-
 public abstract class GameObject : EngineObject, IUpdateable
 {
     private bool initalized = false;
