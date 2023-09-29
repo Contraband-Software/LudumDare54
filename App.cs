@@ -29,6 +29,11 @@ class OtherPlayer : Player
     {
         // PrintLn("Onload: " + " " + parentObject.GetName() + " " + this.GetName());
     }
+
+    public override void OnUnload()
+    {
+        PrintLn("i is kill");
+    }
 }
 
 class Player : GameObject

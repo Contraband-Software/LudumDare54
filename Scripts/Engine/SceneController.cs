@@ -75,7 +75,6 @@ public class SceneController : GameComponent, ISceneControllerService
         }
     }
 
-
     #region SCENE_API
     public void DebugPrintGraph()
     {
@@ -145,6 +144,7 @@ public class SceneController : GameComponent, ISceneControllerService
     {
         if(this.activeScene != null)
         {
+            this.UnloadChildren(this.rootGameObject);
             // this should unload all the monogame assets from the previous scene
             this.activeScene.OnUnload();
 
@@ -170,6 +170,7 @@ public class SceneController : GameComponent, ISceneControllerService
         this.UpdateChildren(this.rootGameObject, gameTime);
         this.UpdateChildren(this.persitentGameObject, gameTime);
     }
+
     private void UpdateChildren(GameObject gameObject, GameTime gameTime)
     {
         List<GameObject> g = gameObject.GetChildren();
@@ -185,6 +186,19 @@ public class SceneController : GameComponent, ISceneControllerService
                 }
                 child.Update(gameTime);
                 this.UpdateChildren(child, gameTime);
+            }
+        }
+    }
+    private void UnloadChildren(GameObject gameObject)
+    {
+        List<GameObject> g = gameObject.GetChildren();
+
+        foreach (GameObject child in g.ToList())
+        {
+            if (child.Enabled)
+            {
+                child.OnUnload();
+                this.UnloadChildren(child);
             }
         }
     }

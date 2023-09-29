@@ -22,36 +22,41 @@ public abstract class GameObject : EngineObject, IUpdateable
 
     protected List<GameObject> children = new();
 
-    protected mat4 transform;
+    protected Matrix transform;
     protected List<Component> components = new();
 
     public GameObject(string name, Game appCtx) : base(name, appCtx)
     {
-        this.transform = mat4.identity();
+        this.transform = Matrix.Identity;
     }
 
     public virtual void Update(GameTime gameTime)
     {
-        UpdateComponents(gameTime);
+        this.UpdateComponents(gameTime);
+    }
+
+    public override void OnUnload()
+    {
+        this.UnloadComponents();
     }
 
     #region SCENE_GRAPH
-    public mat4 GetLocalTransform()
+    public Matrix GetLocalTransform()
     {
         return this.transform;
     }
 
-    public void SetLocalTransform(mat4 transform)
+    public void SetLocalTransform(Matrix transform)
     {
         this.transform = transform;
     }
 
-    public mat4 GetGlobalTransform()
+    public Matrix GetGlobalTransform()
     {
         //                                  |-  Statement null if there is no parent.
         //                                  |                       |-  Null-coalescing operator makes these parenthesis
         //                                  V                       V   evaluate to the identity matrix if the above is null.
-        return this.transform * (this.parent?.GetGlobalTransform() ?? mat4.identity());
+        return this.transform * (this.parent?.GetGlobalTransform() ?? Matrix.Identity);
     }
 
     /// <summary>
@@ -107,6 +112,17 @@ public abstract class GameObject : EngineObject, IUpdateable
             if (c.Enabled)
             {
                 c.Update(gameTime);
+            }
+        }
+    }
+
+    protected void UnloadComponents()
+    {
+        foreach (Component c in this.components)
+        {
+            if (c.Enabled)
+            {
+                c.OnUnload();
             }
         }
     }
