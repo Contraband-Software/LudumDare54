@@ -3,13 +3,13 @@ namespace LD54;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-public class App : Game
+public class App_Jakub : Game
 {
     private readonly GraphicsDeviceManager _graphics;
 
     // contentManager
 
-    public App()
+    public App_Jakub()
     {
         this._graphics = new GraphicsDeviceManager(this);
         this.Content.RootDirectory = "Content";
@@ -46,3 +46,4 @@ public class App : Game
         base.Draw(gameTime);
     }
 }
+
