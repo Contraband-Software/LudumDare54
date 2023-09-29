@@ -1,21 +1,66 @@
-namespace LD54.Scripts.Engine;
+namespace LD54.Engine;
 
 using System;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 
-public abstract class GameObject : EngineObject
+using GlmNet;
+
+public abstract class GameObject : EngineObject, IUpdateable
 {
+    private bool initalized = false;
+
+    public bool Enabled { get; }
+    public int UpdateOrder { get; }
+    public event EventHandler<EventArgs>? EnabledChanged;
+    public event EventHandler<EventArgs>? UpdateOrderChanged;
+
+    private GameObject? _parent;
+
+    // self initialization
     protected GameObject? parent;
+
     protected List<GameObject> children = new();
 
+    protected mat4 transform;
     protected List<Component> components = new();
 
-    protected GameObject(string name) : base(name) { }
+    public GameObject(string name, Game appCtx) : base(name, appCtx)
+    {
+        this.transform = mat4.identity();
+    }
+
+    public virtual void Update(GameTime gameTime)
+    {
+        UpdateComponents(gameTime);
+    }
 
     #region SCENE_GRAPH
+    public mat4 GetLocalTransform()
+    {
+        return this.transform;
+    }
+
+    public void SetLocalTransform(mat4 transform)
+    {
+        this.transform = transform;
+    }
+
+    public mat4 GetGlobalTransform()
+    {
+        //                                  |-  Statement null if there is no parent.
+        //                                  |                       |-  Null-coalescing operator makes these parenthesis
+        //                                  V                       V   evaluate to the identity matrix if the above is null.
+        return this.transform * (this.parent?.GetGlobalTransform() ?? mat4.identity());
+    }
+
+    /// <summary>
+    /// Parents the a child to this gameObject.
+    /// </summary>
+    /// <param name="gameObject"></param>
     public void AddChild(GameObject gameObject)
     {
-        gameObject.parent.RemoveChild(gameObject);
+        gameObject.parent?.RemoveChild(gameObject);
         gameObject.parent = this;
         this.children.Add(gameObject);
     }
@@ -30,6 +75,16 @@ public abstract class GameObject : EngineObject
         this.children.Remove(gameObject);
         gameObject.parent = null;
     }
+
+    public void ClearChildren()
+    {
+        foreach (GameObject child in this.children)
+        {
+            child.parent = null;
+        }
+        this.children.Clear();
+        GC.Collect();
+    }
     #endregion
 
     #region COMPONENT_SYSTEM
@@ -43,6 +98,17 @@ public abstract class GameObject : EngineObject
     {
         component.OnUnload();
         this.components.Remove(component);
+    }
+
+    protected void UpdateComponents(GameTime gameTime)
+    {
+        foreach (Component c in this.components)
+        {
+            if (c.Enabled)
+            {
+                c.Update(gameTime);
+            }
+        }
     }
 
     /// <summary>
@@ -70,24 +136,24 @@ public abstract class GameObject : EngineObject
     /// <returns></returns>
     public List<Component> GetAllComponents<T>() where T : Component
     {
-        List<Component> coms = new();
+        List<Component> typeComponents = new();
         foreach (Component c in this.components)
         {
             if (c.GetType() == typeof(T))
             {
-                coms.Add(c);
+                typeComponents.Add(c);
             }
         }
 
-        return coms;
+        return typeComponents;
     }
 
-    public Component GetComponent<T>(string name) where T : Component
+    public Component GetComponent<T>(string componentName) where T : Component
     {
-        List<Component> components = this.GetAllComponents<T>();
-        foreach (Component c in components)
+        List<Component> typeComponents = this.GetAllComponents<T>();
+        foreach (Component c in typeComponents)
         {
-            if (c.GetName() == name)
+            if (c.GetName() == componentName)
             {
                 return c;
             }

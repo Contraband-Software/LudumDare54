@@ -1,36 +1,25 @@
-namespace LD54.Scripts.Engine;
+namespace LD54.Engine;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
 
 public abstract class Scene : EngineObject
 {
-    protected Game app;
-    protected ContentManager? content;
+    protected ContentManager contentManager;
 
-    protected Scene(string name, Game app) : base(name)
+    protected Scene(string name, Game appCtx) : base(name, appCtx)
     {
-        this.app = app;
+        this.contentManager = new ContentManager(this.app.Services);
+        this.contentManager.RootDirectory = this.app.Content.RootDirectory;
     }
 
-    public virtual void Initialize()
+    /// <summary>
+    /// Releases all game resources in this scene.
+    /// </summary>
+    /// <param name="permanent">If the scene need not be loaded again. (frees more memory)</param>
+    protected void UnloadContent(bool permanent=false)
     {
-        this.content = new ContentManager(this.app.Services);
-        this.content.RootDirectory = this.app.Content.RootDirectory;
-
-        this.LoadContent();
+        this.contentManager.Unload();
+        if (permanent) this.contentManager.Dispose();
     }
-
-    public virtual void LoadContent() { }
-
-    public virtual void UnloadContent()
-    {
-        this.content?.Unload();
-        this.content = null;
-    }
-
-    public virtual void Update(GameTime gameTime) { }
-
-    public virtual void Draw(SpriteBatch spriteBatch) { }
 }

@@ -1,12 +1,16 @@
-namespace LD54.Scripts.Engine;
+namespace LD54.Engine;
 
+using System;
 using Microsoft.Xna.Framework;
 
 public abstract class Component : EngineObject
 {
-    public Component(string name) : base(name) { }
+    public bool Enabled { get; }
+    public int UpdateOrder { get; }
+    public event EventHandler<EventArgs>? EnabledChanged;
+    public event EventHandler<EventArgs>? UpdateOrderChanged;
 
-    public abstract void OnLoad(GameObject parentObject);
-    public abstract void OnUpdate(GameTime gameTime);
-    public abstract void OnUnload();
+    protected GameObject gameObject;
+
+    public Component(string name, Game appCtx) : base(name, appCtx) { }
 }
