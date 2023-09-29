@@ -1,4 +1,4 @@
-﻿namespace LD54.Engine.Leviathan;
+namespace LD54.Engine.Leviathan;
 
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
@@ -59,7 +59,7 @@ public class LeviathanEngine
     public void loadContent()
     {
         spriteBatch = new SpriteBatch(game.GraphicsDevice);
-        lightingShader = game.Content.Load<Effect>("lighting");
+        lightingShader = game.Content.Load<Effect>("Shaders/lighting");
     }
 
     public void draw(GameTime gameTime) {
