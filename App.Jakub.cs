@@ -84,6 +84,7 @@ class PlayerBlock : GameObject
 
         Move();
 
+        PrintLn("PLAYER VELOCITY: " + rb.Velocity.ToString());
         this.SetLocalPosition(preMovePosition + rb.Velocity);
         this.app.Services.GetService<ICollisionSystemService>().RequestCalculation(preMovePosition, collider);
     }

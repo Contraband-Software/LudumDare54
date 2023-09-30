@@ -87,6 +87,7 @@ public class CollisionSystem : GameComponent, ICollisionSystemService
 
         foreach(Collision collision in collisions)
         {
+            PrintLn(position.ToString());
             //resolve collision
             //overlap box is smaller of d1/2x, d1/2y
             float overlapX = MathF.Min(
@@ -104,10 +105,12 @@ public class CollisionSystem : GameComponent, ICollisionSystemService
                 if (overlapX > overlapY)
                 {
                     position.Y -= overlapY * MathF.Sign(position.Y);
+                    PrintLn("Collision resolve: 1");
                 }
                 else if(overlapX < overlapY)
                 {
                     position.X -= overlapX * MathF.Sign(position.X);
+                    PrintLn("Collision resolve: 2");
                 }
                 else{
                     //if left or right of other object (gapX/combined width > gapY/combined height)
@@ -127,20 +130,23 @@ public class CollisionSystem : GameComponent, ICollisionSystemService
                     if(gapRatioX > gapRatioY)
                     {
                         position.X -= (overlapX) * MathF.Sign(position.X);
+                        PrintLn("Collision resolve: 3");
                     }
                     //above or below (maintain X, resolve Y)
                     else
                     {
                         position.Y -= (overlapY) * MathF.Sign(position.Y);
+                        PrintLn("Collision resolve: 4");
                     }
                 }
             }
             else
             {
-                if(overlapX > 0) position.Y -= overlapY * MathF.Sign(position.Y);
+                PrintLn("Collision resolve: 5");
+                if (overlapX > 0) position.Y -= overlapY * MathF.Sign(position.Y);
                 if(overlapY > 0) position.X -= overlapX * MathF.Sign(position.X);
             }
-
+            position -= requestingCollider.GetGameObject().GetParent().GetGlobalPosition();
             requestingCollider.GetGameObject().SetLocalPosition(position);
 
         }
