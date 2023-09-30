@@ -25,7 +25,7 @@ public class CollisionSystem : GameComponent, ICollisionSystemService
     public int AddColliderToSystem(ColliderComponent spriteCollider)
     {
         collisionSystemList.Add(spriteCollider);
-        PrintLn("Collider added, count: " + collisionSystemList.Count.ToString());
+        //PrintLn("Collider added, count: " + collisionSystemList.Count.ToString());
         return collisionSystemList.IndexOf(spriteCollider);
     }
 
@@ -91,7 +91,7 @@ public class CollisionSystem : GameComponent, ICollisionSystemService
 
         foreach(Collision collision in collisions)
         {
-            PrintLn(position.ToString());
+            //PrintLn(position.ToString());
             //resolve collision
             //overlap box is smaller of d1/2x, d1/2y
             float overlapX = MathF.Min(
@@ -106,12 +106,12 @@ public class CollisionSystem : GameComponent, ICollisionSystemService
                 if (overlapX > overlapY)
                 {
                     position.Y -= overlapY * MathF.Sign(requestingColliderRb.Velocity.Y);
-                    PrintLn("Collision resolve: 1");
+                    //PrintLn("Collision resolve: 1");
                 }
                 else if(overlapX < overlapY)
                 {
                     position.X -= overlapX * MathF.Sign(requestingColliderRb.Velocity.X);
-                    PrintLn("Collision resolve: 2");
+                    //PrintLn("Collision resolve: 2");
                 }
                 else{
                     //if left or right of other object (gapX/combined width > gapY/combined height)
@@ -131,19 +131,19 @@ public class CollisionSystem : GameComponent, ICollisionSystemService
                     if(gapRatioX > gapRatioY)
                     {
                         position.X -= (overlapX) * MathF.Sign(requestingColliderRb.Velocity.X);
-                        PrintLn("Collision resolve: 3");
+                        //PrintLn("Collision resolve: 3");
                     }
                     //above or below (maintain X, resolve Y)
                     else
                     {
                         position.Y -= (overlapY) * MathF.Sign(requestingColliderRb.Velocity.Y);
-                        PrintLn("Collision resolve: 4");
+                        //PrintLn("Collision resolve: 4");
                     }
                 }
             }
             else
             {
-                PrintLn("Collision resolve: 5");
+                //PrintLn("Collision resolve: 5");
 
                 if (overlapX > overlapY)
                 {

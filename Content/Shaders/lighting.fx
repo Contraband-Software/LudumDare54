@@ -16,6 +16,7 @@ float3 lightColors[64];
 float2 lightPositions[64];
 sampler colorSampler : register(s0);
 sampler normalSampler : register(s1);
+sampler occluderSampler : register(s2);
 
 struct VertexInput
 {
@@ -44,16 +45,47 @@ PixelInput SpriteVertexShader(VertexInput v)
 float4 SpritePixelShader(PixelInput p) : SV_TARGET
 {
     float4 diffuse = tex2D(colorSampler, p.TexCoord.xy);
-    float4 normal = tex2D(normalSampler, p.TexCoord.xy)*2 - 1;
+    float4 normal = tex2D(normalSampler, p.TexCoord.xy)*2 -1;
     float3 lighting = float3(0, 0, 0);
-    float2 screenCords = float2(p.Position.x, height - p.Position.y);
+    float2 screenCords = float2(p.Position.x, p.Position.y);
     for (int i = 0; i < 64; i++)
     {
-        float2 translatedPos = lightPositions[i] + translation;
-        float2 distAxis = screenCords - translatedPos;
-        float distSquared = distAxis.x * distAxis.x + distAxis.y * distAxis.y;
-        lighting += (lightColors[i] / distSquared) * max(dot(normal.xyz, normalize(float3(distAxis.x, distAxis.y, 10))), 0); // not technically correct
+        if (dot(lightColors[i], float3(1, 1, 1)) > 0)
+        {
+            float2 translatedPos = lightPositions[i] + translation;
+            float2 distAxis = screenCords - translatedPos;
+            float distSquared = distAxis.x * distAxis.x + distAxis.y * distAxis.y;
 
+            float2 marchVector = -normalize(distAxis) * 3; //-?
+            float2 marchPos = screenCords;
+            float3 shadowFactor = float3(1, 1, 1);
+            
+            for (int j = 0; j < 32; j++)
+            {
+                if (dot(shadowFactor, float3(1, 1, 1) <= 0))
+                {
+                    shadowFactor = float3(0, 0, 0);
+                    break;
+                }
+                if (marchPos.x < 0 || marchPos.x > width || marchPos.y < 0 || marchPos.y > height)
+                {
+                    break;
+                }
+                if (abs(translatedPos - marchPos).x < 3 && abs(translatedPos - marchPos).y < 3)
+                {
+                    break;
+                }
+                float3 occluderSample = tex2D(occluderSampler, marchPos / float2(width, height)).rgb;
+                if (dot(occluderSample, float3(1, 1, 1)) == 0)
+                {
+                    shadowFactor -= float3(0.1, 0.1, 0.1);
+                }
+                marchPos += marchVector;
+            }
+
+
+            lighting += (lightColors[i] / distSquared) * max(dot(normal.xyz, normalize(float3(-distAxis.x, distAxis.y, 100))), 0) * shadowFactor; // not technically correct
+        }
     }
     return diffuse * float4(lighting, 1.0);
     //return float4(p.Position.x/width, p.Position.y/height, 0.0, 1.0);

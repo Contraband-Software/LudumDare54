@@ -1,6 +1,6 @@
 // Imported across the entire solution
 global using System.Diagnostics.CodeAnalysis;       // [DisallowNull]
-global using static LD54.Engine.EngineDebug;
+global using static LD54.Engine.Debug.EngineDebug;
 
 namespace LD54;
 

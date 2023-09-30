@@ -76,7 +76,7 @@ class PlayerBlock : GameObject
         rb = new RigidBodyComponent("rbPlayer", app);
         this.AddComponent(rb);
 
-        PrintLn("OnLoad: PlayerBlock");
+        //PrintLn("OnLoad: PlayerBlock");
     }
 
     public override void Update(GameTime gameTime)
@@ -87,7 +87,7 @@ class PlayerBlock : GameObject
 
         Move();
 
-        PrintLn("PLAYER VELOCITY: " + rb.Velocity.ToString());
+        //PrintLn("PLAYER VELOCITY: " + rb.Velocity.ToString());
         this.SetLocalPosition(this.GetLocalPosition() + rb.Velocity);
         //this.app.Services.GetService<ICollisionSystemService>().RequestCalculation(preMovePosition, collider);
     }
@@ -124,7 +124,7 @@ class JakubScene : Scene
     public override void OnLoad(GameObject? parentObject)
     {
         Texture2D blankTexure = this.contentManager.Load<Texture2D>("Sprites/block");
-        PrintLn("OnLoad: JakubScene");
+        //PrintLn("OnLoad: JakubScene");
 
         PlayerBlock playerBlock = new PlayerBlock(blankTexure, "spovus", app);
         parentObject.AddChild(playerBlock);
@@ -157,7 +157,7 @@ public class App_Jakub : Game
         graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
-        EngineDebug.PrintLn("RUNNING APP_HAKUB");
+        //PrintLn("RUNNING APP_HAKUB");
 
     }
 
