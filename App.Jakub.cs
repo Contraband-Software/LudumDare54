@@ -8,23 +8,7 @@ using LD54.Engine.Leviathan;
 using LD54.Engine.Collision;
 using Engine.Components;
 
-public class RigidBodyComponent : Component
-{
-    public Vector3 Velocity;
-    public RigidBodyComponent(string name, Game appCtx) : base(name, appCtx)
-    {
-    }
 
-    public override void OnLoad(GameObject? parentObject)
-    {
-        this.Velocity = Vector3.Zero;
-    }
-
-    public override void OnUnload()
-    {
-
-    }
-}
 
 
 

@@ -3,8 +3,7 @@ namespace LD54.Engine.Collision;
 using System;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
+using Engine.Components;
 
 public interface ICollisionSystemService
 {
@@ -78,7 +77,7 @@ public class CollisionSystem : GameComponent, ICollisionSystemService
     /// <summary>
     /// Force a recalculation for a collider
     /// </summary>
-    public void RequestCalculation(Vector3 preMovePos, ColliderComponent requestingCollider) { 
+    public void RequestCalculation(Vector3 preMovePos, ColliderComponent requestingCollider) {
         List<Collision> collisions = CalculateForCollider(requestingCollider);
 
         GameObject requestingColliderObj = requestingCollider.GetGameObject();
@@ -91,10 +90,10 @@ public class CollisionSystem : GameComponent, ICollisionSystemService
             //resolve collision
             //overlap box is smaller of d1/2x, d1/2y
             float overlapX = MathF.Min(
-                MathF.Abs(collision.overlap.overlaps[0]), 
+                MathF.Abs(collision.overlap.overlaps[0]),
                 MathF.Abs(collision.overlap.overlaps[2]));
             float overlapY = MathF.Min(
-                MathF.Abs(collision.overlap.overlaps[1]), 
+                MathF.Abs(collision.overlap.overlaps[1]),
                 MathF.Abs(collision.overlap.overlaps[3]));
 
             //Debug.WriteLine("OverlapX: " + overlapX.ToString());
@@ -115,13 +114,13 @@ public class CollisionSystem : GameComponent, ICollisionSystemService
                     float widthTarget = requestingCollider.aabb.max.X - requestingCollider.aabb.min.X;
                     float widthCollision = collision.aabb.max.X - collision.aabb.min.X;
 
-                    float gapRatioX = MathF.Abs(collision.collider.aabb.min.X - preMovePos.X) 
+                    float gapRatioX = MathF.Abs(collision.collider.aabb.min.X - preMovePos.X)
                         / (widthTarget + widthCollision);
-                        
+
                     float heightTarget = requestingCollider.aabb.min.Y - requestingCollider.aabb.max.Y;
                     float heightCollision = collision.aabb.min.Y - collision.aabb.max.Y;
 
-                    float gapRatioY = MathF.Abs(collision.collider.aabb.max.Y - preMovePos.Y) 
+                    float gapRatioY = MathF.Abs(collision.collider.aabb.max.Y - preMovePos.Y)
                         / (heightTarget + heightCollision);
 
                     //on left or right (maintain Y, resolve X)
