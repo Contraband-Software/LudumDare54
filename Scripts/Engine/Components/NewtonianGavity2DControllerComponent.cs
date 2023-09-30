@@ -4,8 +4,13 @@ using Microsoft.Xna.Framework;
 
 public class NewtonianGavity2DControllerComponent : Component
 {
-    public NewtonianGavity2DControllerComponent(string name, Game appCtx) : base(name, appCtx)
+    public float GravitationalConstant { get; protected set; } = 1;
+
+    public RigidBodyComponent Satellites { get; protected set; }
+
+    public NewtonianGavity2DControllerComponent(float gravitationalConstant, string name, Game appCtx) : base(name, appCtx)
     {
+        GravitationalConstant = gravitationalConstant;
     }
     public override void OnLoad(GameObject? parentObject)
     {

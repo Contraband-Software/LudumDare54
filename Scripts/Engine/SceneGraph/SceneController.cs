@@ -93,17 +93,19 @@ public class SceneController : GameComponent, ISceneControllerService
     }
     private void PrintChildren(GameObject gameObject, int depth)
     {
+        ++depth;
+
         string space = "";
         for (int i = 0; i < depth; i++)
         {
             space += "   ";
         }
-        PrintLn(space + gameObject.GetName());
+        Console.Out.WriteLine(space + gameObject.GetName());
 
         IEnumerable<GameObject> g = gameObject.GetChildren();
         foreach (GameObject child in g.ToList())
         {
-            this.PrintChildren(child, ++depth);
+            this.PrintChildren(child, depth);
         }
     }
 

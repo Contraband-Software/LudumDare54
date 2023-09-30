@@ -18,6 +18,17 @@ public abstract class GameObject : EngineObject, IUpdateable
     public event EventHandler<EventArgs>? UpdateOrderChanged;
     #endregion
 
+    #region EVENTS
+    public delegate void ChildAttached(GameObject gameObject);
+    public event ChildAttached ChildAttachedEvent;
+
+    public delegate void ChildRemoved(GameObject gameObject);
+    public event ChildRemoved ChildRemovedEvent;
+
+    public delegate void ComponentAttached(Component component);
+    public event ComponentAttached ComponentAttachedEvent;
+    #endregion
+
     protected GameObject? parent;
     protected readonly List<GameObject> children = new();
 
@@ -98,6 +109,8 @@ public abstract class GameObject : EngineObject, IUpdateable
         gameObject.parent?.RemoveChild(gameObject);
         gameObject.parent = this;
         this.children.Add(gameObject);
+
+        if (ChildAttachedEvent is not null) ChildAttachedEvent(gameObject);
     }
 
     public IEnumerable<GameObject> GetChildren()
@@ -109,6 +122,8 @@ public abstract class GameObject : EngineObject, IUpdateable
     {
         this.children.Remove(gameObject);
         gameObject.parent = null;
+
+        if (ChildAttachedEvent is not null) ChildRemovedEvent(gameObject);
     }
 
     public void ClearChildren()
@@ -128,6 +143,8 @@ public abstract class GameObject : EngineObject, IUpdateable
     {
         this.components.Add(component);
         component.OnLoad(this);
+
+        if (ChildAttachedEvent is not null) ComponentAttachedEvent(component);
     }
 
     public void RemoveComponent(Component component)
