@@ -32,6 +32,12 @@
 /processorParam:DebugMode=Auto
 /build:Shaders/abberation.fx
 
+#begin Shaders/blackhole.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/blackhole.fx
+
 #begin Shaders/bloom.fx
 /importer:EffectImporter
 /processor:EffectProcessor
@@ -43,6 +49,12 @@
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
 /build:Shaders/lighting.fx
+
+#begin Shaders/stars.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/stars.fx
 
 #begin Sprites/block.png
 /importer:TextureImporter
@@ -91,6 +103,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Sprites/liberia.jpg
+
+#begin Sprites/nebula.jpg
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/nebula.jpg
 
 #begin Sprites/normal.png
 /importer:TextureImporter

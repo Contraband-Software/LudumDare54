@@ -21,6 +21,14 @@ interface ILeviathanEngineService
     public Vector2 getLightPosition(int id);
 
     public void updateLightPosition(int id, Vector2 offset);
+
+    public int addPostProcess(LeviathanShader shader);
+
+    public void removePostProcess(int i);
+
+    public int addUISprite(LeviathanUIElement uiSprite);
+
+    public void removeUISprite(int index);
 }
 
 public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
@@ -28,12 +36,14 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
 
     private Vector2[] lightPositions = new Vector2[64];
     private Vector3[] lightColors = new Vector3[64];
+    private List<LeviathanShader> shaders = new List<LeviathanShader>();
     private Queue<int> openLocations = new Queue<int>();
     private IGraphicsDeviceManager graphics;
     private SpriteBatch spriteBatch;
     private Effect lightingShader;
     private Game game;
     public Vector2 cameraPosition = new Vector2(0);
+    private Vector2 veiwportSize = new Vector2();
 
     RenderTarget2D colorTarget;
     RenderTarget2D normalTarget;
@@ -50,6 +60,7 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
     {
         game = g;
         graphics = g.Services.GetService<IGraphicsDeviceManager>();
+        veiwportSize = new Vector2(game.Window.ClientBounds.Width, game.Window.ClientBounds.Width);
         //graphics.GraphicsProfile = GraphicsProfile.HiDef;
         for (int i = 0; i < 64; i++)
         {
@@ -78,6 +89,12 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
 
         spriteBatch = new SpriteBatch(game.GraphicsDevice);
         lightingShader = game.Content.Load<Effect>("Shaders/lighting");
+    }
+
+    public int bindShader(LeviathanShader shader)
+    {
+        shaders.Add(shader);
+        return shaders.IndexOf(shader);
     }
 
     public int addPostProcess(LeviathanShader shader)
@@ -122,14 +139,31 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
 
         game.GraphicsDevice.SetRenderTarget(colorTarget);
         game.GraphicsDevice.Clear(Color.Black);
-        spriteBatch.Begin(transformMatrix: view);
-
-        foreach (LeviathanSprite sprite in sprites)
+        for (int i = 0; i < this.shaders.Count+1; i++)
         {
-            spriteBatch.Draw(sprite.color, new Rectangle(sprite.GetPositionXY().ToPoint(), sprite.size), Color.White);
+            if(i == 0)
+            {
+                spriteBatch.Begin(transformMatrix: view);
+            }
+            else
+            {
+                shaders[i - 1].shader.Parameters["viewProjection"]?.SetValue(projection);
+                shaders[i - 1].shader.Parameters["time"]?.SetValue((float)gameTime.TotalGameTime.TotalSeconds);
+                shaders[i - 1].shader.Parameters["width"]?.SetValue(width);
+                shaders[i - 1].shader.Parameters["height"]?.SetValue(height);
+                shaders[i - 1].SetAllParams();
+                spriteBatch.Begin(transformMatrix: view, effect: shaders[i-1].shader) ;
+            }
+            foreach (LeviathanSprite sprite in sprites)
+            {
+                if (sprite.shader == i)
+                {
+                    spriteBatch.Draw(sprite.color, new Rectangle(sprite.GetPositionXY().ToPoint(), sprite.size), Color.White);
+                }
+            }
+            spriteBatch.End();
         }
 
-        spriteBatch.End();
 
         game.GraphicsDevice.SetRenderTarget(normalTarget);
         game.GraphicsDevice.Clear(new Color(0.5f, 0.5f, 1f));
