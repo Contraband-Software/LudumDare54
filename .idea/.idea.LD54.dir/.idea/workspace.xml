@@ -8,7 +8,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b177c274-5f29-4dd6-aecd-1ee6a42ae4d6" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Scripts/AsteroidGame/Scenes/GameScene.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Scripts/AsteroidGame/Scenes/StartScene.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.LD54.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.LD54.dir/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App.Jakub.cs" beforeDir="false" afterPath="$PROJECT_DIR$/App.Jakub.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App.Sam.cs" beforeDir="false" afterPath="$PROJECT_DIR$/App.Sam.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App.cs" beforeDir="false" afterPath="$PROJECT_DIR$/App.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Scripts/Engine/Collision/CollisionSystem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/Engine/Collision/CollisionSystem.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scripts/Engine/EngineDebug.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scripts/Engine/Input.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scripts/Game/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/AsteroidGame/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,6 +35,9 @@
   "associatedIndex": 7
 }]]></component>
   <component name="ProjectId" id="2W7YKVnB0uG2FaPJRZtLq6V1GV1" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -35,7 +47,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "Merging master",
+    "git-widget-placeholder": "master",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -79,7 +91,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1696085022386</updated>
-      <workItem from="1696085025658" duration="2404000" />
+      <workItem from="1696085025658" duration="6473000" />
     </task>
     <servers />
   </component>
@@ -88,24 +100,5 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Scripts/Engine/Collision/CollisionSystem.cs</url>
-          <line>161</line>
-          <properties documentPath="$PROJECT_DIR$/Scripts/Engine/Collision/CollisionSystem.cs" initialLine="149" containingFunctionPresentation="Method 'RequestCalculation'">
-            <startOffsets>
-              <option value="6215" />
-            </startOffsets>
-            <endOffsets>
-              <option value="6277" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

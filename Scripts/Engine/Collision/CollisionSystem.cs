@@ -4,6 +4,7 @@ using System;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Engine.Components;
+using Engine.Debug;
 
 public interface ICollisionSystemService
 {

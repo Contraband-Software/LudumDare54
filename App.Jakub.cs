@@ -86,6 +86,7 @@ class PlayerBlock : GameObject
 
         PrintLn("PLAYER VELOCITY: " + rb.Velocity.ToString());
         this.SetLocalPosition(preMovePosition + rb.Velocity);
+
         this.app.Services.GetService<ICollisionSystemService>().RequestCalculation(preMovePosition, collider);
     }
 
@@ -154,7 +155,7 @@ public class App_Jakub : Game
         graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
-        EngineDebug.PrintLn("RUNNING APP_HAKUB");
+        PrintLn("RUNNING APP_HAKUB");
 
     }
 
