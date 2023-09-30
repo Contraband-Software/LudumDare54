@@ -14,6 +14,15 @@ public class RigidBodyComponent : Component
     public override void OnLoad(GameObject? parentObject)
     {
         this.Velocity = Vector3.Zero;
+
+        this.gameObject = parentObject;
+    }
+
+    public override void Update(GameTime gameTime)
+    {
+        base.Update(gameTime);
+
+        this.gameObject.SetLocalPosition(this.gameObject.GetLocalPosition() + this.Velocity);
     }
 
     public override void OnUnload()

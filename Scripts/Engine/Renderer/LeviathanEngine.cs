@@ -1,4 +1,4 @@
-﻿namespace LD54.Engine.Leviathan;
+namespace LD54.Engine.Leviathan;
 
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
@@ -33,6 +33,7 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
     private SpriteBatch spriteBatch;
     private Effect lightingShader;
     private Game game;
+    public Vector2 cameraPosition = new Vector2(0);
 
     RenderTarget2D colorTarget;
     RenderTarget2D normalTarget;
@@ -111,7 +112,7 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
 
     public override void Draw(GameTime gameTime)
     {
-        Matrix view = Matrix.Identity * Matrix.CreateTranslation(0, 0, 0);
+        Matrix view = Matrix.Identity * Matrix.CreateTranslation(-cameraPosition.X,-cameraPosition.Y, 0);
 
         int width = game.GraphicsDevice.Viewport.Width;
         int height = game.GraphicsDevice.Viewport.Height;

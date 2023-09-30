@@ -6,10 +6,11 @@ using AsteroidGame.Scenes;
 using Engine;
 using Engine.Leviathan;
 using Engine.Collision;
-
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+
+
 
 public class App_Sam : Game
 {
@@ -46,9 +47,9 @@ public class App_Sam : Game
     }
 
     protected override void Initialize() {
-        // le = new LeviathanEngine(this);
-        // this.Components.Add(le);
-        // this.Services.AddService(typeof(ILeviathanEngineService), le);
+        le = new LeviathanEngine(this);
+        this.Components.Add(le);
+        this.Services.AddService(typeof(ILeviathanEngineService), le);
 
         sc = new SceneController(this);
         this.Components.Add(sc);
@@ -60,13 +61,13 @@ public class App_Sam : Game
 
         PrintLn("App: Game systems initialized.");
 
-        // this.sc.AddScene(new GameScene(this));
-        //
-        // PrintLn("App: Scenes loaded.");
-        //
-        // this.sc.ChangeScene("GameScene");
-        //
-        // PrintLn("App: Game scene started.");
+        this.sc.AddScene(new GameScene(this));
+
+        PrintLn("App: Scenes loaded.");
+
+        this.sc.ChangeScene("GameScene");
+
+        PrintLn("App: Game scene started.");
 
         // THESE base METHODS MUST ALWAYS COME LAST IN THE FUNCTION
         base.Initialize();
