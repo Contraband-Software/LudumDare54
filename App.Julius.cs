@@ -40,11 +40,21 @@ public class App_Julius : Game
                 engine.addSprite(testSprite);
             }
         }
+
+        //LeviathanShader bloomShader = new LeviathanShader(this,"Shaders/bloom");
+        //bloomShader.AddParam("strength", 1f);
+        //engine.addPostProcess(bloomShader);
+
+        LeviathanShader abberationShader = new LeviathanShader(this,"Shaders/abberation");
+        abberationShader.AddParam("strength", 0.002f);
+        abberationShader.AddParam("brightnessThreshold", 150);
+        engine.addPostProcess(abberationShader);
+
         base.Initialize();
 
         PrintLn("Game initialized");
     }
-
+     
     protected override void LoadContent()
     {
         // TODO: GLOBAL LOAD CONTENT, USE THE GLOBAL CONTENT MANAGER CONTAINED IN GAME TO LOAD PERSISTENT CONTENT.

@@ -37,8 +37,7 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
     RenderTarget2D colorTarget;
     RenderTarget2D normalTarget;
     RenderTarget2D litTarget;
-    RenderTarget2D postProcessTarget1;
-    RenderTarget2D postProcessTarget2;
+    RenderTarget2D postProcessTarget;
     private bool pingpong = false;
 
     public List<LevithanSprite> sprites = new List<LevithanSprite>();
@@ -67,13 +66,9 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
         litTarget = new RenderTarget2D(game.GraphicsDevice,
             game.GraphicsDevice.PresentationParameters.BackBufferWidth,
             game.GraphicsDevice.PresentationParameters.BackBufferHeight);
-        postProcessTarget1 = new RenderTarget2D(game.GraphicsDevice,
+        postProcessTarget = new RenderTarget2D(game.GraphicsDevice,
             game.GraphicsDevice.PresentationParameters.BackBufferWidth,
             game.GraphicsDevice.PresentationParameters.BackBufferHeight);
-        postProcessTarget2 = new RenderTarget2D(game.GraphicsDevice,
-            game.GraphicsDevice.PresentationParameters.BackBufferWidth,
-            game.GraphicsDevice.PresentationParameters.BackBufferHeight);
-
 
         spriteBatch = new SpriteBatch(game.GraphicsDevice);
         lightingShader = game.Content.Load<Effect>("Shaders/lighting");
@@ -148,26 +143,56 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
         lightingShader.Parameters["normalSampler"]?.SetValue(normalTarget);
 
 
-        game.GraphicsDevice.SetRenderTarget(null);
+        game.GraphicsDevice.SetRenderTarget(litTarget);
         game.GraphicsDevice.Clear(Color.Black);
         spriteBatch.Begin(effect: lightingShader);
         spriteBatch.Draw(colorTarget, new Vector2(0), Color.White);
         spriteBatch.End();
 
-        //game.GraphicsDevice.SetRenderTarget(null);
-        //game.GraphicsDevice.Clear(Color.Black);
+        game.GraphicsDevice.SetRenderTarget(null);
+        game.GraphicsDevice.Clear(Color.Black);
 
-        //foreach (LeviathanShader postProcess in postProcessShaders)
-        //{
-        //    if (pingpong)
-        //    {
-        //        game.GraphicsDevice.SetRenderTarget(postProcessTarget1);
-        //    }
+        foreach (LeviathanShader postProcess in postProcessShaders)
+        {
+            postProcess.shader.Parameters["viewProjection"]?.SetValue(projection);
+            postProcess.shader.Parameters["time"]?.SetValue((float)gameTime.TotalGameTime.TotalSeconds);
+            postProcess.shader.Parameters["width"]?.SetValue(width);
+            postProcess.shader.Parameters["height"]?.SetValue(height);
+            postProcess.SetAllParams();
+            if (pingpong)
+            {
+                game.GraphicsDevice.SetRenderTarget(litTarget);
+            }
+            else
+            {
+                game.GraphicsDevice.SetRenderTarget(postProcessTarget);
+            }
 
-
-        //    pingpong = !pingpong;
-        //}
-
+            game.GraphicsDevice.Clear(Color.Black);
+            spriteBatch.Begin(effect: postProcess.shader);
+            if (pingpong)
+            {
+                spriteBatch.Draw(postProcessTarget, new Vector2(0), Color.White);
+            }
+            else
+            {
+                spriteBatch.Draw(litTarget, new Vector2(0), Color.White);
+            }
+            spriteBatch.End();
+            pingpong = !pingpong;
+        }
+        game.GraphicsDevice.SetRenderTarget(null);
+        game.GraphicsDevice.Clear(Color.Black);
+        spriteBatch.Begin();
+        if (pingpong)
+        {
+            spriteBatch.Draw(postProcessTarget, new Vector2(0), Color.White);
+        }
+        else
+        {
+            spriteBatch.Draw(litTarget, new Vector2(0), Color.White);
+        }
+        spriteBatch.End();
     }
 
     //public override void Update(GameTime gameTime)

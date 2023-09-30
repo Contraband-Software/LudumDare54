@@ -19,6 +19,18 @@
 /processorParam:Quality=Best
 /build:Audio/piri & tommy_on & on.mp3
 
+#begin Shaders/abberation.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/abberation.fx
+
+#begin Shaders/bloom.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/bloom.fx
+
 #begin Shaders/lighting.fx
 /importer:EffectImporter
 /processor:EffectProcessor

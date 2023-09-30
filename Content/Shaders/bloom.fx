@@ -7,15 +7,13 @@
 #endif
 
 
-float2 translation;
 float4x4 viewProjection;
 float time;
 float width;
 float height;
-float3 lightColors[64];
-float2 lightPositions[64];
+float strength;
+float brightnessThreshold;
 sampler colorSampler : register(s0);
-sampler normalSampler : register(s1);
 
 struct VertexInput
 {
@@ -43,20 +41,22 @@ PixelInput SpriteVertexShader(VertexInput v)
 }
 float4 SpritePixelShader(PixelInput p) : SV_TARGET
 {
-    float4 diffuse = tex2D(colorSampler, p.TexCoord.xy);
-    float4 normal = tex2D(normalSampler, p.TexCoord.xy)*2 - 1;
-    float3 lighting = float3(0, 0, 0);
-    float2 screenCords = float2(p.Position.x, height - p.Position.y);
-    for (int i = 0; i < 64; i++)
-    {
-        float2 translatedPos = lightPositions[i] + translation;
-        float2 distAxis = screenCords - translatedPos;
-        float distSquared = distAxis.x * distAxis.x + distAxis.y * distAxis.y;
-        lighting += (lightColors[i] / distSquared) * max(dot(normal.xyz, normalize(float3(distAxis.x, distAxis.y, 10))), 0); // not technically correct
+    float oneOverWidth = 1 / width;
+    float4 col = tex2D(colorSampler, p.TexCoord.xy);
 
-    }
-    return diffuse * float4(lighting, 1.0);
-    //return float4(p.Position.x/width, p.Position.y/height, 0.0, 1.0);
+    float brightness = 0;
+    float3 avarageColor = float3(0, 0, 0);
+    
+    for (int i = -1; i < 2; i++)
+    {
+        for (int j = -1; j < 2; j++)
+        {
+            float3 sample = tex2D(colorSampler, p.TexCoord.xy + float2(i * width, j * width)).rgb;
+            avarageColor += sample;
+            brightness += (sample.r + sample.g + sample.b);
+        }
+    }    
+    return col;
 }
 
 technique SpriteBatch
