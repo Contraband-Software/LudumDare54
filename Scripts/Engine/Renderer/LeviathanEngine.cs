@@ -37,7 +37,9 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
     RenderTarget2D colorTarget;
     RenderTarget2D normalTarget;
     RenderTarget2D litTarget;
-    RenderTarget2D postProcessTarget;
+    RenderTarget2D postProcessTarget1;
+    RenderTarget2D postProcessTarget2;
+    private bool pingpong = false;
 
     public List<LevithanSprite> sprites = new List<LevithanSprite>();
     public List<LeviathanShader> postProcessShaders = new List<LeviathanShader>();
@@ -65,7 +67,10 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
         litTarget = new RenderTarget2D(game.GraphicsDevice,
             game.GraphicsDevice.PresentationParameters.BackBufferWidth,
             game.GraphicsDevice.PresentationParameters.BackBufferHeight);
-        postProcessTarget = new RenderTarget2D(game.GraphicsDevice,
+        postProcessTarget1 = new RenderTarget2D(game.GraphicsDevice,
+            game.GraphicsDevice.PresentationParameters.BackBufferWidth,
+            game.GraphicsDevice.PresentationParameters.BackBufferHeight);
+        postProcessTarget2 = new RenderTarget2D(game.GraphicsDevice,
             game.GraphicsDevice.PresentationParameters.BackBufferWidth,
             game.GraphicsDevice.PresentationParameters.BackBufferHeight);
 
@@ -143,19 +148,25 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
         lightingShader.Parameters["normalSampler"]?.SetValue(normalTarget);
 
 
-        game.GraphicsDevice.SetRenderTarget(litTarget);
+        game.GraphicsDevice.SetRenderTarget(null);
         game.GraphicsDevice.Clear(Color.Black);
         spriteBatch.Begin(effect: lightingShader);
         spriteBatch.Draw(colorTarget, new Vector2(0), Color.White);
         spriteBatch.End();
 
-        game.GraphicsDevice.SetRenderTarget(null);
-        game.GraphicsDevice.Clear(Color.Black);
+        //game.GraphicsDevice.SetRenderTarget(null);
+        //game.GraphicsDevice.Clear(Color.Black);
 
-        foreach (LeviathanShader postProcess in postProcessShaders)
-        {
+        //foreach (LeviathanShader postProcess in postProcessShaders)
+        //{
+        //    if (pingpong)
+        //    {
+        //        game.GraphicsDevice.SetRenderTarget(postProcessTarget1);
+        //    }
 
-        }
+
+        //    pingpong = !pingpong;
+        //}
 
     }
 
