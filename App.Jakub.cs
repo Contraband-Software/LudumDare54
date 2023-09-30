@@ -8,7 +8,7 @@ using LD54.Engine.Leviathan;
 
 class SpriteRendererComponent : Component
 {
-    LeviathanSprite sprite;
+    LeviathanSprite? sprite;
     int spriteID;
 
     public SpriteRendererComponent(string name, Game appCtx) : base(name, appCtx)

@@ -1,3 +1,7 @@
+// ReSharper disable MemberCanBePrivate.Global
+
+using System.Linq;
+
 namespace LD54.Engine;
 
 using System;
@@ -6,29 +10,26 @@ using Microsoft.Xna.Framework;
 
 public abstract class GameObject : EngineObject, IUpdateable
 {
-    private bool initalized = false;
-
+    #region IUPDATEABLE
+    // ReSharper disable once ReplaceAutoPropertyWithComputedProperty
     public bool Enabled { get; } = true;
     public int UpdateOrder { get; }
     public event EventHandler<EventArgs>? EnabledChanged;
     public event EventHandler<EventArgs>? UpdateOrderChanged;
-
-    private GameObject? _parent;
-
-    // self initialization
+    #endregion
+    
     protected GameObject? parent;
-
-    protected List<GameObject> children = new();
+    protected readonly List<GameObject> children = new();
 
     protected Matrix transform;
-    protected List<Component> components = new();
+    protected readonly List<Component> components = new();
 
-    public GameObject(string name, Game appCtx) : base(name, appCtx)
+    protected GameObject(string name, Game appCtx) : base(name, appCtx)
     {
         this.transform = Matrix.Identity;
     }
 
-    public virtual void Update(GameTime gameTime)
+    public new virtual void Update(GameTime gameTime)
     {
         this.UpdateComponents(gameTime);
     }
@@ -39,11 +40,13 @@ public abstract class GameObject : EngineObject, IUpdateable
     }
 
     #region SCENE_GRAPH
+    // ReSharper disable once MemberCanBeProtected.Global
     public Matrix GetLocalTransform()
     {
         return this.transform;
     }
 
+    // ReSharper disable once MemberCanBeProtected.Global
     public void SetLocalTransform(Matrix transform)
     {
         this.transform = transform;
@@ -68,7 +71,7 @@ public abstract class GameObject : EngineObject, IUpdateable
         this.children.Add(gameObject);
     }
 
-    public List<GameObject> GetChildren()
+    public IEnumerable<GameObject> GetChildren()
     {
         return this.children;
     }
@@ -91,6 +94,7 @@ public abstract class GameObject : EngineObject, IUpdateable
     #endregion
 
     #region COMPONENT_SYSTEM
+    // ReSharper disable once MemberCanBeProtected.Global
     public void AddComponent(Component component)
     {
         this.components.Add(component);
@@ -105,23 +109,17 @@ public abstract class GameObject : EngineObject, IUpdateable
 
     protected void UpdateComponents(GameTime gameTime)
     {
-        foreach (Component c in this.components)
+        foreach (Component c in this.components.Where(c => c.Enabled))
         {
-            if (c.Enabled)
-            {
-                c.Update(gameTime);
-            }
+            c.Update(gameTime);
         }
     }
 
     protected void UnloadComponents()
     {
-        foreach (Component c in this.components)
+        foreach (Component c in this.components.Where(c => c.Enabled))
         {
-            if (c.Enabled)
-            {
-                c.OnUnload();
-            }
+            c.OnUnload();
         }
     }
 
@@ -130,17 +128,10 @@ public abstract class GameObject : EngineObject, IUpdateable
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
+    // ReSharper disable once UnusedMember.Global
     public Component? GetComponent<T>() where T : Component
     {
-        foreach (Component c in this.components)
-        {
-            if (c.GetType() == typeof(T))
-            {
-                return c;
-            }
-        }
-
-        return null;
+        return this.components.FirstOrDefault(c => c.GetType() == typeof(T));
     }
 
     /// <summary>
@@ -148,29 +139,17 @@ public abstract class GameObject : EngineObject, IUpdateable
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    public List<Component> GetAllComponents<T>() where T : Component
+    public IEnumerable<Component> GetAllComponents<T>() where T : Component
     {
-        List<Component> typeComponents = new();
-        foreach (Component c in this.components)
-        {
-            if (c.GetType() == typeof(T))
-            {
-                typeComponents.Add(c);
-            }
-        }
-
-        return typeComponents;
+        return this.components.Where(c => c.GetType() == typeof(T)).ToList();
     }
 
     public Component GetComponent<T>(string componentName) where T : Component
     {
-        List<Component> typeComponents = this.GetAllComponents<T>();
-        foreach (Component c in typeComponents)
+        IEnumerable<Component> typeComponents = this.GetAllComponents<T>();
+        foreach (Component c in typeComponents.Where(c => c.GetName() == componentName))
         {
-            if (c.GetName() == componentName)
-            {
-                return c;
-            }
+            return c;
         }
 
         throw new ArgumentException("No component with that name on this GameObject");
