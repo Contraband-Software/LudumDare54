@@ -20,7 +20,7 @@ public class RootGameObject : GameObject
     public override void OnUnload() => throw new System.NotImplementedException();
 }
 
-interface ISceneControllerService
+public interface ISceneControllerService
 {
     public void DebugPrintGraph();
 
@@ -34,26 +34,26 @@ interface ISceneControllerService
 
 public class SceneController : GameComponent, ISceneControllerService
 {
-    private List<Scene> scenes = new();
+    private readonly List<Scene> scenes = new();
 
     private Scene? activeScene;
     private Scene? nextScene;
 
-    protected readonly RootGameObject rootGameObject;
+    private readonly RootGameObject rootGameObject;
     public RootGameObject GetSceneRoot()
     {
         return this.rootGameObject;
     }
-    protected readonly RootGameObject persitentGameObject;
+    private readonly RootGameObject persistantGameObject;
     public RootGameObject GetPersistentGameObject()
     {
-        return this.persitentGameObject;
+        return this.persistantGameObject;
     }
 
     public SceneController(Game game) : base(game)
     {
         this.rootGameObject = new RootGameObject(".Root", game);
-        this.persitentGameObject = new RootGameObject(".PersistentRoot", game);
+        this.persistantGameObject = new RootGameObject(".PersistentRoot", game);
     }
 
     /// <summary>
@@ -76,21 +76,24 @@ public class SceneController : GameComponent, ISceneControllerService
     }
 
     #region SCENE_API
+    /// <summary>
+    /// Prints a text-version of the scene tree (has indentation for children)
+    /// </summary>
     public void DebugPrintGraph()
     {
         this.PrintChildren(this.rootGameObject, 0);
-        this.PrintChildren(this.persitentGameObject, 0);
+        this.PrintChildren(this.persistantGameObject, 0);
     }
     private void PrintChildren(GameObject gameObject, int depth)
     {
         string space = "";
         for (int i = 0; i < depth; i++)
         {
-            space = space + "   ";
+            space += "   ";
         }
         PrintLn(space + gameObject.GetName());
 
-        List<GameObject> g = gameObject.GetChildren();
+        IEnumerable<GameObject> g = gameObject.GetChildren();
         foreach (GameObject child in g.ToList())
         {
             this.PrintChildren(child, ++depth);
@@ -99,10 +102,6 @@ public class SceneController : GameComponent, ISceneControllerService
 
     public Scene? GetCurrentScene()
     {
-        if (this.activeScene == null)
-        {
-            return null;
-        }
         return this.activeScene;
     }
 
@@ -168,38 +167,32 @@ public class SceneController : GameComponent, ISceneControllerService
     private void UpdateGameObjects(GameTime gameTime)
     {
         this.UpdateChildren(this.rootGameObject, gameTime);
-        this.UpdateChildren(this.persitentGameObject, gameTime);
+        this.UpdateChildren(this.persistantGameObject, gameTime);
     }
 
     private void UpdateChildren(GameObject gameObject, GameTime gameTime)
     {
-        List<GameObject> g = gameObject.GetChildren();
+        IEnumerable<GameObject> g = gameObject.GetChildren();
 
-        foreach (GameObject child in g.ToList())
+        foreach (GameObject child in g.ToList().Where(child => child.Enabled))
         {
-            if (child.Enabled)
+            if (!child.Initialized)
             {
-                if (!child.Initialized)
-                {
-                    child.OnLoad(gameObject);
-                    child.Initialized = true;
-                }
-                child.Update(gameTime);
-                this.UpdateChildren(child, gameTime);
+                child.OnLoad(gameObject);
+                child.Initialized = true;
             }
+            child.Update(gameTime);
+            this.UpdateChildren(child, gameTime);
         }
     }
     private void UnloadChildren(GameObject gameObject)
     {
-        List<GameObject> g = gameObject.GetChildren();
+        IEnumerable<GameObject> g = gameObject.GetChildren();
 
-        foreach (GameObject child in g.ToList())
+        foreach (GameObject child in g.ToList().Where(child => child.Enabled))
         {
-            if (child.Enabled)
-            {
-                child.OnUnload();
-                this.UnloadChildren(child);
-            }
+            child.OnUnload();
+            this.UnloadChildren(child);
         }
     }
     #endregion
