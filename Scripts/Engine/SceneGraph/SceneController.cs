@@ -75,6 +75,13 @@ public class SceneController : GameComponent, ISceneControllerService
         }
     }
 
+    public void DestroyObject(GameObject gameObject)
+    {
+        gameObject.OnUnload();
+        this.UnloadChildren(gameObject);
+        gameObject.GetParent().RemoveChild(gameObject);
+    }
+
     #region SCENE_API
     /// <summary>
     /// Prints a text-version of the scene tree (has indentation for children)

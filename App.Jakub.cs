@@ -6,6 +6,7 @@ using Engine;
 using Microsoft.Xna.Framework.Graphics;
 using LD54.Engine.Leviathan;
 using LD54.Engine.Collision;
+using Engine.Components;
 
 public class RigidBodyComponent : Component
 {
@@ -25,48 +26,7 @@ public class RigidBodyComponent : Component
     }
 }
 
-class SpriteRendererComponent : Component
-{
-    LeviathanSprite? sprite;
 
-    int spriteID;
-
-    public SpriteRendererComponent(string name, Game appCtx) : base(name, appCtx)
-    {
-
-    }
-
-    public void LoadSpriteData(Matrix transform, Point size, Texture2D colorTexture, Texture2D? normalTexture = null)
-    {
-        sprite = new(this.app, transform, size, colorTexture, normalTexture);
-
-        spriteID = this.app.Services.GetService<ILeviathanEngineService>().addSprite(sprite);
-
-        this.app.Services.GetService<ILeviathanEngineService>().AddLight(new Vector2(200, 200), new Vector3(10000000, 10000000, 10000000));
-
-        PrintLn("LoadSpriteData");
-    }
-
-    public override void OnLoad(GameObject? parentObject)
-    {
-        gameObject = parentObject;
-        PrintLn("OnLoad: SpriteRendererComponent");
-    }
-
-    public override void Update(GameTime gameTime)
-    {
-        base.Update(gameTime);
-        //PrintLn(this.gameObject.GetLocalTransform().Translation.ToString());
-        sprite.SetTransform(gameObject.GetGlobalTransform());
-    }
-
-    public override void OnUnload()
-    {
-        this.app.Services.GetService<ILeviathanEngineService>().removeSprite(spriteID);
-        PrintLn("OnUnload: SpriteRendererComponent");
-    }
-
-}
 
 class LevelBlock : GameObject
 {
@@ -184,6 +144,8 @@ class JakubScene : Scene
         LevelBlock levelBlock = new LevelBlock(blankTexure, "spovus", app);
         levelBlock.SetLocalPosition(new Vector3(300, 300, 1));
         parentObject.AddChild(levelBlock);
+
+        this.app.Services.GetService<ILeviathanEngineService>().AddLight(new Vector2(200, 200), new Vector3(10000000, 10000000, 10000000));
     }
 
     public override void Update(GameTime gameTime)

@@ -1,6 +1,7 @@
 #define SAM
 
-class Entry
+// ReSharper disable once ClassNeverInstantiated.Global
+public class Entry
 {
     static void Main(string[] args)
     {
