@@ -1,6 +1,7 @@
 namespace LD54.Engine.Collision;
 
 using LD54.Engine;
+using LD54.Engine.Components;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Drawing;
@@ -32,7 +33,15 @@ public class ColliderComponent : Component
     public override void Update(GameTime gameTime)
     {
         base.Update(gameTime);
-        previousPosition = gameObject.GetGlobalPosition() + offset;
+        RigidBodyComponent rb = (RigidBodyComponent)gameObject.GetComponent<RigidBodyComponent>();
+        if (rb != null)
+        {
+            previousPosition = (gameObject.GetGlobalPosition() + offset) - rb.Velocity;
+        }
+        else
+        {
+            previousPosition = gameObject.GetGlobalPosition() + offset;
+        }
 
         //update aabb per update to match where gameObject is
         RecalculateAABB();
