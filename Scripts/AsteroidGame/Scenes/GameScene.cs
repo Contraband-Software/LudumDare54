@@ -2,7 +2,7 @@ global using LD54.Engine;
 
 namespace LD54.AsteroidGame.Scenes;
 
-using Engine.Debug;
+using Engine.Dev;
 using Engine.Leviathan;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -25,7 +25,7 @@ public class GameScene : Scene
         parentObject.AddChild(player);
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
 
-        sunLight = this.app.Services.GetService<ILeviathanEngineService>().AddLight(new Vector2(200, 200), new Vector3(10000000, 10000000, 10000000));
+        //sunLight = this.app.Services.GetService<ILeviathanEngineService>().AddLight(new Vector2(200, 200), new Vector3(10000000, 10000000, 10000000));
     }
 
     public override void Update(GameTime gameTime)

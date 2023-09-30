@@ -1,4 +1,4 @@
-global using static LD54.Engine.Debug.EngineDebug;
+global using static LD54.Engine.Dev.EngineDebug;
 
 namespace LD54;
 
