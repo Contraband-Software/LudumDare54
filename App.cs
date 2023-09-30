@@ -1,17 +1,24 @@
+global using static LD54.Engine.Dev.EngineDebug;
 namespace LD54;
+
+using AsteroidGame.Scenes;
+using Engine;
+using Engine.Leviathan;
+using Engine.Collision;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
 public class App : Game
 {
-    private readonly GraphicsDeviceManager _graphics;
-
-    // contentManager
+    private readonly GraphicsDeviceManager graphics;
+    private SceneController sc;
+    private LeviathanEngine le;
+    private CollisionSystem cs;
 
     public App()
     {
-        this._graphics = new GraphicsDeviceManager(this);
+        this.graphics = new GraphicsDeviceManager(this);
         this.Content.RootDirectory = "Content";
         this.IsMouseVisible = true;
     }
@@ -19,12 +26,34 @@ public class App : Game
     protected override void Initialize() {
         base.Initialize();
 
-        PrintLn("Game initialized");
+        le = new LeviathanEngine(this);
+        this.Components.Add(le);
+        this.Services.AddService(typeof(ILeviathanEngineService), le);
+
+        sc = new SceneController(this);
+        this.Components.Add(sc);
+        this.Services.AddService(typeof(ISceneControllerService), sc);
+
+        cs = new CollisionSystem(this);
+        this.Components.Add(cs);
+        this.Services.AddService(typeof(ICollisionSystemService), cs);
+
+        PrintLn("App: Game systems initialized.");
+
+        this.sc.AddScene(new GameScene(this));
+
+        PrintLn("App: Scenes loaded.");
+
+        this.sc.ChangeScene("GameScene");
+
+        PrintLn("App: Game scene started.");
     }
 
     protected override void LoadContent()
     {
         // TODO: GLOBAL LOAD CONTENT, USE THE GLOBAL CONTENT MANAGER CONTAINED IN GAME TO LOAD PERSISTENT CONTENT.
+        // The statement below demonstrates the global content manager
+        // this.Content.Load<>()
     }
 
     protected override void Update(GameTime gameTime)
