@@ -26,6 +26,7 @@ public class App_Julius : Game
 
     protected override void Initialize() {
         engine = new LeviathanEngine(this);
+        engine.cameraPosition = new Vector2(-200);
         this.Components.Add(engine);
         this.Services.AddService(typeof(ILeviathanEngineService), engine);
 
