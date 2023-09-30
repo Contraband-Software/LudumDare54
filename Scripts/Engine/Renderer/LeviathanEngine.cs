@@ -41,6 +41,7 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
     private bool pingpong = false;
 
     public List<LeviathanSprite> sprites = new List<LeviathanSprite>();
+    public List<LeviathanShader> postProcessShaders = new List<LeviathanShader>();
 
     public LeviathanEngine(Game g) : base(g)
     {
@@ -71,6 +72,16 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
 
         spriteBatch = new SpriteBatch(game.GraphicsDevice);
         lightingShader = game.Content.Load<Effect>("Shaders/lighting");
+    }
+
+    public int addPostProcess(LeviathanShader shader)
+    {
+        postProcessShaders.Add(shader);
+        return postProcessShaders.IndexOf(shader);
+    }
+    public void removePostProcess(int i)
+    {
+        postProcessShaders.RemoveAt(i);
     }
 
     public int addSprite(LeviathanSprite sprite)
@@ -202,7 +213,8 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
         openLocations.Enqueue(id);
     }
 
-    public void setLightColor(int id,  Color color) {
+    public void setLightColor(int id, Color color)
+    {
         lightColors[id] = color.ToVector3();
     }
     public void setLightPosition(int id, Vector2 position)
