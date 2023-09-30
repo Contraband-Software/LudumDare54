@@ -6,51 +6,11 @@ using Engine;
 using Microsoft.Xna.Framework.Graphics;
 using LD54.Engine.Leviathan;
 using LD54.Engine.Collision;
+using Engine.Components;
 
 
 
-class SpriteRendererComponent : Component
-{
-    LeviathanSprite? sprite;
 
-    int spriteID;
-
-    public SpriteRendererComponent(string name, Game appCtx) : base(name, appCtx)
-    {
-
-    }
-
-    public void LoadSpriteData(Matrix transform, Point size, Texture2D colorTexture, Texture2D? normalTexture = null)
-    {
-        sprite = new(this.app, transform, size, colorTexture, normalTexture);
-
-        spriteID = this.app.Services.GetService<ILeviathanEngineService>().addSprite(sprite);
-
-        this.app.Services.GetService<ILeviathanEngineService>().AddLight(new Vector2(200, 200), new Vector3(10000000, 10000000, 10000000));
-
-        PrintLn("LoadSpriteData");
-    }
-
-    public override void OnLoad(GameObject? parentObject)
-    {
-        gameObject = parentObject;
-        PrintLn("OnLoad: SpriteRendererComponent");
-    }
-
-    public override void Update(GameTime gameTime)
-    {
-        base.Update(gameTime);
-        //PrintLn(this.gameObject.GetLocalTransform().Translation.ToString());
-        sprite.SetTransform(gameObject.GetGlobalTransform());
-    }
-
-    public override void OnUnload()
-    {
-        this.app.Services.GetService<ILeviathanEngineService>().removeSprite(spriteID);
-        PrintLn("OnUnload: SpriteRendererComponent");
-    }
-
-}
 
 class LevelBlock : GameObject
 {
@@ -81,8 +41,9 @@ class LevelBlock : GameObject
 class PlayerBlock : GameObject
 {
     Texture2D texture;
-    public Vector3 Velocity;
     public float Speed = 5f;
+    ColliderComponent collider;
+    RigidBodyComponent rb;
     public PlayerBlock(Texture2D texture, string name, Game appCtx) : base(name, appCtx)
     {
         this.texture = texture;
@@ -105,8 +66,11 @@ class PlayerBlock : GameObject
         this.AddComponent(src);
 
         Vector3 colliderDimensions = new Vector3(this.texture.Width, this.texture.Height, 0);
-        ColliderComponent collider = new ColliderComponent(colliderDimensions, Vector3.Zero, "playerCollider", this.app);
+        collider = new ColliderComponent(colliderDimensions, Vector3.Zero, "playerCollider", this.app);
         this.AddComponent(collider);
+
+        rb = new RigidBodyComponent("rbPlayer", app);
+        this.AddComponent(rb);
 
         PrintLn("OnLoad: PlayerBlock");
     }
@@ -115,12 +79,14 @@ class PlayerBlock : GameObject
     {
         base.Update(gameTime);
 
-        Velocity = Vector3.Zero;
+        rb.Velocity = Vector3.Zero;
         Vector3 preMovePosition = this.GetLocalPosition();
 
         Move();
 
-        this.SetLocalPosition(preMovePosition + Velocity);
+        PrintLn("PLAYER VELOCITY: " + rb.Velocity.ToString());
+        this.SetLocalPosition(preMovePosition + rb.Velocity);
+        this.app.Services.GetService<ICollisionSystemService>().RequestCalculation(preMovePosition, collider);
     }
 
 
@@ -128,20 +94,20 @@ class PlayerBlock : GameObject
     {
         if (Keyboard.GetState().IsKeyDown(Keys.Left))
         {
-            Velocity.X -= Speed;
+            rb.Velocity.X -= Speed;
         }
         if (Keyboard.GetState().IsKeyDown(Keys.Right))
         {
-            Velocity.X += Speed;
+            rb.Velocity.X += Speed;
         }
 
         if (Keyboard.GetState().IsKeyDown(Keys.Up))
         {
-            Velocity.Y -= Speed;
+            rb.Velocity.Y -= Speed;
         }
         if (Keyboard.GetState().IsKeyDown(Keys.Down))
         {
-            Velocity.Y += Speed;
+            rb.Velocity.Y += Speed;
         }
     }
 }
@@ -163,6 +129,8 @@ class JakubScene : Scene
         LevelBlock levelBlock = new LevelBlock(blankTexure, "spovus", app);
         levelBlock.SetLocalPosition(new Vector3(300, 300, 1));
         parentObject.AddChild(levelBlock);
+
+        this.app.Services.GetService<ILeviathanEngineService>().AddLight(new Vector2(200, 200), new Vector3(10000000, 10000000, 10000000));
     }
 
     public override void Update(GameTime gameTime)

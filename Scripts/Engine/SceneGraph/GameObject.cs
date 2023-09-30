@@ -17,7 +17,7 @@ public abstract class GameObject : EngineObject, IUpdateable
     public event EventHandler<EventArgs>? EnabledChanged;
     public event EventHandler<EventArgs>? UpdateOrderChanged;
     #endregion
-    
+
     protected GameObject? parent;
     protected readonly List<GameObject> children = new();
 
@@ -29,7 +29,7 @@ public abstract class GameObject : EngineObject, IUpdateable
         this.transform = Matrix.Identity;
     }
 
-    public new virtual void Update(GameTime gameTime)
+    public virtual new void Update(GameTime gameTime)
     {
         this.UpdateComponents(gameTime);
     }
@@ -64,6 +64,11 @@ public abstract class GameObject : EngineObject, IUpdateable
     #endregion
 
     #region SCENE_GRAPH
+    public GameObject? GetParent()
+    {
+        return this.parent;
+    }
+
     // ReSharper disable once MemberCanBeProtected.Global
     public Matrix GetLocalTransform()
     {
