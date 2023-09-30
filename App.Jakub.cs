@@ -81,15 +81,10 @@ class PlayerBlock : GameObject
 
     public override void Update(GameTime gameTime)
     {
-        base.Update(gameTime);
-
         rb.Velocity = Vector3.Zero;
-
         Move();
 
-        //PrintLn("PLAYER VELOCITY: " + rb.Velocity.ToString());
-        this.SetLocalPosition(this.GetLocalPosition() + rb.Velocity);
-        //this.app.Services.GetService<ICollisionSystemService>().RequestCalculation(preMovePosition, collider);
+        base.Update(gameTime);
     }
 
 
@@ -124,7 +119,6 @@ class JakubScene : Scene
     public override void OnLoad(GameObject? parentObject)
     {
         Texture2D blankTexure = this.contentManager.Load<Texture2D>("Sprites/block");
-        //PrintLn("OnLoad: JakubScene");
 
         PlayerBlock playerBlock = new PlayerBlock(blankTexure, "spovus", app);
         parentObject.AddChild(playerBlock);
