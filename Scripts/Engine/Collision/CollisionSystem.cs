@@ -11,7 +11,7 @@ public interface ICollisionSystemService
     public int AddColliderToSystem(ColliderComponent spriteCollider);
     public void RemoveColliderFromSystem(int spriteColliderID);
 
-    public void RequestResolve(ColliderComponent requestingCollider, List<Collision> collisions);
+    public void RequestResolveForBox(BoxColliderComponent requestingCollider, List<Collision> collisions);
 }
 
 public class CollisionSystem : GameComponent, ICollisionSystemService
@@ -47,7 +47,11 @@ public class CollisionSystem : GameComponent, ICollisionSystemService
         //later, will also need to invoke OnCollisionEnter event on a collider
         foreach(ColliderComponent col in collisionSystemList)
         {
-            CalculateForCollider(col);
+            if(col is BoxColliderComponent)
+            {
+                CalculateForBoxCollision((BoxColliderComponent)col);
+            }
+            
         }
     }
 
@@ -55,12 +59,12 @@ public class CollisionSystem : GameComponent, ICollisionSystemService
     /// Calculates collisions for given collider
     /// </summary>
     /// <param name="collider"></param>
-    private void CalculateForCollider(ColliderComponent collider)
+    private void CalculateForBoxCollision(BoxColliderComponent collider)
     {
         collider.RecalculateAABB();
         AABB a = collider.aabb;
         List<Collision> collisions = new List<Collision>();
-        foreach (ColliderComponent other in collisionSystemList)
+        foreach (BoxColliderComponent other in collisionSystemList)
         {
             if (other == collider) continue;
 
@@ -73,14 +77,14 @@ public class CollisionSystem : GameComponent, ICollisionSystemService
 
         }
         //resolve collisions for current collider
-        RequestResolve(collider, collisions);
+        RequestResolveForBox(collider, collisions);
     }
 
 
     /// <summary>
     /// Force a recalculation for a collider
     /// </summary>
-    public void RequestResolve(ColliderComponent requestingCollider, List<Collision> collisions) {
+    public void RequestResolveForBox(BoxColliderComponent requestingCollider, List<Collision> collisions) {
 
 
         GameObject requestingColliderObj = requestingCollider.GetGameObject();
@@ -96,6 +100,7 @@ public class CollisionSystem : GameComponent, ICollisionSystemService
         Vector3 position = requestingColliderObj.GetGlobalTransform().Translation;
         foreach (Collision collision in collisions)
         {
+            BoxColliderComponent colCollider = (BoxColliderComponent)collision.collider;
             //PrintLn(position.ToString());
             //resolve collision
             //overlap box is smaller of d1/2x, d1/2y
@@ -121,15 +126,15 @@ public class CollisionSystem : GameComponent, ICollisionSystemService
                 else{
                     //if left or right of other object (gapX/combined width > gapY/combined height)
                     float widthTarget = requestingCollider.aabb.max.X - requestingCollider.aabb.min.X;
-                    float widthCollision = collision.aabb.max.X - collision.aabb.min.X;
+                    float widthCollision = colCollider.aabb.max.X - colCollider.aabb.min.X;
 
-                    float gapRatioX = MathF.Abs(collision.collider.aabb.min.X - requestingCollider.previousPosition.X)
+                    float gapRatioX = MathF.Abs(colCollider.aabb.min.X - requestingCollider.previousPosition.X)
                         / (widthTarget + widthCollision);
 
                     float heightTarget = requestingCollider.aabb.min.Y - requestingCollider.aabb.max.Y;
-                    float heightCollision = collision.aabb.min.Y - collision.aabb.max.Y;
+                    float heightCollision = colCollider.aabb.min.Y - colCollider.aabb.max.Y;
 
-                    float gapRatioY = MathF.Abs(collision.collider.aabb.max.Y - requestingCollider.previousPosition.Y)
+                    float gapRatioY = MathF.Abs(colCollider.aabb.max.Y - requestingCollider.previousPosition.Y)
                         / (heightTarget + heightCollision);
 
                     //on left or right (maintain Y, resolve X)

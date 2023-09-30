@@ -33,7 +33,7 @@ class LevelBlock : GameObject
         this.AddComponent(src);
 
         Vector3 colliderDimensions = new Vector3(this.texture.Width, this.texture.Height, 0);
-        ColliderComponent collider = new ColliderComponent(colliderDimensions, Vector3.Zero, "playerCollider", this.app);
+        ColliderComponent collider = new BoxColliderComponent(colliderDimensions, Vector3.Zero, "playerCollider", this.app);
         this.AddComponent(collider);
 
         rb = new RigidBodyComponent("rbPlayer", app);
@@ -70,13 +70,11 @@ class PlayerBlock : GameObject
         this.AddComponent(src);
 
         Vector3 colliderDimensions = new Vector3(this.texture.Width, this.texture.Height, 0);
-        collider = new ColliderComponent(colliderDimensions, Vector3.Zero, "playerCollider", this.app);
+        collider = new BoxColliderComponent(colliderDimensions, Vector3.Zero, "playerCollider", this.app);
         this.AddComponent(collider);
 
         rb = new RigidBodyComponent("rbPlayer", app);
         this.AddComponent(rb);
-
-        //PrintLn("OnLoad: PlayerBlock");
     }
 
     public override void Update(GameTime gameTime)
@@ -151,7 +149,6 @@ public class App_Jakub : Game
         graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
-        //PrintLn("RUNNING APP_HAKUB");
 
     }
 
@@ -178,66 +175,16 @@ public class App_Jakub : Game
 
     protected override void LoadContent()
     {
-/*        _spriteBatch = new SpriteBatch(GraphicsDevice);
-
-        var _playerTexture = Content.Load<Texture2D>("block");
-        _sprites = new List<Sprite>()
-            {
-                new Player(_playerTexture, this)
-                {
-                    Position = new Vector2(0,0),
-                    Speed = 5f,
-                    _color = Color.Blue,
-                    Scale = new Vector2(1,1),
-                    name = "Player"
-                },
-
-                new Sprite(_playerTexture, this)
-                {
-                    Position = new Vector2(300,100),
-                    _color = Color.White,
-                    Scale = new Vector2(1,1)
-                },
-                new Sprite(_playerTexture, this)
-                {
-                    Position = new Vector2(364,100),
-                    _color = Color.White,
-                    Scale = new Vector2(1,1)
-                }
-            };*/
-        // TODO: use this.Content to load your game content here
     }
 
     protected override void Update(GameTime gameTime)
     {
-        /*if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-            Exit();
-
-        collisionSystem.CollisionUpdate();
-        foreach (var sprite in _sprites)
-        {
-            sprite.Update(gameTime, _sprites);
-        }*/
-        // TODO: Add your update logic here
 
         base.Update(gameTime);
     }
 
     protected override void Draw(GameTime gameTime)
     {
-/*        GraphicsDevice.Clear(Color.CornflowerBlue);
-
-        _spriteBatch.Begin();
-        foreach (var sprite in _sprites)
-        {
-            sprite.Draw(_spriteBatch);
-
-        }
-
-
-        _spriteBatch.End();
-        // TODO: Add your drawing code here
-*/
         base.Draw(gameTime);
     }
 }

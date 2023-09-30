@@ -6,17 +6,23 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Drawing;
 
-public class ColliderComponent : Component
+public class CircleColliderComponent : ColliderComponent
+{
+    public Vector2 centre; //this is the equivalent of the aabb
+    public float radius;
+
+    public CircleColliderComponent(string name, Game appCtx) : base(name, appCtx)
+    {
+    }
+}
+
+public class BoxColliderComponent : ColliderComponent
 {
     public AABB aabb;
-    private int colliderID;
-
     private Vector3 dimensions;
     private Vector3 offset;
 
-    public Vector3 previousPosition;
-
-    public ColliderComponent(Vector3 dimensions, Vector3 offset, string name, Game appCtx) : base(name, appCtx)
+    public BoxColliderComponent(Vector3 dimensions, Vector3 offset, string name, Game appCtx) : base(name, appCtx)
     {
         this.dimensions = dimensions;
         this.offset = offset;
@@ -24,10 +30,8 @@ public class ColliderComponent : Component
 
     public override void OnLoad(GameObject? parentObject)
     {
-        this.gameObject = parentObject;
+        base.OnLoad(parentObject);
         RecalculateAABB();
-
-        this.colliderID = this.app.Services.GetService<ICollisionSystemService>().AddColliderToSystem(this);
     }
 
     public override void Update(GameTime gameTime)
@@ -45,8 +49,6 @@ public class ColliderComponent : Component
 
         //update aabb per update to match where gameObject is
         RecalculateAABB();
-
-        //draw outline of collider
     }
 
     public void RecalculateAABB()
@@ -56,6 +58,23 @@ public class ColliderComponent : Component
         Vector3 max = new Vector3(colliderOrigin.X + dimensions.X, colliderOrigin.Y, colliderOrigin.Z);
         this.aabb.min = min;
         this.aabb.max = max;
+    }
+
+}
+
+public class ColliderComponent : Component
+{
+    private int colliderID;
+    public Vector3 previousPosition;
+
+    public ColliderComponent(string name, Game appCtx) : base(name, appCtx)
+    {
+    }
+
+    public override void OnLoad(GameObject? parentObject)
+    {
+        this.gameObject = parentObject;
+        this.colliderID = this.app.Services.GetService<ICollisionSystemService>().AddColliderToSystem(this);
     }
 
     public override void OnUnload()
