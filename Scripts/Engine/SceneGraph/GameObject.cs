@@ -39,6 +39,30 @@ public abstract class GameObject : EngineObject, IUpdateable
         this.UnloadComponents();
     }
 
+    #region HELPERS
+    public void SetLocalPosition(Vector3 localPosition)
+    {
+        Matrix matrix = this.GetLocalTransform();
+        matrix.Translation = localPosition;
+        this.SetLocalTransform(matrix);
+    }
+
+    public void SetLocalPosition(Vector2 localPosition)
+    {
+        this.SetLocalPosition(new Vector3(localPosition, 1));
+    }
+
+    public Vector3 GetLocalPosition()
+    {
+        return this.GetLocalTransform().Translation;
+    }
+
+    public Vector3 GetGlobalPosition()
+    {
+        return this.GetGlobalTransform().Translation;
+    }
+    #endregion
+
     #region SCENE_GRAPH
     // ReSharper disable once MemberCanBeProtected.Global
     public Matrix GetLocalTransform()

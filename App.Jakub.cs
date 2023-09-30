@@ -5,10 +5,14 @@ using Microsoft.Xna.Framework.Input;
 using Engine;
 using Microsoft.Xna.Framework.Graphics;
 using LD54.Engine.Leviathan;
+using LD54.Engine.Collision;
+
+
 
 class SpriteRendererComponent : Component
 {
     LeviathanSprite? sprite;
+
     int spriteID;
 
     public SpriteRendererComponent(string name, Game appCtx) : base(name, appCtx)
@@ -36,7 +40,7 @@ class SpriteRendererComponent : Component
     public override void Update(GameTime gameTime)
     {
         base.Update(gameTime);
-
+        //PrintLn(this.gameObject.GetLocalTransform().Translation.ToString());
         sprite.SetTransform(gameObject.GetGlobalTransform());
     }
 
@@ -45,20 +49,46 @@ class SpriteRendererComponent : Component
         this.app.Services.GetService<ILeviathanEngineService>().removeSprite(spriteID);
         PrintLn("OnUnload: SpriteRendererComponent");
     }
+
+}
+
+class LevelBlock : GameObject
+{
+    Texture2D texture;
+    public LevelBlock(Texture2D texture, string name, Game appCtx) : base(name, appCtx)
+    {
+        this.texture = texture;
+    }
+
+    public override void OnLoad(GameObject? parentObject)
+    {
+        SpriteRendererComponent src = new SpriteRendererComponent("texture", this.app);
+        src.LoadSpriteData(
+            this.GetGlobalTransform(),
+            new Point(this.texture.Width, this.texture.Height),
+            this.texture,
+            null);
+
+        this.AddComponent(src);
+
+        Vector3 colliderDimensions = new Vector3(this.texture.Width, this.texture.Height, 0);
+        ColliderComponent collider = new ColliderComponent(colliderDimensions, Vector3.Zero, "playerCollider", this.app);
+        this.AddComponent(collider);
+    }
 }
 
 
 class PlayerBlock : GameObject
 {
     Texture2D texture;
-    public Vector2 Velocity;
-    public float Speed;
+    public Vector3 Velocity;
+    public float Speed = 5f;
     public PlayerBlock(Texture2D texture, string name, Game appCtx) : base(name, appCtx)
     {
         this.texture = texture;
 
         Matrix pos = this.GetLocalTransform();
-        pos.Translation = new Vector3(250, 250, 1);
+        pos.Translation = new Vector3(150, 150, 1);
 
         this.SetLocalTransform(pos);
     }
@@ -67,12 +97,17 @@ class PlayerBlock : GameObject
     {
         SpriteRendererComponent src = new SpriteRendererComponent("Sprite1", this.app);
         src.LoadSpriteData(
-            parentObject.GetGlobalTransform(),
+            this.GetGlobalTransform(),
             new Point(this.texture.Width, this.texture.Height),
             this.texture,
             null);
 
         this.AddComponent(src);
+
+        Vector3 colliderDimensions = new Vector3(this.texture.Width, this.texture.Height, 0);
+        ColliderComponent collider = new ColliderComponent(colliderDimensions, Vector3.Zero, "playerCollider", this.app);
+        this.AddComponent(collider);
+
         PrintLn("OnLoad: PlayerBlock");
     }
 
@@ -80,6 +115,17 @@ class PlayerBlock : GameObject
     {
         base.Update(gameTime);
 
+        Velocity = Vector3.Zero;
+        Vector3 preMovePosition = this.GetLocalPosition();
+
+        Move();
+
+        this.SetLocalPosition(preMovePosition + Velocity);
+    }
+
+
+    private void Move()
+    {
         if (Keyboard.GetState().IsKeyDown(Keys.Left))
         {
             Velocity.X -= Speed;
@@ -113,6 +159,10 @@ class JakubScene : Scene
 
         PlayerBlock playerBlock = new PlayerBlock(blankTexure, "spovus", app);
         parentObject.AddChild(playerBlock);
+
+        LevelBlock levelBlock = new LevelBlock(blankTexure, "spovus", app);
+        levelBlock.SetLocalPosition(new Vector3(300, 300, 1));
+        parentObject.AddChild(levelBlock);
     }
 
     public override void Update(GameTime gameTime)
@@ -129,6 +179,7 @@ public class App_Jakub : Game
     private GraphicsDeviceManager graphics;
     private SceneController sc;
     private LeviathanEngine le;
+    private CollisionSystem cs;
 
     public App_Jakub()
     {
@@ -145,10 +196,15 @@ public class App_Jakub : Game
         this.Components.Add(le);
         this.Services.AddService(typeof(ILeviathanEngineService), le);
 
-
         sc = new SceneController(this);
         this.Components.Add(sc);
         this.Services.AddService(typeof(ISceneControllerService), sc);
+
+        cs = new CollisionSystem(this);
+        this.Components.Add(cs);
+        this.Services.AddService(typeof(ICollisionSystemService), cs);
+
+
         sc.AddScene(new JakubScene(this));
         sc.ChangeScene("JakubScene");
 
