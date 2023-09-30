@@ -7,7 +7,23 @@ using Microsoft.Xna.Framework.Graphics;
 using LD54.Engine.Leviathan;
 using LD54.Engine.Collision;
 
+public class RigidBodyComponent : Component
+{
+    public Vector3 Velocity;
+    public RigidBodyComponent(string name, Game appCtx) : base(name, appCtx)
+    {
+    }
 
+    public override void OnLoad(GameObject? parentObject)
+    {
+        this.Velocity = Vector3.Zero;
+    }
+
+    public override void OnUnload()
+    {
+
+    }
+}
 
 class SpriteRendererComponent : Component
 {
@@ -81,8 +97,9 @@ class LevelBlock : GameObject
 class PlayerBlock : GameObject
 {
     Texture2D texture;
-    public Vector3 Velocity;
     public float Speed = 5f;
+    ColliderComponent collider;
+    RigidBodyComponent rb;
     public PlayerBlock(Texture2D texture, string name, Game appCtx) : base(name, appCtx)
     {
         this.texture = texture;
@@ -105,8 +122,11 @@ class PlayerBlock : GameObject
         this.AddComponent(src);
 
         Vector3 colliderDimensions = new Vector3(this.texture.Width, this.texture.Height, 0);
-        ColliderComponent collider = new ColliderComponent(colliderDimensions, Vector3.Zero, "playerCollider", this.app);
+        collider = new ColliderComponent(colliderDimensions, Vector3.Zero, "playerCollider", this.app);
         this.AddComponent(collider);
+
+        rb = new RigidBodyComponent("rbPlayer", app);
+        this.AddComponent(rb);
 
         PrintLn("OnLoad: PlayerBlock");
     }
@@ -115,12 +135,13 @@ class PlayerBlock : GameObject
     {
         base.Update(gameTime);
 
-        Velocity = Vector3.Zero;
+        rb.Velocity = Vector3.Zero;
         Vector3 preMovePosition = this.GetLocalPosition();
 
         Move();
 
-        this.SetLocalPosition(preMovePosition + Velocity);
+        this.SetLocalPosition(preMovePosition + rb.Velocity);
+        this.app.Services.GetService<ICollisionSystemService>().RequestCalculation(preMovePosition, collider);
     }
 
 
@@ -128,20 +149,20 @@ class PlayerBlock : GameObject
     {
         if (Keyboard.GetState().IsKeyDown(Keys.Left))
         {
-            Velocity.X -= Speed;
+            rb.Velocity.X -= Speed;
         }
         if (Keyboard.GetState().IsKeyDown(Keys.Right))
         {
-            Velocity.X += Speed;
+            rb.Velocity.X += Speed;
         }
 
         if (Keyboard.GetState().IsKeyDown(Keys.Up))
         {
-            Velocity.Y -= Speed;
+            rb.Velocity.Y -= Speed;
         }
         if (Keyboard.GetState().IsKeyDown(Keys.Down))
         {
-            Velocity.Y += Speed;
+            rb.Velocity.Y += Speed;
         }
     }
 }

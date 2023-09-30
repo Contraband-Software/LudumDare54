@@ -2,6 +2,8 @@ namespace LD54.Engine.Collision;
 
 using LD54.Engine;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System.Drawing;
 
 public class ColliderComponent : Component
 {
@@ -22,14 +24,32 @@ public class ColliderComponent : Component
         this.gameObject = parentObject;
         Vector3 colliderOrigin = gameObject.GetGlobalPosition() + offset;
         Vector3 min = new Vector3(colliderOrigin.X, colliderOrigin.Y + dimensions.Y, colliderOrigin.Z);
-        Vector3 max = new Vector3(colliderOrigin.X + dimensions.X, dimensions.Y, colliderOrigin.Z);
+        Vector3 max = new Vector3(colliderOrigin.X + dimensions.X, colliderOrigin.Y, colliderOrigin.Z);
         this.aabb = new AABB(min, max);
 
         this.colliderID = this.app.Services.GetService<ICollisionSystemService>().AddColliderToSystem(this);
     }
 
+    public override void Update(GameTime gameTime)
+    {
+        base.Update(gameTime);
+
+        //update aabb per update to match where gameObject is
+        Vector3 colliderOrigin = gameObject.GetGlobalPosition() + offset;
+        Vector3 min = new Vector3(colliderOrigin.X, colliderOrigin.Y + dimensions.Y, colliderOrigin.Z);
+        Vector3 max = new Vector3(colliderOrigin.X + dimensions.X, colliderOrigin.Y, colliderOrigin.Z);
+        this.aabb.min = min;
+        this.aabb.max = max;
+
+        //draw outline of collider
+    }
     public override void OnUnload()
     {
         this.app.Services.GetService<ICollisionSystemService>().RemoveColliderFromSystem(colliderID);
+    }
+
+    public GameObject? GetGameObject()
+    {
+        return this.gameObject;
     }
 }

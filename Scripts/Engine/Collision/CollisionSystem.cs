@@ -10,6 +10,8 @@ public interface ICollisionSystemService
 {
     public int AddColliderToSystem(ColliderComponent spriteCollider);
     public void RemoveColliderFromSystem(int spriteColliderID);
+
+    public void RequestCalculation(Vector3 preMovePos, ColliderComponent requestingCollider);
 }
 
 public class CollisionSystem : GameComponent, ICollisionSystemService
@@ -33,20 +35,7 @@ public class CollisionSystem : GameComponent, ICollisionSystemService
         collisionSystemList.RemoveAt(spriteColliderID);
     }
 
-    /*
 
-    List<GameObjeec> spriteColliders = new List<Sprite>();
-
-    public CollisionSystem(Game game)
-    {
-        this.game = game;
-    }
-    
-    public void AddColliderToSystem(Sprite spriteCollider)
-    {
-        spriteColliders.Add(spriteCollider);
-        Debug.WriteLine("Collider added to system. Collider count: " + spriteColliders.Count.ToString());
-    }
 
     public void CollisionUpdate()
     {
@@ -56,28 +45,29 @@ public class CollisionSystem : GameComponent, ICollisionSystemService
         //give it back to the sprite that you are checking collision for
 
         //later, will also need to invoke OnCollisionEnter event on a collider
-        foreach(var sprite in spriteColliders)
+        /*foreach(ColliderComponent col in collisionSystemList)
         {
-            CalculateForCollider(sprite);
-        }
+            CalculateForCollider(col);
+        }*/
     }
 
     /// <summary>
     /// Calculates collisions for given collider
     /// </summary>
-    /// <param name="sprite"></param>
-    private List<Collision> CalculateForCollider(Sprite sprite)
+    /// <param name="collider"></param>
+    private List<Collision> CalculateForCollider(ColliderComponent collider)
     {
-        AABB a = sprite.aabb;
+        AABB a = collider.aabb;
         List<Collision> collisions = new List<Collision>();
-        foreach (var other in spriteColliders)
+        foreach (ColliderComponent other in collisionSystemList)
         {
-            if (other == sprite) continue;
+            if (other == collider) continue;
 
             AABB b = other.aabb;
             Overlap collision = TestAABBOverlap(a, b);
             if (collision.isOverlap)
             {
+                PrintLn(collision.overlaps.ToString());
                 collisions.Add(new Collision(b, other, collision));
             }
         }
@@ -88,10 +78,14 @@ public class CollisionSystem : GameComponent, ICollisionSystemService
     /// <summary>
     /// Force a recalculation for a collider
     /// </summary>
-    public void RequestCalculation(Vector2 preMovePos, Sprite target) { 
-        List<Collision> collisions = CalculateForCollider(target);
-        Vector2 postMovePos = target.Position;
-        //Debug.WriteLine(collisions.Count > 0);
+    public void RequestCalculation(Vector3 preMovePos, ColliderComponent requestingCollider) { 
+        List<Collision> collisions = CalculateForCollider(requestingCollider);
+
+        GameObject requestingColliderObj = requestingCollider.GetGameObject();
+        RigidBodyComponent requestingColliderRb = (RigidBodyComponent)requestingColliderObj.GetComponent<RigidBodyComponent>();
+        Vector3 position = requestingColliderObj.GetGlobalTransform().Translation;
+
+
         foreach(Collision collision in collisions)
         {
             //resolve collision
@@ -106,47 +100,49 @@ public class CollisionSystem : GameComponent, ICollisionSystemService
             //Debug.WriteLine("OverlapX: " + overlapX.ToString());
             //Debug.WriteLine("OverlapY: " + overlapY.ToString());
 
-            if(target.Velocity.X != 0 && target.Velocity.Y != 0)
+            if(requestingColliderRb.Velocity.X != 0 && requestingColliderRb.Velocity.Y != 0)
             {
                 if (overlapX > overlapY)
                 {
-                    target.Position.Y -= overlapY * MathF.Sign(target.Velocity.Y);
+                    position.Y -= overlapY * MathF.Sign(position.Y);
                 }
                 else if(overlapX < overlapY)
                 {
-                    target.Position.X -= overlapX * MathF.Sign(target.Velocity.X);
+                    position.X -= overlapX * MathF.Sign(position.X);
                 }
                 else{
                     //if left or right of other object (gapX/combined width > gapY/combined height)
-                    float widthTarget = target.aabb.max.X - target.aabb.min.X;
+                    float widthTarget = requestingCollider.aabb.max.X - requestingCollider.aabb.min.X;
                     float widthCollision = collision.aabb.max.X - collision.aabb.min.X;
 
-                    float gapRatioX = MathF.Abs(collision.collider.Position.X - preMovePos.X) 
+                    float gapRatioX = MathF.Abs(collision.collider.aabb.min.X - preMovePos.X) 
                         / (widthTarget + widthCollision);
                         
-                    float heightTarget = target.aabb.min.Y - target.aabb.max.Y;
+                    float heightTarget = requestingCollider.aabb.min.Y - requestingCollider.aabb.max.Y;
                     float heightCollision = collision.aabb.min.Y - collision.aabb.max.Y;
 
-                    float gapRatioY = MathF.Abs(collision.collider.Position.Y - preMovePos.Y) 
+                    float gapRatioY = MathF.Abs(collision.collider.aabb.max.Y - preMovePos.Y) 
                         / (heightTarget + heightCollision);
 
                     //on left or right (maintain Y, resolve X)
                     if(gapRatioX > gapRatioY)
                     {
-                        target.Position.X -= (overlapX) * MathF.Sign(target.Velocity.X);
+                        position.X -= (overlapX) * MathF.Sign(position.X);
                     }
                     //above or below (maintain X, resolve Y)
                     else
                     {
-                        target.Position.Y -= (overlapY) * MathF.Sign(target.Velocity.Y);
+                        position.Y -= (overlapY) * MathF.Sign(position.Y);
                     }
                 }
             }
             else
             {
-                if(overlapX > 0) target.Position.Y -= overlapY * MathF.Sign(target.Velocity.Y);
-                if(overlapY > 0) target.Position.X -= overlapX * MathF.Sign(target.Velocity.X);
+                if(overlapX > 0) position.Y -= overlapY * MathF.Sign(position.Y);
+                if(overlapY > 0) position.X -= overlapX * MathF.Sign(position.X);
             }
+
+            requestingCollider.GetGameObject().SetLocalPosition(position);
 
         }
     }
@@ -176,6 +172,5 @@ public class CollisionSystem : GameComponent, ICollisionSystemService
 
         return new Overlap(true, new float[4] { d1x, d1y, d2x, d2y });
     }
-    */
 }
 
