@@ -25,7 +25,7 @@
 /processorParam:DebugMode=Auto
 /build:Shaders/lighting.fx
 
-#begin Sprites/FLCL Wallpapers.jpg
+#begin Sprites/block.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -35,7 +35,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sprites/FLCL Wallpapers.jpg
+/build:Sprites/block.png
 
 #begin Sprites/FLCL Wallpapers.jpg
 /importer:TextureImporter
@@ -60,18 +60,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Sprites/image.png
-
-#begin Sprites/liberia.jpg
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Sprites/liberia.jpg
 
 #begin Sprites/liberia.jpg
 /importer:TextureImporter

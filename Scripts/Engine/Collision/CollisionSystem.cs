@@ -1,4 +1,4 @@
-namespace LD54.Engine.Collision;
+/*namespace LD54.Engine.Collision;
 
 using System;
 using Microsoft.Xna.Framework;
@@ -152,3 +152,4 @@ public class CollisionSystem
         return new Overlap(true, new float[4] { d1x, d1y, d2x, d2y });
     }
 }
+*/

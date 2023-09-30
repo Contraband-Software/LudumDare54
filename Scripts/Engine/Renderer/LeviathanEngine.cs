@@ -1,4 +1,4 @@
-namespace LD54.Engine.Leviathan;
+﻿namespace LD54.Engine.Leviathan;
 
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
@@ -37,6 +37,9 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
     RenderTarget2D colorTarget;
     RenderTarget2D normalTarget;
     RenderTarget2D litTarget;
+    RenderTarget2D postProcessTarget1;
+    RenderTarget2D postProcessTarget2;
+    private bool pingpong = false;
 
     public List<LeviathanSprite> sprites = new List<LeviathanSprite>();
 
@@ -63,6 +66,13 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
         litTarget = new RenderTarget2D(game.GraphicsDevice,
             game.GraphicsDevice.PresentationParameters.BackBufferWidth,
             game.GraphicsDevice.PresentationParameters.BackBufferHeight);
+        postProcessTarget1 = new RenderTarget2D(game.GraphicsDevice,
+            game.GraphicsDevice.PresentationParameters.BackBufferWidth,
+            game.GraphicsDevice.PresentationParameters.BackBufferHeight);
+        postProcessTarget2 = new RenderTarget2D(game.GraphicsDevice,
+            game.GraphicsDevice.PresentationParameters.BackBufferWidth,
+            game.GraphicsDevice.PresentationParameters.BackBufferHeight);
+
 
         spriteBatch = new SpriteBatch(game.GraphicsDevice);
         lightingShader = game.Content.Load<Effect>("Shaders/lighting");
@@ -82,25 +92,23 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
     //{
     //}
 
-    public override void Draw(GameTime gameTime) {
-        Matrix view = Matrix.Identity*Matrix.CreateTranslation(0,0,0);
+    public override void Draw(GameTime gameTime)
+    {
+        Matrix view = Matrix.Identity * Matrix.CreateTranslation(0, 0, 0);
 
         int width = game.GraphicsDevice.Viewport.Width;
         int height = game.GraphicsDevice.Viewport.Height;
         Matrix projection = Matrix.CreateOrthographicOffCenter(0, width, height, 0, 0, 1);
-
-        //lightingShader.Parameters["view"]?.SetValue(view);
-        //lightingShader.Parameters["projection"]?.SetValue(projection);
         Vector3 translation;
         view.Decompose(out _, out _, out translation);
 
         game.GraphicsDevice.SetRenderTarget(colorTarget);
-        game.GraphicsDevice.Clear(Color.Black); ;
+        game.GraphicsDevice.Clear(Color.Black);
         spriteBatch.Begin(transformMatrix: view);
 
         foreach (LeviathanSprite sprite in sprites)
         {
-            spriteBatch.Draw(sprite.color,new Rectangle(sprite.getPositionXY().ToPoint(),sprite.size), Color.White);
+            spriteBatch.Draw(sprite.color, new Rectangle(sprite.GetPositionXY().ToPoint(), sprite.size), Color.White);
         }
 
         spriteBatch.End();
@@ -113,7 +121,7 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
         {
             if (sprite.useNormal)
             {
-                spriteBatch.Draw(sprite.normal, new Rectangle(sprite.getPositionXY().ToPoint(), sprite.size), Color.White);
+                spriteBatch.Draw(sprite.normal, new Rectangle(sprite.GetPositionXY().ToPoint(), sprite.size), Color.White);
             }
         }
 
@@ -134,6 +142,21 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
         spriteBatch.Begin(effect: lightingShader);
         spriteBatch.Draw(colorTarget, new Vector2(0), Color.White);
         spriteBatch.End();
+
+        //game.GraphicsDevice.SetRenderTarget(null);
+        //game.GraphicsDevice.Clear(Color.Black);
+
+        //foreach (LeviathanShader postProcess in postProcessShaders)
+        //{
+        //    if (pingpong)
+        //    {
+        //        game.GraphicsDevice.SetRenderTarget(postProcessTarget1);
+        //    }
+
+
+        //    pingpong = !pingpong;
+        //}
+
     }
 
     //public override void Update(GameTime gameTime)

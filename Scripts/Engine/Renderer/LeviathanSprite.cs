@@ -1,4 +1,4 @@
-namespace LD54.Engine.Leviathan;
+﻿namespace LD54.Engine.Leviathan;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -11,6 +11,7 @@ public class LeviathanSprite
     public Point size;
     public bool useNormal = false;
     private Game game;
+
     public LeviathanSprite(Game game, Matrix transform, Point size, Texture2D colorTexture, Texture2D? normalTexture = null) {
         this.color = colorTexture;
         this.normal = normalTexture;
@@ -20,22 +21,26 @@ public class LeviathanSprite
         this.size = size;
     }
 
-    public void setTransform(Matrix transform)
+    public void SetTransform(Matrix transform)
     {
         this.transform = transform;
     }
-    public Vector3 getPosition()
+
+    public Vector3 GetPosition()
     {
         return this.transform.Translation;
     }
-    public Vector2 getPositionXY()
+
+    public Vector2 GetPositionXY()
     {
         return new Vector2(this.transform.Translation.X, this.transform.Translation.Y);
     }
-    public void setPosition(Vector3 position) {
+
+    public void SetPosition(Vector3 position) {
         this.transform.Translation = position;
     }
-    public void translatePosition(Vector3 translation)
+
+    public void TranslatePosition(Vector3 translation)
     {
         this.transform.Translation += translation;
     }
