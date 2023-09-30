@@ -37,7 +37,6 @@ public class App_Julius : Game
             for (int j = 0; j < 4; j++)
             {
                 LevithanSprite testSprite = new LevithanSprite(this, Matrix.CreateTranslation(new Vector3(i * 120, j * 120, 0)), new Point(100), "Sprites/image", "Sprites/normal");
-                Components.Add(testSprite);
                 engine.addSprite(testSprite);
             }
         }
