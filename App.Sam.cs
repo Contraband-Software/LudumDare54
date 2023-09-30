@@ -8,6 +8,7 @@ using Engine.Leviathan;
 using Engine.Collision;
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 public class App_Sam : Game
@@ -17,6 +18,26 @@ public class App_Sam : Game
     private LeviathanEngine le;
     private CollisionSystem cs;
 
+    #region PROTOTYPING_SUPPORT_RENDER
+    private SpriteBatch spriteBatch;
+    Texture2D boxTexture;
+
+    // Vector2 position
+
+    void SetupPrototyping()
+    {
+        spriteBatch = new SpriteBatch(GraphicsDevice);
+        boxTexture = Content.Load<Texture2D>("Sprites/block");
+    }
+
+    void DrawPrototyping()
+    {
+        spriteBatch.Begin();
+        spriteBatch.Draw(boxTexture, new Vector2(0, 0), Color.White);
+        spriteBatch.End();
+    }
+    #endregion
+
     public App_Sam()
     {
         this.graphics = new GraphicsDeviceManager(this);
@@ -25,9 +46,9 @@ public class App_Sam : Game
     }
 
     protected override void Initialize() {
-        le = new LeviathanEngine(this);
-        this.Components.Add(le);
-        this.Services.AddService(typeof(ILeviathanEngineService), le);
+        // le = new LeviathanEngine(this);
+        // this.Components.Add(le);
+        // this.Services.AddService(typeof(ILeviathanEngineService), le);
 
         sc = new SceneController(this);
         this.Components.Add(sc);
@@ -39,13 +60,13 @@ public class App_Sam : Game
 
         PrintLn("App: Game systems initialized.");
 
-        this.sc.AddScene(new GameScene(this));
-
-        PrintLn("App: Scenes loaded.");
-
-        this.sc.ChangeScene("GameScene");
-
-        PrintLn("App: Game scene started.");
+        // this.sc.AddScene(new GameScene(this));
+        //
+        // PrintLn("App: Scenes loaded.");
+        //
+        // this.sc.ChangeScene("GameScene");
+        //
+        // PrintLn("App: Game scene started.");
 
         // THESE base METHODS MUST ALWAYS COME LAST IN THE FUNCTION
         base.Initialize();
@@ -56,6 +77,8 @@ public class App_Sam : Game
         // TODO: GLOBAL LOAD CONTENT, USE THE GLOBAL CONTENT MANAGER CONTAINED IN GAME TO LOAD PERSISTENT CONTENT.
         // The statement below demonstrates the global content manager
         // this.Content.Load<>()
+
+        SetupPrototyping();
     }
 
     protected override void Update(GameTime gameTime)
@@ -73,6 +96,8 @@ public class App_Sam : Game
     protected override void Draw(GameTime gameTime)
     {
         this.GraphicsDevice.Clear(Color.CornflowerBlue);
+
+
 
         base.Draw(gameTime);
     }

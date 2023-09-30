@@ -24,7 +24,6 @@ public class App : Game
     }
 
     protected override void Initialize() {
-        base.Initialize();
 
         le = new LeviathanEngine(this);
         this.Components.Add(le);
@@ -47,6 +46,9 @@ public class App : Game
         this.sc.ChangeScene("GameScene");
 
         PrintLn("App: Game scene started.");
+
+        // ALL BASE FUNCTION CALLS MUST COME LAST !!!! OTHERWISE NONE OF OUR SERVICES GET INITIALIZED
+        base.Initialize();
     }
 
     protected override void LoadContent()

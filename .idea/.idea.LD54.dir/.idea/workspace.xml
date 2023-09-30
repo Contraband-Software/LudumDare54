@@ -7,7 +7,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b177c274-5f29-4dd6-aecd-1ee6a42ae4d6" name="Changes" comment="" />
+    <list default="true" id="b177c274-5f29-4dd6-aecd-1ee6a42ae4d6" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Scripts/Engine/Components/NewtonianGavity2DControllerComponent.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.LD54.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.LD54.dir/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App.Sam.cs" beforeDir="false" afterPath="$PROJECT_DIR$/App.Sam.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LD54.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/LD54.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scripts/Engine/Components/RigidBodyComponent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/Engine/Components/RigidBodyComponent.cs" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -87,6 +93,7 @@
       <updated>1696085022386</updated>
       <workItem from="1696085025658" duration="8256000" />
       <workItem from="1696094649045" duration="509000" />
+      <workItem from="1696095254133" duration="2718000" />
     </task>
     <servers />
   </component>
