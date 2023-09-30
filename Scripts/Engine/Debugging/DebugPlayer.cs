@@ -36,7 +36,7 @@ class DebugPlayer : GameObject
         this.AddComponent(src);
 
         Vector3 colliderDimensions = new Vector3(this.texture.Width, this.texture.Height, 0);
-        collider = new ColliderComponent(colliderDimensions, Vector3.Zero, "playerCollider", this.app);
+        collider = new BoxColliderComponent(colliderDimensions, Vector3.Zero, "playerCollider", this.app);
         this.AddComponent(collider);
 
         rb = new RigidBodyComponent("rbPlayer", app);
