@@ -10,15 +10,17 @@ public class LeviathanSprite
     private Matrix transform;
     public Point size;
     public bool useNormal = false;
+    public bool isOccluder;
     private Game game;
 
-    public LeviathanSprite(Game game, Matrix transform, Point size, Texture2D colorTexture, Texture2D? normalTexture = null) {
+    public LeviathanSprite(Game game, Matrix transform, Point size, Texture2D colorTexture, Texture2D? normalTexture = null, bool isOccluder = true) {
         this.color = colorTexture;
         this.normal = normalTexture;
         this.useNormal = normalTexture != null;
         this.transform = transform;
         this.game = game;
         this.size = size;
+        this.isOccluder = isOccluder;
     }
 
     public void SetTransform(Matrix transform)

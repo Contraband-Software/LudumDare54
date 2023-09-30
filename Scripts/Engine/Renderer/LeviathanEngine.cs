@@ -36,6 +36,7 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
 
     RenderTarget2D colorTarget;
     RenderTarget2D normalTarget;
+    RenderTarget2D shadowTarget;
     RenderTarget2D litTarget;
     RenderTarget2D postProcessTarget;
     private bool pingpong = false;
@@ -62,6 +63,9 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
             game.GraphicsDevice.PresentationParameters.BackBufferWidth,
             game.GraphicsDevice.PresentationParameters.BackBufferHeight);
         normalTarget = new RenderTarget2D(game.GraphicsDevice,
+            game.GraphicsDevice.PresentationParameters.BackBufferWidth,
+            game.GraphicsDevice.PresentationParameters.BackBufferHeight);
+        shadowTarget = new RenderTarget2D(game.GraphicsDevice,
             game.GraphicsDevice.PresentationParameters.BackBufferWidth,
             game.GraphicsDevice.PresentationParameters.BackBufferHeight);
         litTarget = new RenderTarget2D(game.GraphicsDevice,
@@ -140,6 +144,20 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
 
         spriteBatch.End();
 
+        game.GraphicsDevice.SetRenderTarget(shadowTarget);
+        game.GraphicsDevice.Clear(Color.White);
+        spriteBatch.Begin(transformMatrix: view);
+
+        foreach (LeviathanSprite sprite in sprites)
+        {
+            if (sprite.isOccluder)
+            {
+                spriteBatch.Draw(sprite.color, new Rectangle(sprite.GetPositionXY().ToPoint(), sprite.size), Color.Black);
+            }
+        }
+
+        spriteBatch.End();
+
         lightingShader.Parameters["translation"]?.SetValue(new Vector2(translation.X, translation.Y));
         lightingShader.Parameters["viewProjection"]?.SetValue(projection);
         lightingShader.Parameters["time"]?.SetValue((float)gameTime.TotalGameTime.TotalSeconds);
@@ -148,6 +166,7 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
         lightingShader.Parameters["lightColors"]?.SetValue(lightColors);
         lightingShader.Parameters["lightPositions"]?.SetValue(lightPositions);
         lightingShader.Parameters["normalSampler"]?.SetValue(normalTarget);
+        lightingShader.Parameters["occluderSampler"]?.SetValue(shadowTarget);
 
 
         game.GraphicsDevice.SetRenderTarget(litTarget);
