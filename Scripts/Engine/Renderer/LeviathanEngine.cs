@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 interface ILeviathanEngineService
 {
-    public int addSprite(Sprite sprite);
+    public int addSprite(LevithanSprite sprite);
 
     public void removeSprite(int index);
 
@@ -38,7 +38,7 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
     RenderTarget2D normalTarget;
     RenderTarget2D litTarget;
 
-    public List<Sprite> sprites = new List<Sprite>();
+    public List<LevithanSprite> sprites = new List<LevithanSprite>();
 
     public LeviathanEngine(Game g) : base(g)
     {
@@ -68,7 +68,7 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
         lightingShader = game.Content.Load<Effect>("Shaders/lighting");
     }
 
-    public int addSprite(Sprite sprite)
+    public int addSprite(LevithanSprite sprite)
     {
         sprites.Add(sprite);
         return sprites.IndexOf(sprite);
@@ -98,7 +98,7 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
         game.GraphicsDevice.Clear(Color.Black); ;
         spriteBatch.Begin(transformMatrix: view);
 
-        foreach (Sprite sprite in sprites)
+        foreach (LevithanSprite sprite in sprites)
         {
             spriteBatch.Draw(sprite.color,new Rectangle(sprite.getPositionXY().ToPoint(),sprite.size), Color.White);
         }
@@ -109,7 +109,7 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
         game.GraphicsDevice.Clear(new Color(0.5f, 0.5f, 1f));
         spriteBatch.Begin(transformMatrix: view);
 
-        foreach (Sprite sprite in sprites)
+        foreach (LevithanSprite sprite in sprites)
         {
             if (sprite.useNormal)
             {

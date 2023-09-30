@@ -1,9 +1,9 @@
-﻿namespace LD54.Engine.Leviathan;
+namespace LD54.Engine.Leviathan;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-public class Sprite : DrawableGameComponent
+public class LevithanSprite
 {
     private string colorPath;
     private string normalPath;
@@ -13,7 +13,7 @@ public class Sprite : DrawableGameComponent
     public Point size;
     public bool useNormal = false;
     private Game game;
-    public Sprite(Game game, Matrix transform,Point size, string colorPath, string normalPath = "") : base(game) {
+    public LevithanSprite(Game game, Matrix transform,Point size, string colorPath, string normalPath = ""){
         this.colorPath = colorPath;
         this.normalPath = normalPath;
         if(normalPath != "")
@@ -24,7 +24,7 @@ public class Sprite : DrawableGameComponent
         this.game = game;
         this.size = size;
     }
-    protected override void LoadContent()
+    protected void LoadContent()
     {
         color = game.Content.Load<Texture2D>(colorPath);
         if(useNormal) {
