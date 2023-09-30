@@ -19,6 +19,9 @@ public class App_Julius : Game
         this.Content.RootDirectory = "Content";
         this.IsMouseVisible = true;
         graphics = new GraphicsDeviceManager(this);
+        //graphics.PreferredBackBufferWidth = 2560; //FIX THIS
+        //graphics.PreferredBackBufferHeight = 1440;
+
     }
 
     protected override void Initialize() {
@@ -47,13 +50,13 @@ public class App_Julius : Game
             }
         }
 
-        //LeviathanShader bloomShader = new LeviathanShader(this,"Shaders/bloom");
-        //bloomShader.AddParam("strength", 1f);
-        //engine.addPostProcess(bloomShader);
+        LeviathanShader bloomShader = new LeviathanShader(this, "Shaders/bloom");
+        bloomShader.AddParam("strength", 0.3f);
+        bloomShader.AddParam("brightnessThreshold", 20f);
+        engine.addPostProcess(bloomShader);
 
         LeviathanShader abberationShader = new LeviathanShader(this,"Shaders/abberation");
         abberationShader.AddParam("strength", 0.002f);
-        abberationShader.AddParam("brightnessThreshold", 150);
         engine.addPostProcess(abberationShader);
 
         base.Initialize();

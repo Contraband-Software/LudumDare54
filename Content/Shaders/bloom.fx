@@ -41,21 +41,25 @@ PixelInput SpriteVertexShader(VertexInput v)
 }
 float4 SpritePixelShader(PixelInput p) : SV_TARGET
 {
-    float oneOverWidth = 1 / width;
+    float oneOverWidth = (1 / width)*2;
     float4 col = tex2D(colorSampler, p.TexCoord.xy);
 
     float brightness = 0;
     float3 avarageColor = float3(0, 0, 0);
     
-    for (int i = -1; i < 2; i++)
+    for (int i = -4; i < 5; i++)
     {
-        for (int j = -1; j < 2; j++)
+        for (int j = -4; j < 5; j++)
         {
-            float3 sample = tex2D(colorSampler, p.TexCoord.xy + float2(i * width, j * width)).rgb;
+            float3 sample = tex2D(colorSampler, p.TexCoord.xy + float2(i * oneOverWidth, j * oneOverWidth)).rgb;
             avarageColor += sample;
-            brightness += (sample.r + sample.g + sample.b);
+            brightness = brightness +sample.r + sample.g + sample.b;
         }
     }    
+    if (brightness > brightnessThreshold)
+    {
+        return col + float4(avarageColor * strength/64, 0);
+    }
     return col;
 }
 
