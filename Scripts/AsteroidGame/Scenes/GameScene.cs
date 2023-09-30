@@ -6,6 +6,8 @@ using Engine.Dev;
 using Engine.Leviathan;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using AsteroidGame.GameObjects;
+using Scripts.AsteroidGame.GameObjects;
 
 public class GameScene : Scene
 {
@@ -21,11 +23,23 @@ public class GameScene : Scene
         Texture2D blankTexure = this.contentManager.Load<Texture2D>("Sprites/block");
 
         DebugPlayer player = new(blankTexure, "DebugPlayerController", this.app);
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-        parentObject.AddChild(player);
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
-        //sunLight = this.app.Services.GetService<ILeviathanEngineService>().AddLight(new Vector2(200, 200), new Vector3(10000000, 10000000, 10000000));
+        // simple scene-wide illumination
+        sunLight = this.app.Services.GetService<ILeviathanEngineService>().AddLight(new Vector2(200, 200), new Vector3(10000000, 10000000, 10000000));
+
+        NewtonianSystemObject newtonianSystem = new NewtonianSystemObject("GravitySimulationObject", this.app);
+        parentObject.AddChild(newtonianSystem);
+
+        newtonianSystem.AddChild(player);
+
+        for (int i = 0; i < 10; i++)
+        {
+            // GameObject newSat = new SatelliteObject(blankTexure, "satelliteObject_" + i, this.app);
+            // newSat.SetLocalPosition(new Vector2(10, 10));
+            // newtonianSystem.AddChild(newSat);
+        }
+
+        this.app.Services.GetService<ISceneControllerService>().DebugPrintGraph();
     }
 
     public override void Update(GameTime gameTime)

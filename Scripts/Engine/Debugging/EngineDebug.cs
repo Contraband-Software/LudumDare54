@@ -7,7 +7,7 @@ public static class EngineDebug
 {
     public static void PrintLn(string text)
     {
-        #if SAM
+        #if sam
         Console.Out.WriteLine(text);
         #else
         Debug.WriteLine(text);
