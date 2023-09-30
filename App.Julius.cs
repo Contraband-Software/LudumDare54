@@ -12,6 +12,8 @@ public class App_Julius : Game
     private LeviathanEngine engine;
     private Random rnd = new Random();
     private GraphicsDeviceManager graphics;
+    LeviathanShader starsShader;
+
     // contentManager
 
     public App_Julius()
@@ -46,7 +48,7 @@ public class App_Julius : Game
 
         LeviathanShader blackholeShader = new LeviathanShader(this, "Shaders/blackhole");
         engine.bindShader(blackholeShader);
-        LeviathanShader starsShader = new LeviathanShader(this, "Shaders/stars");
+        starsShader = new LeviathanShader(this, "Shaders/stars");
         starsShader.AddParam("blackholeX", 200);
         starsShader.AddParam("blackholeY", 200);
         starsShader.AddParam("strength", 3000);
@@ -103,7 +105,8 @@ public class App_Julius : Game
         //{
         //    engine.sprites[i].TranslatePosition(new Vector3((float)(rnd.NextDouble() - 0.5) * 2, (float)(rnd.NextDouble() - 0.5) * 2, 0));
         //}
-
+        starsShader.UpdateParam("blackholeX", 300 + MathF.Sin((float)gameTime.TotalGameTime.TotalSeconds) * 100);
+        starsShader.UpdateParam("blackholeY", 300 + MathF.Cos((float)gameTime.TotalGameTime.TotalSeconds) * 100);
         base.Update(gameTime);
     }
 
