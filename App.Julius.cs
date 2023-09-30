@@ -50,13 +50,16 @@ public class App_Julius : Game
             }
         }
 
+        SpriteFont testFont = Content.Load<SpriteFont>("Fonts/main");
+        engine.addUISprite(new LeviathanUIElement(this, Matrix.CreateTranslation(new Vector3(0)),new Point(100), colortex));
+        engine.addUISprite(new LeviathanUIElement(this, Matrix.CreateTranslation(new Vector3(100,400,0)), new Point(10), "hello world", testFont, Color.Red));
         LeviathanShader bloomShader = new LeviathanShader(this, "Shaders/bloom");
-        bloomShader.AddParam("strength", 0.3f);
+        bloomShader.AddParam("strength", 0.5f);
         bloomShader.AddParam("brightnessThreshold", 20f);
         engine.addPostProcess(bloomShader);
 
         LeviathanShader abberationShader = new LeviathanShader(this,"Shaders/abberation");
-        abberationShader.AddParam("strength", 0.002f);
+        abberationShader.AddParam("strength", 0.004f);
         engine.addPostProcess(abberationShader);
 
         base.Initialize();

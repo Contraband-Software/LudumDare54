@@ -41,6 +41,7 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
     private bool pingpong = false;
 
     public List<LeviathanSprite> sprites = new List<LeviathanSprite>();
+    public List<LeviathanUIElement> uiSprites = new List<LeviathanUIElement>();
     public List<LeviathanShader> postProcessShaders = new List<LeviathanShader>();
 
     public LeviathanEngine(Game g) : base(g)
@@ -89,14 +90,20 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
         sprites.Add(sprite);
         return sprites.IndexOf(sprite);
     }
+    public int addUISprite(LeviathanUIElement uiSprite)
+    {
+        uiSprites.Add(uiSprite);
+        return uiSprites.IndexOf(uiSprite);
+    }
     public void removeSprite(int index)
     {
         sprites.RemoveAt(index);
     }
 
-    //public override void LoadContent()
-    //{
-    //}
+    public void removeUISprite(int index)
+    {
+        uiSprites.RemoveAt(index);
+    }
 
     public override void Draw(GameTime gameTime)
     {
@@ -192,7 +199,24 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
         {
             spriteBatch.Draw(litTarget, new Vector2(0), Color.White);
         }
+
+        foreach(LeviathanUIElement uISprite in uiSprites)
+        {
+            if(uISprite.isEnabled)
+            {
+                if (uISprite.isText)
+                {
+                    spriteBatch.DrawString(uISprite.font, uISprite.text,uISprite.GetPositionXY(),uISprite.textColor);
+                }
+                else
+                {
+                    spriteBatch.Draw(uISprite.color, new Rectangle(uISprite.GetPositionXY().ToPoint(), uISprite.size), Color.White);
+                }
+            }
+        }
+
         spriteBatch.End();
+
     }
 
     //public override void Update(GameTime gameTime)
