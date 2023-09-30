@@ -13,6 +13,8 @@ public class ColliderComponent : Component
     private Vector3 dimensions;
     private Vector3 offset;
 
+    public Vector3 previousPosition;
+
     public ColliderComponent(Vector3 dimensions, Vector3 offset, string name, Game appCtx) : base(name, appCtx)
     {
         this.dimensions = dimensions;
@@ -30,6 +32,7 @@ public class ColliderComponent : Component
     public override void Update(GameTime gameTime)
     {
         base.Update(gameTime);
+        previousPosition = gameObject.GetGlobalPosition() + offset;
 
         //update aabb per update to match where gameObject is
         RecalculateAABB();

@@ -15,6 +15,7 @@ using Engine.Components;
 class LevelBlock : GameObject
 {
     Texture2D texture;
+    RigidBodyComponent rb;
     public LevelBlock(Texture2D texture, string name, Game appCtx) : base(name, appCtx)
     {
         this.texture = texture;
@@ -34,6 +35,9 @@ class LevelBlock : GameObject
         Vector3 colliderDimensions = new Vector3(this.texture.Width, this.texture.Height, 0);
         ColliderComponent collider = new ColliderComponent(colliderDimensions, Vector3.Zero, "playerCollider", this.app);
         this.AddComponent(collider);
+
+        rb = new RigidBodyComponent("rbPlayer", app);
+        this.AddComponent(rb);
     }
 }
 
@@ -72,7 +76,7 @@ class PlayerBlock : GameObject
         rb = new RigidBodyComponent("rbPlayer", app);
         this.AddComponent(rb);
 
-        PrintLn("OnLoad: PlayerBlock");
+        //PrintLn("OnLoad: PlayerBlock");
     }
 
     public override void Update(GameTime gameTime)
@@ -80,14 +84,12 @@ class PlayerBlock : GameObject
         base.Update(gameTime);
 
         rb.Velocity = Vector3.Zero;
-        Vector3 preMovePosition = this.GetLocalPosition();
 
         Move();
 
-        PrintLn("PLAYER VELOCITY: " + rb.Velocity.ToString());
-        this.SetLocalPosition(preMovePosition + rb.Velocity);
-
-        this.app.Services.GetService<ICollisionSystemService>().RequestCalculation(preMovePosition, collider);
+        //PrintLn("PLAYER VELOCITY: " + rb.Velocity.ToString());
+        this.SetLocalPosition(this.GetLocalPosition() + rb.Velocity);
+        //this.app.Services.GetService<ICollisionSystemService>().RequestCalculation(preMovePosition, collider);
     }
 
 
@@ -122,7 +124,7 @@ class JakubScene : Scene
     public override void OnLoad(GameObject? parentObject)
     {
         Texture2D blankTexure = this.contentManager.Load<Texture2D>("Sprites/block");
-        PrintLn("OnLoad: JakubScene");
+        //PrintLn("OnLoad: JakubScene");
 
         PlayerBlock playerBlock = new PlayerBlock(blankTexure, "spovus", app);
         parentObject.AddChild(playerBlock);
@@ -155,7 +157,7 @@ public class App_Jakub : Game
         graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
-        PrintLn("RUNNING APP_HAKUB");
+        //PrintLn("RUNNING APP_HAKUB");
 
     }
 

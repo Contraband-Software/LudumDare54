@@ -1,5 +1,4 @@
 global using static LD54.Engine.Dev.EngineDebug;
-
 namespace LD54;
 
 using AsteroidGame.Scenes;
