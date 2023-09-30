@@ -1,4 +1,4 @@
-﻿namespace LD54.Engine.Leviathan;
+namespace LD54.Engine.Leviathan;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
