@@ -85,12 +85,16 @@ public class CollisionSystem : GameComponent, ICollisionSystemService
 
         GameObject requestingColliderObj = requestingCollider.GetGameObject();
         RigidBodyComponent requestingColliderRb = (RigidBodyComponent)requestingColliderObj.GetComponent<RigidBodyComponent>();
-        Vector3 position = requestingColliderObj.GetGlobalTransform().Translation;
-
 
         //if it has a rigidbody, allow resolution, if not, it is forced to be a trigger
+        if (requestingColliderRb == null)
+        {
+            //invoke triggerEnter 
+            return;
+        }
 
-        foreach(Collision collision in collisions)
+        Vector3 position = requestingColliderObj.GetGlobalTransform().Translation;
+        foreach (Collision collision in collisions)
         {
             //PrintLn(position.ToString());
             //resolve collision
