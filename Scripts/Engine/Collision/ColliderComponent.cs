@@ -22,10 +22,7 @@ public class ColliderComponent : Component
     public override void OnLoad(GameObject? parentObject)
     {
         this.gameObject = parentObject;
-        Vector3 colliderOrigin = gameObject.GetGlobalPosition() + offset;
-        Vector3 min = new Vector3(colliderOrigin.X, colliderOrigin.Y + dimensions.Y, colliderOrigin.Z);
-        Vector3 max = new Vector3(colliderOrigin.X + dimensions.X, colliderOrigin.Y, colliderOrigin.Z);
-        this.aabb = new AABB(min, max);
+        RecalculateAABB();
 
         this.colliderID = this.app.Services.GetService<ICollisionSystemService>().AddColliderToSystem(this);
     }
@@ -35,14 +32,20 @@ public class ColliderComponent : Component
         base.Update(gameTime);
 
         //update aabb per update to match where gameObject is
+        RecalculateAABB();
+
+        //draw outline of collider
+    }
+
+    public void RecalculateAABB()
+    {
         Vector3 colliderOrigin = gameObject.GetGlobalPosition() + offset;
         Vector3 min = new Vector3(colliderOrigin.X, colliderOrigin.Y + dimensions.Y, colliderOrigin.Z);
         Vector3 max = new Vector3(colliderOrigin.X + dimensions.X, colliderOrigin.Y, colliderOrigin.Z);
         this.aabb.min = min;
         this.aabb.max = max;
-
-        //draw outline of collider
     }
+
     public override void OnUnload()
     {
         this.app.Services.GetService<ICollisionSystemService>().RemoveColliderFromSystem(colliderID);

@@ -56,6 +56,7 @@ public class CollisionSystem : GameComponent, ICollisionSystemService
     /// <param name="collider"></param>
     private List<Collision> CalculateForCollider(ColliderComponent collider)
     {
+        collider.RecalculateAABB();
         AABB a = collider.aabb;
         List<Collision> collisions = new List<Collision>();
         foreach (ColliderComponent other in collisionSystemList)
@@ -158,7 +159,7 @@ public class CollisionSystem : GameComponent, ICollisionSystemService
                     position.X -= overlapX * MathF.Sign(requestingColliderRb.Velocity.X);
                 }
             }
-            // position -= requestingCollider.GetGameObject().GetParent().GetGlobalPosition();
+            position -= requestingCollider.GetGameObject().GetParent().GetGlobalPosition();
             requestingCollider.GetGameObject().SetLocalPosition(position);
 
         }
