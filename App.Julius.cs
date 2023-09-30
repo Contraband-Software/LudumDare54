@@ -36,8 +36,8 @@ public class App_Julius : Game
         {
             for (int j = 0; j < 4; j++)
             {
-                LevithanSprite testSprite = new LevithanSprite(this, Matrix.CreateTranslation(new Vector3(i * 120, j * 120, 0)), new Point(100), "Sprites/image", "Sprites/normal");
-                engine.addSprite(testSprite);
+                //LeviathanSprite testSprite = new LeviathanSprite(this, Matrix.CreateTranslation(new Vector3(i * 120, j * 120, 0)), new Point(100), "Sprites/image", "Sprites/normal");
+                //engine.addSprite(testSprite);
             }
         }
 
@@ -75,7 +75,7 @@ public class App_Julius : Game
         }
         for (int i = 0; i < 32; i++)
         {
-            engine.sprites[i].translatePosition(new Vector3((float)(rnd.NextDouble() - 0.5) * 2, (float)(rnd.NextDouble() - 0.5) * 2, 0));
+            engine.sprites[i].TranslatePosition(new Vector3((float)(rnd.NextDouble() - 0.5) * 2, (float)(rnd.NextDouble() - 0.5) * 2, 0));
         }
 
         base.Update(gameTime);

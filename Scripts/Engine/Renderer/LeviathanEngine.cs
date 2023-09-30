@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 interface ILeviathanEngineService
 {
-    public int addSprite(LevithanSprite sprite);
+    public int addSprite(LeviathanSprite sprite);
 
     public void removeSprite(int index);
 
@@ -40,8 +40,7 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
     RenderTarget2D postProcessTarget;
     private bool pingpong = false;
 
-    public List<LevithanSprite> sprites = new List<LevithanSprite>();
-    public List<LeviathanShader> postProcessShaders = new List<LeviathanShader>();
+    public List<LeviathanSprite> sprites = new List<LeviathanSprite>();
 
     public LeviathanEngine(Game g) : base(g)
     {
@@ -74,17 +73,7 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
         lightingShader = game.Content.Load<Effect>("Shaders/lighting");
     }
 
-    public int addPostProcess(LeviathanShader shader)
-    {
-        postProcessShaders.Add(shader);
-        return postProcessShaders.IndexOf(shader);
-    }
-    public void removePostProcess(int i)
-    {
-        postProcessShaders.RemoveAt(i);
-    }
-
-    public int addSprite(LevithanSprite sprite)
+    public int addSprite(LeviathanSprite sprite)
     {
         sprites.Add(sprite);
         return sprites.IndexOf(sprite);
@@ -112,9 +101,9 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
         game.GraphicsDevice.Clear(Color.Black);
         spriteBatch.Begin(transformMatrix: view);
 
-        foreach (LevithanSprite sprite in sprites)
+        foreach (LeviathanSprite sprite in sprites)
         {
-            spriteBatch.Draw(sprite.color, new Rectangle(sprite.getPositionXY().ToPoint(), sprite.size), Color.White);
+            spriteBatch.Draw(sprite.color, new Rectangle(sprite.GetPositionXY().ToPoint(), sprite.size), Color.White);
         }
 
         spriteBatch.End();
@@ -123,11 +112,11 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
         game.GraphicsDevice.Clear(new Color(0.5f, 0.5f, 1f));
         spriteBatch.Begin(transformMatrix: view);
 
-        foreach (LevithanSprite sprite in sprites)
+        foreach (LeviathanSprite sprite in sprites)
         {
             if (sprite.useNormal)
             {
-                spriteBatch.Draw(sprite.normal, new Rectangle(sprite.getPositionXY().ToPoint(), sprite.size), Color.White);
+                spriteBatch.Draw(sprite.normal, new Rectangle(sprite.GetPositionXY().ToPoint(), sprite.size), Color.White);
             }
         }
 

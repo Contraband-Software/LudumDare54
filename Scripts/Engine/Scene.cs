@@ -2,10 +2,14 @@ namespace LD54.Engine;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using System.Collections.Generic;
 
 public abstract class Scene : EngineObject
 {
     protected ContentManager contentManager;
+    public ContentManager ContentManager { get { return contentManager; } }
+
+    /*protected Dictionary<string, object> */
 
     protected Scene(string name, Game appCtx) : base(name, appCtx)
     {
