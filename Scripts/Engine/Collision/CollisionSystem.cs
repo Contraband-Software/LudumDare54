@@ -10,7 +10,7 @@ public interface ICollisionSystemService
     public int AddColliderToSystem(ColliderComponent spriteCollider);
     public void RemoveColliderFromSystem(int spriteColliderID);
 
-    public void RequestCalculation(Vector3 preMovePos, ColliderComponent requestingCollider);
+    public void RequestResolve(ColliderComponent requestingCollider, List<Collision> collisions);
 }
 
 public class CollisionSystem : GameComponent, ICollisionSystemService
@@ -36,7 +36,7 @@ public class CollisionSystem : GameComponent, ICollisionSystemService
 
 
 
-    public void CollisionUpdate()
+    public override void Update(GameTime gameTime)
     {
         //check collision between each collider
 
@@ -44,17 +44,17 @@ public class CollisionSystem : GameComponent, ICollisionSystemService
         //give it back to the sprite that you are checking collision for
 
         //later, will also need to invoke OnCollisionEnter event on a collider
-        /*foreach(ColliderComponent col in collisionSystemList)
+        foreach(ColliderComponent col in collisionSystemList)
         {
             CalculateForCollider(col);
-        }*/
+        }
     }
 
     /// <summary>
     /// Calculates collisions for given collider
     /// </summary>
     /// <param name="collider"></param>
-    private List<Collision> CalculateForCollider(ColliderComponent collider)
+    private void CalculateForCollider(ColliderComponent collider)
     {
         collider.RecalculateAABB();
         AABB a = collider.aabb;
@@ -67,24 +67,27 @@ public class CollisionSystem : GameComponent, ICollisionSystemService
             Overlap collision = TestAABBOverlap(a, b);
             if (collision.isOverlap)
             {
-                PrintLn(collision.overlaps.ToString());
                 collisions.Add(new Collision(b, other, collision));
             }
+
         }
-        return collisions;
+        //resolve collisions for current collider
+        RequestResolve(collider, collisions);
     }
 
 
     /// <summary>
     /// Force a recalculation for a collider
     /// </summary>
-    public void RequestCalculation(Vector3 preMovePos, ColliderComponent requestingCollider) {
-        List<Collision> collisions = CalculateForCollider(requestingCollider);
+    public void RequestResolve(ColliderComponent requestingCollider, List<Collision> collisions) {
+
 
         GameObject requestingColliderObj = requestingCollider.GetGameObject();
         RigidBodyComponent requestingColliderRb = (RigidBodyComponent)requestingColliderObj.GetComponent<RigidBodyComponent>();
         Vector3 position = requestingColliderObj.GetGlobalTransform().Translation;
 
+
+        //if it has a rigidbody, allow resolution, if not, it is forced to be a trigger
 
         foreach(Collision collision in collisions)
         {
@@ -97,9 +100,6 @@ public class CollisionSystem : GameComponent, ICollisionSystemService
             float overlapY = MathF.Min(
                 MathF.Abs(collision.overlap.overlaps[1]),
                 MathF.Abs(collision.overlap.overlaps[3]));
-
-            //Debug.WriteLine("OverlapX: " + overlapX.ToString());
-            //Debug.WriteLine("OverlapY: " + overlapY.ToString());
 
             if(requestingColliderRb.Velocity.X != 0 && requestingColliderRb.Velocity.Y != 0)
             {
@@ -118,13 +118,13 @@ public class CollisionSystem : GameComponent, ICollisionSystemService
                     float widthTarget = requestingCollider.aabb.max.X - requestingCollider.aabb.min.X;
                     float widthCollision = collision.aabb.max.X - collision.aabb.min.X;
 
-                    float gapRatioX = MathF.Abs(collision.collider.aabb.min.X - preMovePos.X)
+                    float gapRatioX = MathF.Abs(collision.collider.aabb.min.X - requestingCollider.previousPosition.X)
                         / (widthTarget + widthCollision);
 
                     float heightTarget = requestingCollider.aabb.min.Y - requestingCollider.aabb.max.Y;
                     float heightCollision = collision.aabb.min.Y - collision.aabb.max.Y;
 
-                    float gapRatioY = MathF.Abs(collision.collider.aabb.max.Y - preMovePos.Y)
+                    float gapRatioY = MathF.Abs(collision.collider.aabb.max.Y - requestingCollider.previousPosition.Y)
                         / (heightTarget + heightCollision);
 
                     //on left or right (maintain Y, resolve X)
