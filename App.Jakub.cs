@@ -51,6 +51,8 @@ class SpriteRendererComponent : Component
 class PlayerBlock : GameObject
 {
     Texture2D texture;
+    public Vector2 Velocity;
+    public float Speed;
     public PlayerBlock(Texture2D texture, string name, Game appCtx) : base(name, appCtx)
     {
         this.texture = texture;
@@ -77,6 +79,24 @@ class PlayerBlock : GameObject
     public override void Update(GameTime gameTime)
     {
         base.Update(gameTime);
+
+        if (Keyboard.GetState().IsKeyDown(Keys.Left))
+        {
+            Velocity.X -= Speed;
+        }
+        if (Keyboard.GetState().IsKeyDown(Keys.Right))
+        {
+            Velocity.X += Speed;
+        }
+
+        if (Keyboard.GetState().IsKeyDown(Keys.Up))
+        {
+            Velocity.Y -= Speed;
+        }
+        if (Keyboard.GetState().IsKeyDown(Keys.Down))
+        {
+            Velocity.Y += Speed;
+        }
     }
 }
 
