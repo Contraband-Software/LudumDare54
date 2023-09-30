@@ -7,15 +7,13 @@ using System.Collections.Generic;
 
 public struct AABB
 {
-    public Vector2 min { get; set; }
-    public Vector2 max { get; set; }
+    public Vector3 min { get; set; }
+    public Vector3 max { get; set; }
 
-    public AABB(Vector2 min, Vector2 max)
+    public AABB(Vector3 min, Vector3 max)
     {
         this.min = min;
         this.max = max;
     }
-
-
 }
 

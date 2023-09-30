@@ -5,10 +5,14 @@ using Microsoft.Xna.Framework.Input;
 using Engine;
 using Microsoft.Xna.Framework.Graphics;
 using LD54.Engine.Leviathan;
+using LD54.Engine.Collision;
+
+
 
 class SpriteRendererComponent : Component
 {
-    LeviathanSprite sprite;
+    LeviathanSprite? sprite;
+
     int spriteID;
 
     public SpriteRendererComponent(string name, Game appCtx) : base(name, appCtx)
@@ -45,6 +49,7 @@ class SpriteRendererComponent : Component
         this.app.Services.GetService<ILeviathanEngineService>().removeSprite(spriteID);
         PrintLn("OnUnload: SpriteRendererComponent");
     }
+
 }
 
 class LevelBlock : GameObject
@@ -65,6 +70,10 @@ class LevelBlock : GameObject
             null);
 
         this.AddComponent(src);
+
+        Vector3 colliderDimensions = new Vector3(this.texture.Width, this.texture.Height, 0);
+        ColliderComponent collider = new ColliderComponent(colliderDimensions, Vector3.Zero, "playerCollider", this.app);
+        this.AddComponent(collider);
     }
 }
 
@@ -79,7 +88,7 @@ class PlayerBlock : GameObject
         this.texture = texture;
 
         Matrix pos = this.GetLocalTransform();
-        pos.Translation = new Vector3(250, 250, 1);
+        pos.Translation = new Vector3(150, 150, 1);
 
         this.SetLocalTransform(pos);
     }
@@ -94,21 +103,24 @@ class PlayerBlock : GameObject
             null);
 
         this.AddComponent(src);
+
+        Vector3 colliderDimensions = new Vector3(this.texture.Width, this.texture.Height, 0);
+        ColliderComponent collider = new ColliderComponent(colliderDimensions, Vector3.Zero, "playerCollider", this.app);
+        this.AddComponent(collider);
+
         PrintLn("OnLoad: PlayerBlock");
     }
 
     public override void Update(GameTime gameTime)
     {
         base.Update(gameTime);
-        Velocity = Vector3.Zero; 
-        Matrix matrix = this.GetLocalTransform();
-        Vector3 position = matrix.Translation;
-        Vector2 preMovePosition = new Vector2(position.X, position.Y);
+
+        Velocity = Vector3.Zero;
+        Vector3 preMovePosition = this.GetLocalPosition();
 
         Move();
-        matrix.Translation += Velocity;
 
-        this.SetLocalTransform(matrix);
+        this.SetLocalPosition(preMovePosition + Velocity);
     }
 
 
@@ -149,6 +161,7 @@ class JakubScene : Scene
         parentObject.AddChild(playerBlock);
 
         LevelBlock levelBlock = new LevelBlock(blankTexure, "spovus", app);
+        levelBlock.SetLocalPosition(new Vector3(300, 300, 1));
         parentObject.AddChild(levelBlock);
     }
 
@@ -166,6 +179,7 @@ public class App_Jakub : Game
     private GraphicsDeviceManager graphics;
     private SceneController sc;
     private LeviathanEngine le;
+    private CollisionSystem cs;
 
     public App_Jakub()
     {
@@ -182,10 +196,15 @@ public class App_Jakub : Game
         this.Components.Add(le);
         this.Services.AddService(typeof(ILeviathanEngineService), le);
 
-
         sc = new SceneController(this);
         this.Components.Add(sc);
         this.Services.AddService(typeof(ISceneControllerService), sc);
+
+        cs = new CollisionSystem(this);
+        this.Components.Add(cs);
+        this.Services.AddService(typeof(ICollisionSystemService), cs);
+
+
         sc.AddScene(new JakubScene(this));
         sc.ChangeScene("JakubScene");
 

@@ -1,4 +1,4 @@
-/*namespace LD54.Engine.Collision;
+namespace LD54.Engine.Collision;
 
 using System;
 using Microsoft.Xna.Framework;
@@ -6,17 +6,42 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-public class CollisionSystem
+public interface ICollisionSystemService
 {
-    Game game; 
+    public int AddColliderToSystem(ColliderComponent spriteCollider);
+    public void RemoveColliderFromSystem(int spriteColliderID);
+}
 
-    List<Sprite> spriteColliders = new List<Sprite>();
+public class CollisionSystem : GameComponent, ICollisionSystemService
+{
+    private List<ColliderComponent> collisionSystemList;
+
+    public CollisionSystem(Game game) : base(game)
+    {
+        collisionSystemList = new List<ColliderComponent>();
+    }
+
+    public int AddColliderToSystem(ColliderComponent spriteCollider)
+    {
+        collisionSystemList.Add(spriteCollider);
+        PrintLn("Collider added, count: " + collisionSystemList.Count.ToString());
+        return collisionSystemList.IndexOf(spriteCollider);
+    }
+
+    public void RemoveColliderFromSystem(int spriteColliderID)
+    {
+        collisionSystemList.RemoveAt(spriteColliderID);
+    }
+
+    /*
+
+    List<GameObjeec> spriteColliders = new List<Sprite>();
 
     public CollisionSystem(Game game)
     {
         this.game = game;
     }
-
+    
     public void AddColliderToSystem(Sprite spriteCollider)
     {
         spriteColliders.Add(spriteCollider);
@@ -66,7 +91,7 @@ public class CollisionSystem
     public void RequestCalculation(Vector2 preMovePos, Sprite target) { 
         List<Collision> collisions = CalculateForCollider(target);
         Vector2 postMovePos = target.Position;
-        Debug.WriteLine(collisions.Count > 0);
+        //Debug.WriteLine(collisions.Count > 0);
         foreach(Collision collision in collisions)
         {
             //resolve collision
@@ -78,8 +103,8 @@ public class CollisionSystem
                 MathF.Abs(collision.overlap.overlaps[1]), 
                 MathF.Abs(collision.overlap.overlaps[3]));
 
-            Debug.WriteLine("OverlapX: " + overlapX.ToString());
-            Debug.WriteLine("OverlapY: " + overlapY.ToString());
+            //Debug.WriteLine("OverlapX: " + overlapX.ToString());
+            //Debug.WriteLine("OverlapY: " + overlapY.ToString());
 
             if(target.Velocity.X != 0 && target.Velocity.Y != 0)
             {
@@ -151,5 +176,6 @@ public class CollisionSystem
 
         return new Overlap(true, new float[4] { d1x, d1y, d2x, d2y });
     }
+    */
 }
-*/
+
