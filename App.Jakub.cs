@@ -36,7 +36,7 @@ class SpriteRendererComponent : Component
     public override void Update(GameTime gameTime)
     {
         base.Update(gameTime);
-
+        //PrintLn(this.gameObject.GetLocalTransform().Translation.ToString());
         sprite.SetTransform(gameObject.GetGlobalTransform());
     }
 
@@ -47,12 +47,33 @@ class SpriteRendererComponent : Component
     }
 }
 
+class LevelBlock : GameObject
+{
+    Texture2D texture;
+    public LevelBlock(Texture2D texture, string name, Game appCtx) : base(name, appCtx)
+    {
+        this.texture = texture;
+    }
+
+    public override void OnLoad(GameObject? parentObject)
+    {
+        SpriteRendererComponent src = new SpriteRendererComponent("texture", this.app);
+        src.LoadSpriteData(
+            this.GetGlobalTransform(),
+            new Point(this.texture.Width, this.texture.Height),
+            this.texture,
+            null);
+
+        this.AddComponent(src);
+    }
+}
+
 
 class PlayerBlock : GameObject
 {
     Texture2D texture;
-    public Vector2 Velocity;
-    public float Speed;
+    public Vector3 Velocity;
+    public float Speed = 5f;
     public PlayerBlock(Texture2D texture, string name, Game appCtx) : base(name, appCtx)
     {
         this.texture = texture;
@@ -67,7 +88,7 @@ class PlayerBlock : GameObject
     {
         SpriteRendererComponent src = new SpriteRendererComponent("Sprite1", this.app);
         src.LoadSpriteData(
-            parentObject.GetGlobalTransform(),
+            this.GetGlobalTransform(),
             new Point(this.texture.Width, this.texture.Height),
             this.texture,
             null);
@@ -79,7 +100,20 @@ class PlayerBlock : GameObject
     public override void Update(GameTime gameTime)
     {
         base.Update(gameTime);
+        Velocity = Vector3.Zero; 
+        Matrix matrix = this.GetLocalTransform();
+        Vector3 position = matrix.Translation;
+        Vector2 preMovePosition = new Vector2(position.X, position.Y);
 
+        Move();
+        matrix.Translation += Velocity;
+
+        this.SetLocalTransform(matrix);
+    }
+
+
+    private void Move()
+    {
         if (Keyboard.GetState().IsKeyDown(Keys.Left))
         {
             Velocity.X -= Speed;
@@ -113,6 +147,9 @@ class JakubScene : Scene
 
         PlayerBlock playerBlock = new PlayerBlock(blankTexure, "spovus", app);
         parentObject.AddChild(playerBlock);
+
+        LevelBlock levelBlock = new LevelBlock(blankTexure, "spovus", app);
+        parentObject.AddChild(levelBlock);
     }
 
     public override void Update(GameTime gameTime)
