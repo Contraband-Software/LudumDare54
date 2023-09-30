@@ -4,6 +4,8 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Engine.Leviathan;
+using Microsoft.Xna.Framework.Graphics;
+using System.Diagnostics.Contracts;
 
 public class App_Julius : Game
 {
@@ -32,12 +34,16 @@ public class App_Julius : Game
             }
         }
         //engine.AddLight(new Vector2(150, 150), new Vector3(1000, 1000, 1000));
+
+        Texture2D colortex = Content.Load<Texture2D>("Sprites/image");
+        Texture2D normaltex = Content.Load<Texture2D>("Sprites/normal");
+
         for (int i = 0; i < 8; i++)
         {
             for (int j = 0; j < 4; j++)
             {
-                //LeviathanSprite testSprite = new LeviathanSprite(this, Matrix.CreateTranslation(new Vector3(i * 120, j * 120, 0)), new Point(100), "Sprites/image", "Sprites/normal");
-                //engine.addSprite(testSprite);
+                LeviathanSprite testSprite = new LeviathanSprite(this, Matrix.CreateTranslation(new Vector3(i * 120, j * 120, 0)), new Point(100), colortex, normaltex);
+                engine.addSprite(testSprite);
             }
         }
 
