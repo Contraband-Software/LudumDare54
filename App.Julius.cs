@@ -9,16 +9,21 @@ public class App_Julius : Game
 {
     private LeviathanEngine engine;
     private Random rnd = new Random();
+    private GraphicsDeviceManager graphics;
     // contentManager
 
     public App_Julius()
     {
         this.Content.RootDirectory = "Content";
         this.IsMouseVisible = true;
-        engine = new LeviathanEngine(this);
+        graphics = new GraphicsDeviceManager(this);
     }
 
     protected override void Initialize() {
+        engine = new LeviathanEngine(this);
+        this.Components.Add(engine);
+        this.Services.AddService(typeof(ILeviathanEngineService), engine);
+
         for (int i = 0; i < 8; i++)
         {
             for (int j = 0; j < 8; j++)
@@ -36,7 +41,6 @@ public class App_Julius : Game
                 engine.addSprite(testSprite);
             }
         }
-        engine.initialize();
         base.Initialize();
 
         PrintLn("Game initialized");
@@ -44,7 +48,6 @@ public class App_Julius : Game
 
     protected override void LoadContent()
     {
-        engine.loadContent();
         // TODO: GLOBAL LOAD CONTENT, USE THE GLOBAL CONTENT MANAGER CONTAINED IN GAME TO LOAD PERSISTENT CONTENT.
     }
 
@@ -71,7 +74,6 @@ public class App_Julius : Game
 
     protected override void Draw(GameTime gameTime)
     {
-        engine.draw(gameTime);
         base.Draw(gameTime);
     }
 }

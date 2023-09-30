@@ -4,13 +4,32 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-public class LeviathanEngine
+interface ILeviathanEngineService
+{
+    public int addSprite(Sprite sprite);
+
+    public void removeSprite(int index);
+
+    public int AddLight(Vector2 position, Vector3 color);
+
+    public void removeLight(int id);
+
+    public void setLightColor(int id, Color color);
+
+    public Vector3 getLightColor(int id);
+
+    public Vector2 getLightPosition(int id);
+
+    public void updateLightPosition(int id, Vector2 offset);
+}
+
+public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
 {
 
     private Vector2[] lightPositions = new Vector2[64];
     private Vector3[] lightColors = new Vector3[64];
     private Queue<int> openLocations = new Queue<int>();
-    private GraphicsDeviceManager graphics;
+    private IGraphicsDeviceManager graphics;
     private SpriteBatch spriteBatch;
     private Effect lightingShader;
     private Game game;
@@ -21,11 +40,11 @@ public class LeviathanEngine
 
     public List<Sprite> sprites = new List<Sprite>();
 
-    public LeviathanEngine(Game g)
+    public LeviathanEngine(Game g) : base(g)
     {
         game = g;
-        graphics = new GraphicsDeviceManager(game);
-        graphics.GraphicsProfile = GraphicsProfile.HiDef;
+        graphics = g.Services.GetService<IGraphicsDeviceManager>();
+        //graphics.GraphicsProfile = GraphicsProfile.HiDef;
         for (int i = 0; i < 64; i++)
         {
             openLocations.Enqueue(i);
@@ -33,7 +52,7 @@ public class LeviathanEngine
 
     }
 
-    public void initialize()
+    public override void Initialize()
     {
         colorTarget = new RenderTarget2D(game.GraphicsDevice,
             game.GraphicsDevice.PresentationParameters.BackBufferWidth,
@@ -44,6 +63,9 @@ public class LeviathanEngine
         litTarget = new RenderTarget2D(game.GraphicsDevice,
             game.GraphicsDevice.PresentationParameters.BackBufferWidth,
             game.GraphicsDevice.PresentationParameters.BackBufferHeight);
+
+        spriteBatch = new SpriteBatch(game.GraphicsDevice);
+        lightingShader = game.Content.Load<Effect>("Shaders/lighting");
     }
 
     public int addSprite(Sprite sprite)
@@ -56,13 +78,11 @@ public class LeviathanEngine
         sprites.RemoveAt(index);
     }
 
-    public void loadContent()
-    {
-        spriteBatch = new SpriteBatch(game.GraphicsDevice);
-        lightingShader = game.Content.Load<Effect>("Shaders/lighting");
-    }
+    //public override void LoadContent()
+    //{
+    //}
 
-    public void draw(GameTime gameTime) {
+    public override void Draw(GameTime gameTime) {
         Matrix view = Matrix.Identity*Matrix.CreateTranslation(0,0,0);
 
         int width = game.GraphicsDevice.Viewport.Width;
