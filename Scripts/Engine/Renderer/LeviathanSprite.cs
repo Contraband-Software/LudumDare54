@@ -3,32 +3,22 @@ namespace LD54.Engine.Leviathan;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-public class LevithanSprite
+public class LeviathanSprite
 {
-    private string colorPath;
-    private string normalPath;
     public Texture2D color;
-    public Texture2D normal;
+    public Texture2D? normal;
     private Matrix transform;
     public Point size;
     public bool useNormal = false;
     private Game game;
-    public LevithanSprite(Game game, Matrix transform,Point size, string colorPath, string normalPath = ""){
-        this.colorPath = colorPath;
-        this.normalPath = normalPath;
-        color = game.Content.Load<Texture2D>(colorPath);
-        if (normalPath != "")
-        {
-            useNormal = true;
-            normal = game.Content.Load<Texture2D>(normalPath);
-        }
+    public LeviathanSprite(Game game, Matrix transform, Point size, Texture2D colorTexture, Texture2D? normalTexture = null) {
+        this.color = colorTexture;
+        this.normal = normalTexture;
+        this.useNormal = normalTexture != null;
         this.transform = transform;
         this.game = game;
         this.size = size;
     }
-    //protected void LoadContent()
-    //{
-    //}
 
     public void setTransform(Matrix transform)
     {
