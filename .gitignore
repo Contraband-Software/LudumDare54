@@ -6,6 +6,8 @@
 obj/
 bin/
 
+*.sln
+
 # User-specific files
 *.rsuser
 *.suo
