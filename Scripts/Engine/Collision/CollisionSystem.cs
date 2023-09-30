@@ -143,8 +143,8 @@ public class CollisionSystem : GameComponent, ICollisionSystemService
             else
             {
                 PrintLn("Collision resolve: 5");
-                if (overlapX > 0) position.Y -= overlapY * MathF.Sign(position.Y);
-                if(overlapY > 0) position.X -= overlapX * MathF.Sign(position.X);
+                if (overlapX > 0) position.Y -= overlapY * MathF.Sign(requestingColliderRb.Velocity.Y);
+                if(overlapY > 0) position.X -= overlapX * MathF.Sign(requestingColliderRb.Velocity.X);
             }
             position -= requestingCollider.GetGameObject().GetParent().GetGlobalPosition();
             requestingCollider.GetGameObject().SetLocalPosition(position);
