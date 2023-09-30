@@ -104,12 +104,12 @@ public class CollisionSystem : GameComponent, ICollisionSystemService
             {
                 if (overlapX > overlapY)
                 {
-                    position.Y -= overlapY * MathF.Sign(position.Y);
+                    position.Y -= overlapY * MathF.Sign(requestingColliderRb.Velocity.Y);
                     PrintLn("Collision resolve: 1");
                 }
                 else if(overlapX < overlapY)
                 {
-                    position.X -= overlapX * MathF.Sign(position.X);
+                    position.X -= overlapX * MathF.Sign(requestingColliderRb.Velocity.X);
                     PrintLn("Collision resolve: 2");
                 }
                 else{
@@ -129,13 +129,13 @@ public class CollisionSystem : GameComponent, ICollisionSystemService
                     //on left or right (maintain Y, resolve X)
                     if(gapRatioX > gapRatioY)
                     {
-                        position.X -= (overlapX) * MathF.Sign(position.X);
+                        position.X -= (overlapX) * MathF.Sign(requestingColliderRb.Velocity.X);
                         PrintLn("Collision resolve: 3");
                     }
                     //above or below (maintain X, resolve Y)
                     else
                     {
-                        position.Y -= (overlapY) * MathF.Sign(position.Y);
+                        position.Y -= (overlapY) * MathF.Sign(requestingColliderRb.Velocity.Y);
                         PrintLn("Collision resolve: 4");
                     }
                 }
