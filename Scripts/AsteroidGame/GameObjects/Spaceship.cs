@@ -16,7 +16,11 @@ namespace LD54.Scripts.AsteroidGame.GameObjects
     {
         Texture2D texture;
         public float moveForce = 30f;
-        public float RotationSpeed = 5f;
+
+        private float rotationSpeed;
+        public float MaxRotationSpeed = 3.5f;
+        public float RotationAccel = 1f;
+
         ColliderComponent collider;
         RigidBodyComponent rb;
         SpriteRendererComponent src;
@@ -50,7 +54,7 @@ namespace LD54.Scripts.AsteroidGame.GameObjects
             rb = new RigidBodyComponent("rbPlayer", app);
             this.AddComponent(rb);
 
-            rb.SetMaxVelocity(3f);
+            rb.SetMaxVelocity(5f);
             rb.SetDampingFactor(0.98f);
         }
 
@@ -68,13 +72,13 @@ namespace LD54.Scripts.AsteroidGame.GameObjects
 
         private void RotateLeft(GameTime gameTime)
         {
-            Rotation -= RotationSpeed * (gameTime.ElapsedGameTime.Milliseconds / 1000f);
+            Rotation -= MaxRotationSpeed * (gameTime.ElapsedGameTime.Milliseconds / 1000f);
             src.Rotation = Rotation;
             
         }
         private void RotateRight(GameTime gameTime)
         {
-            Rotation += RotationSpeed * (gameTime.ElapsedGameTime.Milliseconds / 1000f);
+            Rotation += MaxRotationSpeed * (gameTime.ElapsedGameTime.Milliseconds / 1000f);
             src.Rotation = Rotation;
         }
 
