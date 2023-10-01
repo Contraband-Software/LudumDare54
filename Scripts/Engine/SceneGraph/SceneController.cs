@@ -27,6 +27,8 @@ public interface ISceneControllerService
     public RootGameObject GetSceneRoot();
     public RootGameObject GetPersistentGameObject();
 
+    public void DestroyObject(GameObject gameObject);
+
     public Scene? GetCurrentScene();
     public void AddScene(Scene scene);
     public void ChangeScene(string next);
@@ -92,7 +94,7 @@ public class SceneController : GameComponent, ISceneControllerService
     public void DebugPrintGraph()
     {
         string rootName = "SceneController";
-        PrintLn(rootName.PadLeft(POSITION_PADDING + rootName.Length));
+        PrintLn(rootName.PadLeft(POSITION_PADDING + rootName.Length + "    ".Length));
         this.PrintChildren(this.rootGameObject, 0);
         this.PrintChildren(this.persistantGameObject, 0);
     }
@@ -110,10 +112,13 @@ public class SceneController : GameComponent, ISceneControllerService
 
         string components = "";
         gameObject.GetAllComponents().ToList().ForEach(c => { components += c.GetType().Name + ":" + c.GetName() + ", "; });
+        Vector3 position = gameObject.GetGlobalPosition();
+        string format = "{0,10:####0.000}";
         PrintLn(
-            String.Format("{0," + POSITION_PADDING + "}", gameObject.GetGlobalPosition()) +
-            space                                                                      +
-            gameObject.GetType().Name                                                  + ": '" + gameObject.GetName() + "' -> [" + components + "]");
+            "[" + String.Format(format, position.X) + ", " + String.Format(format, position.Y) + ", " + String.Format(format, position.Z) + "]" +
+            space +
+            gameObject.GetType().Name + ": '" + gameObject.GetName() + "' -> [" + components + "]"
+            );
 
         IEnumerable<GameObject> g = gameObject.GetChildren();
         foreach (GameObject child in g.ToList())

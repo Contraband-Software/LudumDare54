@@ -3,13 +3,15 @@ namespace LD54.Engine.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AsteroidGame.Scenes;
 using Microsoft.Xna.Framework;
+using System.Threading.Tasks;
 
 public class NewtonianGravity2DControllerComponent : Component
 {
     public float GravitationalConstant { get; protected set; } = 1;
 
-    public int ForceLaw { get; set; } = 3;
+    public float ForceLaw { get; set; } = 2.5f;
 
     public List<RigidBodyComponent> Satellites { get; protected set; } = new List<RigidBodyComponent>();
 
@@ -23,6 +25,8 @@ public class NewtonianGravity2DControllerComponent : Component
         // iterate over children, getting all RigidBody and adding them to a list
 
         this.gameObject = parentObject;
+
+        ForceLaw = GameScene.FORCE_LAW;
 
         this.gameObject.ChildAttachedEvent += (gameObject) =>
         {
@@ -52,32 +56,35 @@ public class NewtonianGravity2DControllerComponent : Component
     {
         base.Update(gameTime);
 
-        foreach (RigidBodyComponent rb in Satellites)
-        {
-            List<RigidBodyComponent> otherObjects = Satellites.ToList();
-            otherObjects.Remove(rb);
-            Vector3 acceleration = ResolveGravityAcceleration(rb, otherObjects);
+        Parallel.ForEach(Satellites,
+            rb =>
+            {
+                List<RigidBodyComponent> otherObjects = Satellites.ToList();
+                otherObjects.Remove(rb);
+                Vector3 acceleration = ResolveGravityAcceleration(rb, otherObjects, this.ForceLaw, this.GravitationalConstant);
 
-            rb.Velocity += acceleration;
-        }
+                rb.Velocity += acceleration;
+            });
     }
-    private Vector3 ResolveGravityAcceleration(RigidBodyComponent rb, List<RigidBodyComponent> otherObjects)
+    private static Vector3 ResolveGravityAcceleration(RigidBodyComponent rb, List<RigidBodyComponent> otherObjects, float forceLaw, float gravitationalConstant)
     {
         Vector3 sumAcceleration = Vector3.Zero;
         Vector3 position = rb.ContainingGameObject.GetGlobalPosition();
 
-        foreach (RigidBodyComponent other in otherObjects)
-        {
-            Vector3 otherPosition = other.ContainingGameObject.GetGlobalPosition();
+        Parallel.ForEach(otherObjects,
+            other =>
+            {
+                Vector3 otherPosition = other.ContainingGameObject.GetGlobalPosition();
 
-            float distance = Vector3.Distance(position, otherPosition);
+                float distance = Vector3.Distance(position, otherPosition);
 
-            if (distance < 10) continue;
-
-            Vector3 directionOfSeparation = (otherPosition - position);
-            directionOfSeparation.Normalize();
-            sumAcceleration += this.GravitationalConstant * other.Mass / (MathF.Pow(distance, ForceLaw)) * directionOfSeparation;
-        }
+                if (distance > 10)
+                {
+                    Vector3 directionOfSeparation = (otherPosition - position);
+                    directionOfSeparation.Normalize();
+                    sumAcceleration += gravitationalConstant * other.Mass / (MathF.Pow(distance, forceLaw)) * directionOfSeparation;
+                }
+            });
 
         return sumAcceleration;
     }

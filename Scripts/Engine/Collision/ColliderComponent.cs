@@ -6,14 +6,61 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Drawing;
 
+public abstract class ColliderComponent : Component
+{
+    private int colliderID;
+    public Vector3 previousPosition;
+    public bool isTrigger;
+
+    #region EVENTS
+    public delegate void Trigger(ColliderComponent collidedWith);
+    public event Trigger TriggerEvent;
+    public void InvokeTriggerEvent(ColliderComponent collidedWith)
+    {
+        if (TriggerEvent is not null) TriggerEvent(collidedWith);
+    }
+
+    public delegate void Collide(ColliderComponent collidedWith);
+    public event Collide CollideEvent;
+    public void InvokeCollideEvent(ColliderComponent collidedWith)
+    {
+        if (CollideEvent is not null) CollideEvent(collidedWith);
+    }
+
+    #endregion
+
+
+    public ColliderComponent(string name, Game appCtx) : base(name, appCtx)
+    {
+    }
+
+    public override void OnLoad(GameObject? parentObject)
+    {
+        this.gameObject = parentObject;
+        this.colliderID = this.app.Services.GetService<ICollisionSystemService>().AddColliderToSystem(this);
+    }
+
+    public override void OnUnload()
+    {
+        this.app.Services.GetService<ICollisionSystemService>().RemoveColliderFromSystem(colliderID);
+    }
+
+    public GameObject GetGameObject()
+    {
+        return this.gameObject;
+    }
+}
+
 public class CircleColliderComponent : ColliderComponent
 {
     public Vector2 centre; //this is the equivalent of the aabb
     public float radius;
+    private Vector3 offset;
 
-    public CircleColliderComponent(float radius, string name, Game appCtx) : base(name, appCtx)
+    public CircleColliderComponent(float radius, Vector3 offset, string name, Game appCtx) : base(name, appCtx)
     {
         this.radius = radius;
+        this.offset = offset;
     }
 
     public override void OnLoad(GameObject? parentObject)
@@ -28,18 +75,18 @@ public class CircleColliderComponent : ColliderComponent
         RigidBodyComponent rb = (RigidBodyComponent)gameObject.GetComponent<RigidBodyComponent>();
         if (rb != null)
         {
-            previousPosition = (gameObject.GetGlobalPosition()) - rb.Velocity;
+            previousPosition = (gameObject.GetGlobalPosition() + offset) - rb.Velocity;
         }
         else
         {
-            previousPosition = gameObject.GetGlobalPosition();
+            previousPosition = gameObject.GetGlobalPosition() + offset;
         }
         RecalculateCentre();
     }
 
     public void RecalculateCentre()
     {
-        Vector3 colliderOrigin = gameObject.GetGlobalPosition();
+        Vector3 colliderOrigin = gameObject.GetGlobalPosition() + offset;
         centre = new Vector2(colliderOrigin.X + radius, colliderOrigin.Y + radius);
     }
 }
@@ -88,49 +135,4 @@ public class BoxColliderComponent : ColliderComponent
         this.aabb.max = max;
     }
 
-}
-
-public abstract class ColliderComponent : Component
-{
-    private int colliderID;
-    public Vector3 previousPosition;
-    public bool isTrigger;
-
-    #region EVENTS
-    public delegate void Trigger(ColliderComponent collidedWith);
-    public event Trigger TriggerEvent;
-    public void InvokeTriggerEvent(ColliderComponent collidedWith)
-    {
-        if (TriggerEvent is not null) TriggerEvent(collidedWith);
-    }
-
-    public delegate void Collide(ColliderComponent collidedWith);
-    public event Collide CollideEvent;
-    public void InvokeCollideEvent(ColliderComponent collidedWith)
-    {
-        if (CollideEvent is not null) CollideEvent(collidedWith);
-    }
-
-    #endregion
-
-
-    public ColliderComponent(string name, Game appCtx) : base(name, appCtx)
-    {
-    }
-
-    public override void OnLoad(GameObject? parentObject)
-    {
-        this.gameObject = parentObject;
-        this.colliderID = this.app.Services.GetService<ICollisionSystemService>().AddColliderToSystem(this);
-    }
-
-    public override void OnUnload()
-    {
-        this.app.Services.GetService<ICollisionSystemService>().RemoveColliderFromSystem(colliderID);
-    }
-
-    public GameObject? GetGameObject()
-    {
-        return this.gameObject;
-    }
 }

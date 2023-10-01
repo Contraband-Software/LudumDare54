@@ -11,34 +11,49 @@ using Microsoft.Xna.Framework.Graphics;
 using AsteroidGame.GameObjects;
 using Engine.Components;
 using AsteroidGame.GameObjects;
+using Scripts.Engine;
 
 public class GameScene : Scene
 {
+    #region PARAMS
+    public const float FORCE_LAW = 2.4f;
+    public const float GRAVITATIONAL_CONSTANT = 43f;
+
+    public const float BLACK_HOLE_MASS = 100;   // no need to edit, GRAVITATIONAL_CONSTANT is already directly proportional (Satellites are massless)
+    public const int SATELLITES = 100;
+    public const float SPEED_MULT = 15f;
+
+    public const float MAP_SIZE = 2f;
+    #endregion
+
     private int sunLight = -1;
 
     private Texture2D testObjectTexture;
 
     public GameScene(Game appCtx) : base("GameScene", appCtx)
     {
-
     }
 
-    public void SpawnAccretionDisk(GameObject parent, Vector2 boundsDimensions, Vector2 blackHole)
+    public void SpawnAccretionDisk(GameObject parent, Vector2 boundsOffset, Vector2 boundsDimensions, Vector2 blackHole)
     {
         Random rnd = new Random();
 
-        Vector2 startPosition = new Vector2(
-            rnd.Next((int)boundsDimensions.X),
-            rnd.Next((int)boundsDimensions.Y));
-
-        Vector2 separation = startPosition - blackHole;
-        Vector2 perpendicular = separation;
-
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < GameScene.SATELLITES; i++)
         {
+
+            Vector2 startPosition = new Vector2(
+                rnd.Next((int)boundsOffset.X, (int)boundsDimensions.X),
+                rnd.Next((int)boundsOffset.Y, (int)boundsDimensions.Y));
+
+            Vector2 separation = startPosition - blackHole;
+            Vector2 perpendicular = separation.PerpendicularClockwise();
+            perpendicular.Normalize();
+
+            // PrintLn(perpendicular.ToString());
+
             GameObject newSat = new SatelliteObject(
                 0,
-                new Vector3(rnd.Next(2), rnd.Next(2), 1),
+                new Vector3(perpendicular.X, perpendicular.Y, 0.76f) * GameScene.SPEED_MULT * (1 / MathF.Sqrt(separation.Magnitude())),
                 testObjectTexture,
                 "satelliteObject_" + i,
                 this.app
@@ -59,33 +74,39 @@ public class GameScene : Scene
 
         // sim set up
         NewtonianSystemObject newtonianSystem = new NewtonianSystemObject(
-            20,
+            GameScene.GRAVITATIONAL_CONSTANT,
             "GravitySimulationObject",
             this.app);
         parentObject.AddChild(newtonianSystem);
+        newtonianSystem.SetLocalPosition(new Vector2(-800, -800));
 
         // player controller
-        testObjectTexture = this.contentManager.Load<Texture2D>("Sprites/block");
+        testObjectTexture = this.contentManager.Load<Texture2D>("Sprites/circle");
         DebugPlayer player = new(testObjectTexture, "DebugPlayerController", this.app);
         newtonianSystem.AddChild(player);
 
         // black hole
+        Vector2 blackHolePosition = new Vector2(200, 200);
         GameObject blackHole = new BlackHole(
-            100,
+            BLACK_HOLE_MASS,
             testObjectTexture,
             "BlackHole",
             this.app
             );
         newtonianSystem.AddChild(blackHole);
-        blackHole.SetLocalPosition(new Vector2(
-            windowSize.X / 2,
-            windowSize.Y / 2)
-        );
+        blackHole.SetLocalPosition(blackHolePosition);
 
         // some testing space junk spawning
-        SpawnAccretionDisk(newtonianSystem, windowSize, new Vector2(
-            windowSize.X / 2,
-            windowSize.Y / 2)
+        SpawnAccretionDisk(newtonianSystem,
+            new Vector2(
+                windowSize.X * -MAP_SIZE /2,
+                windowSize.Y * -MAP_SIZE /2
+            ) + blackHolePosition,
+            new Vector2(
+                windowSize.X * MAP_SIZE,
+                windowSize.Y * MAP_SIZE
+            ),
+            blackHolePosition
         );
     }
 
