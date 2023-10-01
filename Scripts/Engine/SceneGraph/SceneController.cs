@@ -27,6 +27,8 @@ public interface ISceneControllerService
     public RootGameObject GetSceneRoot();
     public RootGameObject GetPersistentGameObject();
 
+    public void DestroyObject(GameObject gameObject);
+
     public Scene? GetCurrentScene();
     public void AddScene(Scene scene);
     public void ChangeScene(string next);

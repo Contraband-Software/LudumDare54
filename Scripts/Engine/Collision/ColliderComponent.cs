@@ -6,6 +6,51 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Drawing;
 
+public abstract class ColliderComponent : Component
+{
+    private int colliderID;
+    public Vector3 previousPosition;
+    public bool isTrigger;
+
+    #region EVENTS
+    public delegate void Trigger(ColliderComponent collidedWith);
+    public event Trigger TriggerEvent;
+    public void InvokeTriggerEvent(ColliderComponent collidedWith)
+    {
+        if (TriggerEvent is not null) TriggerEvent(collidedWith);
+    }
+
+    public delegate void Collide(ColliderComponent collidedWith);
+    public event Collide CollideEvent;
+    public void InvokeCollideEvent(ColliderComponent collidedWith)
+    {
+        if (CollideEvent is not null) CollideEvent(collidedWith);
+    }
+
+    #endregion
+
+
+    public ColliderComponent(string name, Game appCtx) : base(name, appCtx)
+    {
+    }
+
+    public override void OnLoad(GameObject? parentObject)
+    {
+        this.gameObject = parentObject;
+        this.colliderID = this.app.Services.GetService<ICollisionSystemService>().AddColliderToSystem(this);
+    }
+
+    public override void OnUnload()
+    {
+        this.app.Services.GetService<ICollisionSystemService>().RemoveColliderFromSystem(colliderID);
+    }
+
+    public GameObject GetGameObject()
+    {
+        return this.gameObject;
+    }
+}
+
 public class CircleColliderComponent : ColliderComponent
 {
     public Vector2 centre; //this is the equivalent of the aabb
@@ -90,49 +135,4 @@ public class BoxColliderComponent : ColliderComponent
         this.aabb.max = max;
     }
 
-}
-
-public abstract class ColliderComponent : Component
-{
-    private int colliderID;
-    public Vector3 previousPosition;
-    public bool isTrigger;
-
-    #region EVENTS
-    public delegate void Trigger(ColliderComponent collidedWith);
-    public event Trigger TriggerEvent;
-    public void InvokeTriggerEvent(ColliderComponent collidedWith)
-    {
-        if (TriggerEvent is not null) TriggerEvent(collidedWith);
-    }
-
-    public delegate void Collide(ColliderComponent collidedWith);
-    public event Collide CollideEvent;
-    public void InvokeCollideEvent(ColliderComponent collidedWith)
-    {
-        if (CollideEvent is not null) CollideEvent(collidedWith);
-    }
-
-    #endregion
-
-
-    public ColliderComponent(string name, Game appCtx) : base(name, appCtx)
-    {
-    }
-
-    public override void OnLoad(GameObject? parentObject)
-    {
-        this.gameObject = parentObject;
-        this.colliderID = this.app.Services.GetService<ICollisionSystemService>().AddColliderToSystem(this);
-    }
-
-    public override void OnUnload()
-    {
-        this.app.Services.GetService<ICollisionSystemService>().RemoveColliderFromSystem(colliderID);
-    }
-
-    public GameObject? GetGameObject()
-    {
-        return this.gameObject;
-    }
 }

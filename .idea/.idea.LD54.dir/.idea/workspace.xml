@@ -11,8 +11,10 @@
       <change beforePath="$PROJECT_DIR$/.idea/.idea.LD54.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.LD54.dir/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Scripts/AsteroidGame/GameObjects/BlackHole.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/AsteroidGame/GameObjects/BlackHole.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Scripts/AsteroidGame/GameObjects/SatelliteObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/AsteroidGame/GameObjects/SatelliteObject.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scripts/AsteroidGame/Scenes/GameScene.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/AsteroidGame/Scenes/GameScene.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scripts/Engine/Components/RigidBodyComponent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/Engine/Components/RigidBodyComponent.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scripts/Engine/Collision/ColliderComponent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/Engine/Collision/ColliderComponent.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scripts/Engine/Components/SpriteRendererComponent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/Engine/Components/SpriteRendererComponent.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scripts/Engine/Debugging/DebugPlayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/Engine/Debugging/DebugPlayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scripts/Engine/SceneGraph/SceneController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/Engine/SceneGraph/SceneController.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,7 +26,11 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/777f4218e4a0469dbc075c5f54bf5f721c5a00/4e/7bf5122e/GraphicsDevice.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/777f4218e4a0469dbc075c5f54bf5f721c5a00/50/9841a67b/GameServiceContainer.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/777f4218e4a0469dbc075c5f54bf5f721c5a00/70/f9836f04/Vector2.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/777f4218e4a0469dbc075c5f54bf5f721c5a00/9e/ebaccfcd/Game.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/777f4218e4a0469dbc075c5f54bf5f721c5a00/f8/049dd3d4/SdlGamePlatform.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/d4f98ebdd878db4fbd98872756eb7be6ad9e468fe5cd6b16385d8c4993109a/List.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -96,7 +102,7 @@
       <workItem from="1696094649045" duration="509000" />
       <workItem from="1696095254133" duration="6048000" />
       <workItem from="1696104022872" duration="27532000" />
-      <workItem from="1696158508716" duration="1043000" />
+      <workItem from="1696158508716" duration="3460000" />
     </task>
     <servers />
   </component>

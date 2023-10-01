@@ -10,6 +10,8 @@ public class SpriteRendererComponent : Component
 
     private int spriteID;
 
+    public Vector3 Offset = Vector3.Zero;
+
     public SpriteRendererComponent(string name, Game appCtx) : base(name, appCtx)
     {
 
@@ -30,8 +32,9 @@ public class SpriteRendererComponent : Component
     public override void Update(GameTime gameTime)
     {
         base.Update(gameTime);
-        //PrintLn(this.gameObject.GetLocalTransform().Translation.ToString());
-        sprite.SetTransform(gameObject.GetGlobalTransform());
+        Matrix transform = gameObject.GetGlobalTransform();
+        transform.Translation += this.Offset;
+        sprite.SetTransform(transform);
     }
 
     public override void OnUnload()

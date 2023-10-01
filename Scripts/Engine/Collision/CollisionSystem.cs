@@ -3,6 +3,7 @@ namespace LD54.Engine.Collision;
 using System;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using System.Linq;
 using Engine.Components;
 using Engine.Dev;
 
@@ -43,7 +44,7 @@ public class CollisionSystem : GameComponent, ICollisionSystemService
         //give it back to the sprite that you are checking collision for
 
         //later, will also need to invoke OnCollisionEnter event on a collider
-        foreach(ColliderComponent col in collisionSystemList)
+        foreach(ColliderComponent col in collisionSystemList.ToList())
         {
             if(col is BoxColliderComponent)
             {
@@ -53,7 +54,7 @@ public class CollisionSystem : GameComponent, ICollisionSystemService
             {
                 CalculateForCircleCollision((CircleColliderComponent)col);
             }
-            
+
         }
     }
     /// <summary>
@@ -101,7 +102,7 @@ public class CollisionSystem : GameComponent, ICollisionSystemService
         //if it has a rigidbody, allow resolution, if not, it is forced to be a trigger
         if (requestingColliderRb == null)
         {
-            //invoke triggerEnter 
+            //invoke triggerEnter
             return;
         }
 
@@ -173,7 +174,7 @@ public class CollisionSystem : GameComponent, ICollisionSystemService
         //if it has a rigidbody, allow resolution, if not, it is forced to be a trigger
         if (requestingColliderRb == null)
         {
-            //invoke triggerEnter 
+            //invoke triggerEnter
             return;
         }
 

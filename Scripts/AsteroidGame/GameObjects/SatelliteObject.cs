@@ -1,14 +1,17 @@
 namespace LD54.AsteroidGame.GameObjects;
 
+using Engine.Collision;
 using Engine.Components;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 public class SatelliteObject : GameObject
 {
+    public float Mass { get; set; } = 1;
+
     private Texture2D? texture;
 
-    public float Mass { get; set; } = 1;
+    private CircleColliderComponent collider;
 
     private Vector3 startingVelocity = Vector3.Zero;
 
@@ -38,5 +41,9 @@ public class SatelliteObject : GameObject
         rb.Mass = this.Mass;
         rb.Velocity = this.startingVelocity;
         this.AddComponent(rb);
+
+        collider = new CircleColliderComponent(textureSize.X / 2, textureSize / -2f, "Sat", this.app);
+        this.collider.isTrigger = true;
+        this.AddComponent(collider);
     }
 }
