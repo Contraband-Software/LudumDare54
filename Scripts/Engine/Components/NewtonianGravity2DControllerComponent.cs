@@ -3,13 +3,14 @@ namespace LD54.Engine.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AsteroidGame.Scenes;
 using Microsoft.Xna.Framework;
 
 public class NewtonianGravity2DControllerComponent : Component
 {
     public float GravitationalConstant { get; protected set; } = 1;
 
-    public int ForceLaw { get; set; } = 3;
+    public float ForceLaw { get; set; } = 2.5f;
 
     public List<RigidBodyComponent> Satellites { get; protected set; } = new List<RigidBodyComponent>();
 
@@ -23,6 +24,8 @@ public class NewtonianGravity2DControllerComponent : Component
         // iterate over children, getting all RigidBody and adding them to a list
 
         this.gameObject = parentObject;
+
+        // ForceLaw = ((GameScene)this.app.Services.GetService<ISceneControllerService>().GetCurrentScene()).FORCE_LAW;
 
         this.gameObject.ChildAttachedEvent += (gameObject) =>
         {

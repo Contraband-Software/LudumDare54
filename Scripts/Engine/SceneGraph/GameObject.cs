@@ -35,12 +35,16 @@ public abstract class GameObject : EngineObject, IUpdateable
     protected Matrix transform;
     protected readonly List<Component> components = new();
 
+    public readonly Game App;
+
     protected GameObject(string name, Game appCtx) : base(name, appCtx)
     {
         this.transform = Matrix.Identity;
+
+        App = appCtx;
     }
 
-    public virtual new void Update(GameTime gameTime)
+    public new virtual void Update(GameTime gameTime)
     {
         this.UpdateComponents(gameTime);
     }
