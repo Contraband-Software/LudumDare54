@@ -24,17 +24,17 @@ public class BlackHole : GameObject
     {
         float scaleDivider = 1f;
 
-        SpriteRendererComponent src = new SpriteRendererComponent("Sprite1", this.app);
+        //SpriteRendererComponent src = new SpriteRendererComponent("Sprite1", this.app);
         Vector3 textureSize = new Vector3((float)this.texture.Width / scaleDivider, (float)this.texture.Height / scaleDivider, 0f);
-        Matrix transform = this.GetGlobalTransform();
-        transform.Translation -= textureSize / 2f;
-        src.LoadSpriteData(
-            transform,
-            new Vector2(textureSize.X, textureSize.Y),
-            this.texture,
-            null);
-        src.Offset = textureSize / -2f;
-        this.AddComponent(src);
+        //Matrix transform = this.GetGlobalTransform();
+        //transform.Translation -= textureSize / 2f;
+        //src.LoadSpriteData(
+        //    transform,
+        //    new Vector2(textureSize.X, textureSize.Y),
+        //    this.texture,
+        //    null);
+        //src.Offset = textureSize / -2f;
+        //this.AddComponent(src);
 
         RigidBodyComponent rb = new RigidBodyComponent("BlackHoleRB", this.app);
         rb.Mass = this.Mass;
@@ -46,6 +46,10 @@ public class BlackHole : GameObject
         this.collider.TriggerEvent += this.EatIt;
         this.collider.DebugMode = true;
         this.AddComponent(collider);
+
+        BlackHoleComponent bh = new BlackHoleComponent("BlackHoleDrawing", this.app);
+        this.AddComponent(bh);
+
     }
 
     public int DestroyedObjects = 0;
