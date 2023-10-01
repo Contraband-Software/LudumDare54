@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using LD54.Engine.Leviathan;
 using LD54.Engine.Collision;
 using Engine.Components;
-
+using LD54.Scripts.AsteroidGame.GameObjects;
 
 class LevelSquare : GameObject
 {
@@ -173,9 +173,14 @@ class JakubScene : Scene
     {
         Texture2D blankTexure = this.contentManager.Load<Texture2D>("Sprites/circle");
         Texture2D squong = this.contentManager.Load<Texture2D>("Sprites/block");
+        Texture2D arrow = this.contentManager.Load<Texture2D>("Sprites/arrow");
 
-        PlayerBlock playerBlock = new PlayerBlock(blankTexure, "spovus", app);
-        parentObject.AddChild(playerBlock);
+        //PlayerBlock playerBlock = new PlayerBlock(blankTexure, "spovus", app);
+        //parentObject.AddChild(playerBlock);
+
+        Spaceship player = new Spaceship(arrow, "spovus", app);
+        parentObject.AddChild(player);
+
 
         LevelBlock levelBlock = new LevelBlock(blankTexure,1f, "spovus", app);
         levelBlock.SetLocalPosition(new Vector3(300, 300, 1));

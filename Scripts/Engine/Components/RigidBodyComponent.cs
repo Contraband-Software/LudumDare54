@@ -1,6 +1,7 @@
 namespace LD54.Engine.Components;
 
 using Microsoft.Xna.Framework;
+using System;
 
 public class RigidBodyComponent : Component
 {
@@ -30,5 +31,13 @@ public class RigidBodyComponent : Component
     public override void OnUnload()
     {
 
+    }
+
+    /// <summary>
+    /// Adds velocity based off of the direction the gameobject is facing
+    /// </summary>
+    public void AddVelocityForward(Vector2 velocity)
+    {
+        this.Velocity = new Vector3(velocity.X, velocity.Y, 0f);
     }
 }
