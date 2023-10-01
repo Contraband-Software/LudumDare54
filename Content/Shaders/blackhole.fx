@@ -11,7 +11,7 @@ float4x4 viewProjection;
 float time;
 float width;
 float height;
-float strength;
+//float strength;
 sampler colorSampler : register(s0);
 
 struct VertexInput

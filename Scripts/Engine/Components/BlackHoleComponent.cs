@@ -20,14 +20,6 @@ public class BlackHoleComponent : Component
 
     }
 
-    //public void LoadSpriteData(Matrix transform, Vector2 size, Texture2D colorTexture, Texture2D? normalTexture = null)
-    //{
-    //    re = this.app.Services.GetService<ILeviathanEngineService>();
-
-    //    sprite = new(this.app, transform,0 , size, colorTexture, normalTexture);
-
-    //    re.addSprite(sprite);
-    //}
 
     public override void OnLoad(GameObject? parentObject)
     {
@@ -36,7 +28,8 @@ public class BlackHoleComponent : Component
         Offset = Matrix.CreateTranslation(-100,-100, 0);
 
 
-        bh = new LeviathanSprite(this.app,gameObject.GetGlobalTransform() *Offset,0,new Vector2(200),this.app.Content.Load<Texture2D>("Sprites/image"));
+
+        bh = new LeviathanSprite(this.app,Matrix.CreateTranslation(200,100,0),0,new Vector2(200),1,this.app.Content.Load<Texture2D>("Sprites/image"),false,0);
         re.addSprite(bh);
 
 

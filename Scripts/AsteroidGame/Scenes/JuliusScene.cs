@@ -71,6 +71,8 @@ public class JuliusScene : Scene
         ILeviathanEngineService re = this.app.Services.GetService<ILeviathanEngineService>();
         Vector2 windowSize = re.getWindowSize();
         PrintLn("Screen resolution: " + windowSize);
+        LeviathanShader blackholeShader = new LeviathanShader(this.app, "Shaders/blackhole");
+        re.bindShader(blackholeShader);
 
         backgroundShader = new LeviathanShader(this.app, "Shaders/stars");
         backgroundShader.AddParam("strength", 3000);
@@ -78,12 +80,12 @@ public class JuliusScene : Scene
         backgroundShader.AddParam("blackholeY", 0);
         re.bindShader(backgroundShader);
 
+
+
         // simple scene-wide illumination
-        sunLight = this.app.Services.GetService<ILeviathanEngineService>().AddLight(new Vector2(200, 200), new Vector3(100000, 100000, 100000));
+        sunLight = this.app.Services.GetService<ILeviathanEngineService>().AddLight(new Vector2(200, 200), new Vector3(40000, 40000, 60000));
 
         // sim set up
-        StaticSprite background = new StaticSprite(this.contentManager.Load<Texture2D>("Sprites/nebula"), new Vector2(-500), new Vector2(1000), "background", this.app);
-        parentObject.AddChild(background);
 
         NewtonianSystemObject newtonianSystem = new NewtonianSystemObject(
             GameScene.GRAVITATIONAL_CONSTANT,
@@ -107,6 +109,9 @@ public class JuliusScene : Scene
             );
         newtonianSystem.AddChild(blackHole);
         blackHole.SetLocalPosition(blackHolePosition);
+
+        StaticSprite background = new StaticSprite(blackHole,backgroundShader, this.contentManager.Load<Texture2D>("Sprites/nebula"), new Vector2(-500), new Vector2(1000), "background", this.app);
+        parentObject.AddChild(background);
 
         // some testing space junk spawning
         SpawnAccretionDisk(newtonianSystem,
