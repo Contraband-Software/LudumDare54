@@ -103,8 +103,18 @@ public class CollisionSystem : GameComponent, ICollisionSystemService
 
         foreach(Collision col in collisions)
         {
+            //collided with a trigger
+            if (col.collider.isTrigger)
+            {
+                //invoke trigger event
+                requestingCollider.InvokeTriggerEvent(col.collider);
+                continue;
+            }
+            //otherwise collided with collider.
+            requestingCollider.InvokeCollideEvent(col.collider);
+
             //this ensures that the other collider is not moved
-            if(requestingColliderRb.Velocity.Length() == 0f)
+            if (requestingColliderRb.Velocity.Length() == 0f)
             {
                 continue;
             }
@@ -162,6 +172,16 @@ public class CollisionSystem : GameComponent, ICollisionSystemService
         Vector3 position = requestingColliderObj.GetGlobalTransform().Translation;
         foreach (Collision collision in collisions)
         {
+            //collided with a trigger
+            if (collision.collider.isTrigger)
+            {
+                //invoke trigger event
+                requestingCollider.InvokeTriggerEvent(collision.collider);
+                continue;
+            }
+            //otherwise collided with collider.
+            requestingCollider.InvokeCollideEvent(collision.collider);
+
             BoxColliderComponent colCollider = (BoxColliderComponent)collision.collider;
             //PrintLn(position.ToString());
             //resolve collision
