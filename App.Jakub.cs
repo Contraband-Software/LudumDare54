@@ -16,9 +16,11 @@ class LevelBlock : GameObject
 {
     Texture2D texture;
     RigidBodyComponent rb;
-    public LevelBlock(Texture2D texture, string name, Game appCtx) : base(name, appCtx)
+    private float scale = 1f;
+    public LevelBlock(Texture2D texture, float scale, string name, Game appCtx) : base(name, appCtx)
     {
         this.texture = texture;
+        this.scale = scale;
     }
 
     public override void OnLoad(GameObject? parentObject)
@@ -26,14 +28,20 @@ class LevelBlock : GameObject
         SpriteRendererComponent src = new SpriteRendererComponent("texture", this.app);
         src.LoadSpriteData(
             this.GetGlobalTransform(),
-            new Point(this.texture.Width, this.texture.Height),
+            new Point(
+                (int)((this.texture.Width) * scale),
+                (int)((this.texture.Height) * scale)),
             this.texture,
             null);
 
         this.AddComponent(src);
 
-        Vector3 colliderDimensions = new Vector3(this.texture.Width, this.texture.Height, 0);
-        ColliderComponent collider = new BoxColliderComponent(colliderDimensions, Vector3.Zero, "playerCollider", this.app);
+        Vector3 colliderDimensions = new Vector3
+            ((int)((this.texture.Width) * scale),
+            (int)((this.texture.Height) * scale), 0);
+
+
+        ColliderComponent collider = new CircleColliderComponent(colliderDimensions.X / 2, "playerCollider", this.app);
         this.AddComponent(collider);
 
         rb = new RigidBodyComponent("rbPlayer", app);
@@ -70,7 +78,7 @@ class PlayerBlock : GameObject
         this.AddComponent(src);
 
         Vector3 colliderDimensions = new Vector3(this.texture.Width, this.texture.Height, 0);
-        collider = new BoxColliderComponent(colliderDimensions, Vector3.Zero, "playerCollider", this.app);
+        collider = new CircleColliderComponent(colliderDimensions.X / 2, "playerCollider", this.app);
         this.AddComponent(collider);
 
         rb = new RigidBodyComponent("rbPlayer", app);
@@ -116,14 +124,18 @@ class JakubScene : Scene
 
     public override void OnLoad(GameObject? parentObject)
     {
-        Texture2D blankTexure = this.contentManager.Load<Texture2D>("Sprites/block");
+        Texture2D blankTexure = this.contentManager.Load<Texture2D>("Sprites/circle");
 
         PlayerBlock playerBlock = new PlayerBlock(blankTexure, "spovus", app);
         parentObject.AddChild(playerBlock);
 
-        LevelBlock levelBlock = new LevelBlock(blankTexure, "spovus", app);
+        LevelBlock levelBlock = new LevelBlock(blankTexure,1f, "spovus", app);
         levelBlock.SetLocalPosition(new Vector3(300, 300, 1));
         parentObject.AddChild(levelBlock);
+
+        LevelBlock levelBlock2 = new LevelBlock(blankTexure, 2, "spovus", app);
+        levelBlock2.SetLocalPosition(new Vector3(440, 150, 1));
+        parentObject.AddChild(levelBlock2);
 
         this.app.Services.GetService<ILeviathanEngineService>().AddLight(new Vector2(200, 200), new Vector3(10000000, 10000000, 10000000));
     }
