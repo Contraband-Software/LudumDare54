@@ -46,4 +46,9 @@ public class SatelliteObject : GameObject
         this.collider.isTrigger = true;
         this.AddComponent(collider);
     }
+
+    public override void OnUnload()
+    {
+        base.OnUnload();
+    }
 }

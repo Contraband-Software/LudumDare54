@@ -115,7 +115,7 @@ public class GameScene : Scene
     {
         base.Update(gameTime);
 
-        if (gameTime.TotalGameTime.Seconds > 1 && !printed)
+        if (!printed)
         {
             printed = true;
             this.app.Services.GetService<ISceneControllerService>().DebugPrintGraph();

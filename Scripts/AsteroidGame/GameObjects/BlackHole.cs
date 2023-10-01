@@ -48,8 +48,14 @@ public class BlackHole : GameObject
         this.AddComponent(collider);
     }
 
+    public int DestroyedObjects = 0;
+
     private void EatIt(ColliderComponent other)
     {
+        PrintLn("");
+        PrintLn("Eaten Object: " + other.GetGameObject().GetName());
+        DestroyedObjects++;
         this.app.Services.GetService<ISceneControllerService>().DestroyObject(other.GetGameObject());
+        PrintLn("Blackholed Objects: " + this.DestroyedObjects);
     }
 }
