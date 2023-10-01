@@ -16,6 +16,7 @@ namespace LD54.Scripts.AsteroidGame.GameObjects
     public  class Asteroid : GameObject
     {
         Texture2D texture;
+        Texture2D brokenTexture;
 
         public float rotationSpeed;
 
@@ -23,9 +24,12 @@ namespace LD54.Scripts.AsteroidGame.GameObjects
         RigidBodyComponent rb;
         SpriteRendererComponent src;
 
+        private enum State { ALIVE, DYING};
+        State state = State.ALIVE;
+
         float scale;
 
-        public Asteroid(Texture2D texture, string name, Game appCtx) : base(name, appCtx)
+        public Asteroid(Texture2D texture, Texture2D brokenText, string name, Game appCtx) : base(name, appCtx)
         {
             this.texture = texture;
             Random rnd = new Random();
@@ -59,14 +63,35 @@ namespace LD54.Scripts.AsteroidGame.GameObjects
 
             rb = new RigidBodyComponent("rbAsteroid", app);
             this.AddComponent(rb);
+            rb.Velocity = new Vector3(1, 1, 0);
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
 
-            Rotation += rotationSpeed * (gameTime.ElapsedGameTime.Milliseconds / 1000f);
-            src.Rotation = Rotation;
+            if(state == State.ALIVE)
+            {
+                Rotation += rotationSpeed * (gameTime.ElapsedGameTime.Milliseconds / 1000f);
+                src.Rotation = Rotation;
+            }
+            if(state == State.DYING)
+            {
+
+            }
+        }
+
+        /// <summary>
+        /// goes into DYING state and changes to "blown up" version of sprite
+        /// </summary>
+        public void StartDeathCountdown()
+        {
+            if(state == State.ALIVE)
+            {
+                PrintLn("starting DEATH sequence for asteroid");
+                state = State.DYING;
+                rotationSpeed = 0;
+            }    
         }
     }
 }
