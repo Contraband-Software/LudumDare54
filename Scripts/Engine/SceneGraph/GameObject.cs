@@ -33,6 +33,7 @@ public abstract class GameObject : EngineObject, IUpdateable
     protected readonly List<GameObject> children = new();
 
     protected Matrix transform;
+    protected float Rotation = 0;
     protected readonly List<Component> components = new();
 
     // public readonly Game App;

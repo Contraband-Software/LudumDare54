@@ -7,7 +7,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b177c274-5f29-4dd6-aecd-1ee6a42ae4d6" name="Changes" comment="" />
+    <list default="true" id="b177c274-5f29-4dd6-aecd-1ee6a42ae4d6" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/Scripts/Engine/Components/SpriteRendererComponent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/Engine/Components/SpriteRendererComponent.cs" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
