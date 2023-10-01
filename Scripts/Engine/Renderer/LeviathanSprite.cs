@@ -1,5 +1,6 @@
 namespace LD54.Engine.Leviathan;
 
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -13,8 +14,9 @@ public class LeviathanSprite
     public bool isOccluder;
     private Game game;
     public int shader = 0;
+    public float rotation = 0;
 
-    public LeviathanSprite(Game game, Matrix transform, Point size, Texture2D colorTexture, Texture2D? normalTexture = null, bool isOccluder = true) {
+    public LeviathanSprite(Game game, Matrix transform, float rotation, Point size, Texture2D colorTexture, Texture2D? normalTexture = null, bool isOccluder = true) {
         this.color = colorTexture;
         this.normal = normalTexture;
         this.useNormal = normalTexture != null;
@@ -22,8 +24,9 @@ public class LeviathanSprite
         this.game = game;
         this.size = size;
         this.isOccluder = isOccluder;
+        this.rotation = rotation;
     }
-    public LeviathanSprite(Game game, Matrix transform, Point size, int shader, Texture2D colorTexture, bool isOccluder = true)
+    public LeviathanSprite(Game game, Matrix transform,float rotation, Point size, int shader, Texture2D colorTexture, bool isOccluder = true)
     {
         this.color = colorTexture;
         this.transform = transform;
@@ -31,8 +34,9 @@ public class LeviathanSprite
         this.size = size;
         this.isOccluder = isOccluder;
         this.shader = shader;
+        this.rotation = rotation;
     }
-    public LeviathanSprite(Game game, Matrix transform, Point size, int shader, Texture2D colorTexture, Texture2D? normalTexture = null, bool isOccluder = true)
+    public LeviathanSprite(Game game, Matrix transform, float rotation, Point size, int shader, Texture2D colorTexture, Texture2D? normalTexture = null, bool isOccluder = true)
     {
         this.color = colorTexture;
         this.normal = normalTexture;
@@ -42,12 +46,18 @@ public class LeviathanSprite
         this.size = size;
         this.isOccluder = isOccluder;
         this.shader = shader;
+        this.rotation = rotation;
     }
 
+    private float getRotation(Matrix transform)
+    {
+        return MathF.Asin(-transform.M32);
+    }
 
     public void SetTransform(Matrix transform)
     {
         this.transform = transform;
+        this.rotation = getRotation(transform);
     }
 
     public Vector3 GetPosition()

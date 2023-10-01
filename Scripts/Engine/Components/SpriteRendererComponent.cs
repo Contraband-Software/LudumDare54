@@ -17,7 +17,7 @@ public class SpriteRendererComponent : Component
 
     public void LoadSpriteData(Matrix transform, Point size, Texture2D colorTexture, Texture2D? normalTexture = null)
     {
-        sprite = new(this.app, transform, size, colorTexture, normalTexture);
+        sprite = new(this.app, transform,0 , size, colorTexture, normalTexture);
 
         spriteID = this.app.Services.GetService<ILeviathanEngineService>().addSprite(sprite);
     }

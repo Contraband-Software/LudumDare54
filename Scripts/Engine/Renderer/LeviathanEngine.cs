@@ -163,7 +163,7 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
             {
                 if (sprite.shader == i)
                 {
-                    spriteBatch.Draw(sprite.color, new Rectangle(sprite.GetPositionXY().ToPoint(), sprite.size), Color.White);
+                    spriteBatch.Draw(sprite.color, new Rectangle(sprite.GetPositionXY().ToPoint(), sprite.size), null, Color.White, sprite.rotation, new Vector2(0), SpriteEffects.None, 0f);
                 }
             }
             spriteBatch.End();
@@ -178,7 +178,7 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
         {
             if (sprite.useNormal)
             {
-                spriteBatch.Draw(sprite.normal, new Rectangle(sprite.GetPositionXY().ToPoint(), sprite.size), Color.White);
+                spriteBatch.Draw(sprite.normal, new Rectangle(sprite.GetPositionXY().ToPoint(), sprite.size), null, Color.White, sprite.rotation, new Vector2(0), SpriteEffects.None, 0f);
             }
         }
 
@@ -270,6 +270,7 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
                 else
                 {
                     spriteBatch.Draw(uISprite.color, new Rectangle(uISprite.GetPositionXY().ToPoint(), uISprite.size), Color.White);
+                    //spriteBatch.Draw(uISprite.color, new Rectangle(uISprite.GetPositionXY().ToPoint(), uISprite.size), null, Color.White, 0.05f, new Vector2(uISprite.size.X / 2, uISprite.size.Y / 2)+ uISprite.GetPositionXY(), SpriteEffects.None, 0);
                 }
             }
         }
