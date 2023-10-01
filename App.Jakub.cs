@@ -41,8 +41,7 @@ class LevelBlock : GameObject
             (int)((this.texture.Height) * scale), 0);
 
 
-        ColliderComponent collider = new CircleColliderComponent(colliderDimensions.X / 2, "playerCollider", this.app);
-        collider.isTrigger = true;
+        ColliderComponent collider = new CircleColliderComponent(colliderDimensions.X / 2, "blockCollider", this.app);
         this.AddComponent(collider);
 
         rb = new RigidBodyComponent("rbPlayer", app);
@@ -84,6 +83,17 @@ class PlayerBlock : GameObject
 
         rb = new RigidBodyComponent("rbPlayer", app);
         this.AddComponent(rb);
+
+        collider.CollideEvent += OnCollisionEnter;
+    }
+
+    private void OnTriggerEnter(ColliderComponent other)
+    {
+        PrintLn("TRIGGERED ON: " + other.GetName());
+    }
+    private void OnCollisionEnter(ColliderComponent other)
+    {
+        PrintLn("COLLIDED WITH: " + other.GetName());
     }
 
     public override void Update(GameTime gameTime)

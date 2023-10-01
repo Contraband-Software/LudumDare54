@@ -96,6 +96,24 @@ public abstract class ColliderComponent : Component
     public Vector3 previousPosition;
     public bool isTrigger;
 
+    #region EVENTS
+    public delegate void Trigger(ColliderComponent collidedWith);
+    public event Trigger TriggerEvent;
+    public void InvokeTriggerEvent(ColliderComponent collidedWith)
+    {
+        if (TriggerEvent is not null) TriggerEvent(collidedWith);
+    }
+
+    public delegate void Collide(ColliderComponent collidedWith);
+    public event Collide CollideEvent;
+    public void InvokeCollideEvent(ColliderComponent collidedWith)
+    {
+        if (CollideEvent is not null) CollideEvent(collidedWith);
+    }
+
+    #endregion
+
+
     public ColliderComponent(string name, Game appCtx) : base(name, appCtx)
     {
     }
