@@ -24,6 +24,8 @@ namespace LD54.Scripts.AsteroidGame.GameObjects
         RigidBodyComponent rb;
         SpriteRendererComponent src;
 
+        private float deathCountdownTime = 1f;
+
         private enum State { ALIVE, DYING};
         State state = State.ALIVE;
 
@@ -77,7 +79,11 @@ namespace LD54.Scripts.AsteroidGame.GameObjects
             }
             if(state == State.DYING)
             {
-
+                deathCountdownTime -= (gameTime.ElapsedGameTime.Milliseconds / 1000f);
+                if(deathCountdownTime < 0)
+                {
+                    this.app.Services.GetService<ISceneControllerService>().DestroyObject(this);
+                }
             }
         }
 
