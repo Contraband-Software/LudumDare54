@@ -100,7 +100,8 @@ public class CollisionSystem : GameComponent, ICollisionSystemService
         RigidBodyComponent requestingColliderRb = (RigidBodyComponent)requestingColliderObj.GetComponent<RigidBodyComponent>();
 
         //if it has a rigidbody, allow resolution, if not, it is forced to be a trigger
-        if (requestingColliderRb == null)
+        //also wont resolve if its a static
+        if (requestingColliderRb == null || requestingColliderRb.Static)
         {
             //invoke triggerEnter
             return;
@@ -172,7 +173,7 @@ public class CollisionSystem : GameComponent, ICollisionSystemService
         RigidBodyComponent requestingColliderRb = (RigidBodyComponent)requestingColliderObj.GetComponent<RigidBodyComponent>();
 
         //if it has a rigidbody, allow resolution, if not, it is forced to be a trigger
-        if (requestingColliderRb == null)
+        if (requestingColliderRb == null || requestingColliderRb.Static)
         {
             //invoke triggerEnter
             return;

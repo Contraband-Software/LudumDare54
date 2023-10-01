@@ -12,28 +12,28 @@ using Microsoft.Xna.Framework.Input;
 public class App : Game
 {
     private readonly GraphicsDeviceManager graphics;
-    private SceneController sc;
-    private LeviathanEngine le;
-    private CollisionSystem cs;
+    private readonly SceneController sc;
+    private readonly LeviathanEngine le;
+    private readonly CollisionSystem cs;
 
     public App()
     {
         this.graphics = new GraphicsDeviceManager(this);
         this.Content.RootDirectory = "Content";
         this.IsMouseVisible = true;
+
+        le = new LeviathanEngine(this);
+        sc = new SceneController(this);
+        cs = new CollisionSystem(this);
     }
 
     protected override void Initialize() {
-
-        le = new LeviathanEngine(this);
         this.Components.Add(le);
         this.Services.AddService(typeof(ILeviathanEngineService), le);
 
-        sc = new SceneController(this);
         this.Components.Add(sc);
         this.Services.AddService(typeof(ISceneControllerService), sc);
 
-        cs = new CollisionSystem(this);
         this.Components.Add(cs);
         this.Services.AddService(typeof(ICollisionSystemService), cs);
 

@@ -1,6 +1,7 @@
 namespace LD54.Engine.Components;
 
 using Microsoft.Xna.Framework;
+using System;
 
 public class RigidBodyComponent : Component
 {
@@ -30,5 +31,15 @@ public class RigidBodyComponent : Component
     public override void OnUnload()
     {
 
+    }
+
+    /// <summary>
+    /// Adds force to the rigidbody in a direction
+    /// </summary>
+    /// <param name="force">force vector</param>
+    public void AddForce(Vector2 force)
+    {
+        Vector2 acceleration = (force / this.Mass);
+        this.Velocity += new Vector3(acceleration.X, acceleration.Y, 0);
     }
 }

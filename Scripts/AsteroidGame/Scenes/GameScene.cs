@@ -12,6 +12,7 @@ using AsteroidGame.GameObjects;
 using Engine.Components;
 using AsteroidGame.GameObjects;
 using Scripts.Engine;
+using LD54.Scripts.AsteroidGame.GameObjects;
 
 public class GameScene : Scene
 {
@@ -78,15 +79,18 @@ public class GameScene : Scene
             "GravitySimulationObject",
             this.app);
         parentObject.AddChild(newtonianSystem);
-        newtonianSystem.SetLocalPosition(new Vector2(-800, -800));
+        newtonianSystem.SetLocalPosition(new Vector2(300, 400));
+
+        testObjectTexture = this.contentManager.Load<Texture2D>("Sprites/circle");
 
         // player controller
-        testObjectTexture = this.contentManager.Load<Texture2D>("Sprites/circle");
-        DebugPlayer player = new(testObjectTexture, "DebugPlayerController", this.app);
-        newtonianSystem.AddChild(player);
+
+        //DebugPlayer playerd = new(testObjectTexture, "DebugPlayerController", this.app);
+        //newtonianSystem.AddChild(playerd);
+
 
         // black hole
-        Vector2 blackHolePosition = new Vector2(200, 200);
+        Vector2 blackHolePosition = new Vector2(0, 0);
         GameObject blackHole = new BlackHole(
             BLACK_HOLE_MASS,
             testObjectTexture,
@@ -95,6 +99,11 @@ public class GameScene : Scene
             );
         newtonianSystem.AddChild(blackHole);
         blackHole.SetLocalPosition(blackHolePosition);
+
+        Texture2D shipTexture = this.contentManager.Load<Texture2D>("Sprites/arrow");
+        Spaceship player = new Spaceship(blackHole as BlackHole, shipTexture, "player", app);
+        player.SetLocalPosition(new Vector2(0, 0));
+        parentObject.AddChild(player);
 
         // some testing space junk spawning
         SpawnAccretionDisk(newtonianSystem,
