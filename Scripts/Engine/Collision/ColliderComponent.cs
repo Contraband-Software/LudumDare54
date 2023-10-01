@@ -10,10 +10,12 @@ public class CircleColliderComponent : ColliderComponent
 {
     public Vector2 centre; //this is the equivalent of the aabb
     public float radius;
+    private Vector3 offset;
 
-    public CircleColliderComponent(float radius, string name, Game appCtx) : base(name, appCtx)
+    public CircleColliderComponent(float radius, Vector3 offset, string name, Game appCtx) : base(name, appCtx)
     {
         this.radius = radius;
+        this.offset = offset;
     }
 
     public override void OnLoad(GameObject? parentObject)
@@ -28,18 +30,18 @@ public class CircleColliderComponent : ColliderComponent
         RigidBodyComponent rb = (RigidBodyComponent)gameObject.GetComponent<RigidBodyComponent>();
         if (rb != null)
         {
-            previousPosition = (gameObject.GetGlobalPosition()) - rb.Velocity;
+            previousPosition = (gameObject.GetGlobalPosition() + offset) - rb.Velocity;
         }
         else
         {
-            previousPosition = gameObject.GetGlobalPosition();
+            previousPosition = gameObject.GetGlobalPosition() + offset;
         }
         RecalculateCentre();
     }
 
     public void RecalculateCentre()
     {
-        Vector3 colliderOrigin = gameObject.GetGlobalPosition();
+        Vector3 colliderOrigin = gameObject.GetGlobalPosition() + offset;
         centre = new Vector2(colliderOrigin.X + radius, colliderOrigin.Y + radius);
     }
 }

@@ -76,7 +76,7 @@ class LevelBlock : GameObject
             (int)((this.texture.Height) * scale), 0);
 
 
-        ColliderComponent collider = new CircleColliderComponent(colliderDimensions.X / 2, "blockCollider", this.app);
+        ColliderComponent collider = new CircleColliderComponent(colliderDimensions.X / 2, Vector3.Zero, "blockCollider", this.app);
         this.AddComponent(collider);
 
         rb = new RigidBodyComponent("rbPlayer", app);
@@ -113,7 +113,8 @@ class PlayerBlock : GameObject
         this.AddComponent(src);
 
         Vector3 colliderDimensions = new Vector3(this.texture.Width, this.texture.Height, 0);
-        collider = new CircleColliderComponent(colliderDimensions.X / 2, "playerCollider", this.app);
+        Vector3 offset = new Vector3(0, 0, 0);
+        collider = new CircleColliderComponent(colliderDimensions.X / 2, offset, "playerCollider", this.app);
         this.AddComponent(collider);
 
         rb = new RigidBodyComponent("rbPlayer", app);
