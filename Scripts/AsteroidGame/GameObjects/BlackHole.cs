@@ -44,6 +44,7 @@ public class BlackHole : GameObject
         collider = new CircleColliderComponent(textureSize.X / 2, textureSize / -2f, "BlackHoleCollider", this.app);
         this.collider.isTrigger = true;
         this.collider.TriggerEvent += this.EatIt;
+        this.collider.DebugMode = true;
         this.AddComponent(collider);
     }
 
