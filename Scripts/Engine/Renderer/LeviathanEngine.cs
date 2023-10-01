@@ -34,6 +34,8 @@ interface ILeviathanEngineService
     public Vector2 getWindowSize();
 
     public void SetCameraPosition(Vector2 position);
+
+    public void DebugDrawCircle(Vector2 position, float radius, Color color);
 }
 
 public struct DebugCircle
@@ -109,7 +111,7 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
         blankNormal = game.Content.Load<Texture2D>("Sprites/blank");
     }
 
-    public void DrawDebugCircle(Vector2 position, float radius, Color color)
+    public void DebugDrawCircle(Vector2 position, float radius, Color color)
     {
         debug.Add(new DebugCircle(position, radius, color));
     }
