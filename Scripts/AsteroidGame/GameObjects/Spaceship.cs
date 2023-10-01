@@ -11,6 +11,8 @@ namespace LD54.Scripts.AsteroidGame.GameObjects
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+    using LD54.AsteroidGame.GameObjects;
+    using LD54.Scripts.Engine;
 
     public class Spaceship : GameObject
     {
@@ -28,8 +30,13 @@ namespace LD54.Scripts.AsteroidGame.GameObjects
         RigidBodyComponent rb;
         SpriteRendererComponent src;
 
-        public Spaceship(Texture2D texture, string name, Game appCtx) : base(name, appCtx)
+        private const float spaceshipConstant = 0.01f;
+        BlackHole blackHole;
+
+
+        public Spaceship(BlackHole blackHole, Texture2D texture, string name, Game appCtx) : base(name, appCtx)
         {
+            this.blackHole = blackHole;
             this.texture = texture;
 
             Matrix pos = this.GetLocalTransform();
@@ -59,12 +66,37 @@ namespace LD54.Scripts.AsteroidGame.GameObjects
 
             rb = new RigidBodyComponent("rbPlayer", app);
             rb.Mass = 0;
+            rb.Velocity += new Vector3(1, 1, 0);
             this.AddComponent(rb);
         }
 
         public override void Update(GameTime gameTime)
         {
-            base.Update(gameTime);
+
+            {
+/*                Vector3 blackHolePosition = blackHole.GetGlobalPosition();
+                Vector3 shipPosition = this.GetGlobalPosition();
+
+                Vector2 positionDelta = new Vector2(
+                    blackHolePosition.X - shipPosition.X,
+                    blackHolePosition.Y - shipPosition.Y
+                );
+
+                float r = positionDelta.Magnitude();
+
+                positionDelta.Normalize(); // positionDelta would become the orbit normal
+
+                Vector2 tangentNormalized = positionDelta.PerpendicularClockwise();
+
+                Vector2 tangentVelocity = Vector2.Dot(new Vector2(rb.Velocity), tangentNormalized);
+
+                Vector3 vel = new Vector3(positionDelta * (r * tangentVelocity), 0) * spaceshipConstant;
+
+                rb.Velocity += vel;*/
+
+                /*this.app.Services.GetService<ILeviathanEngineService>().DebugDrawCircle(
+                    new Vector2(blackHolePosition.X, blackHolePosition.Y), r, Color.Lime);*/
+            }
 
             //rb.Velocity = Vector3.Zero;
             Move(gameTime);
@@ -80,6 +112,7 @@ namespace LD54.Scripts.AsteroidGame.GameObjects
                 this.GetGlobalPosition().X + texture.Width/2,
                 this.GetGlobalPosition().Y + texture.Height/2) - re.getWindowSize() / 2);
 
+            base.Update(gameTime);
         }
 
         private void RotateLeft(GameTime gameTime)

@@ -177,9 +177,9 @@ class JakubScene : Scene
 
         //PlayerBlock playerBlock = new PlayerBlock(blankTexure, "spovus", app);
         //parentObject.AddChild(playerBlock);
-
-        Spaceship player = new Spaceship(arrow, "spovus", app);
-        parentObject.AddChild(player);
+/*
+        Spaceship player = new Spaceship(null, arrow, "spovus", app);
+        parentObject.AddChild(player);*/
 
 
         LevelBlock levelBlock = new LevelBlock(blankTexure,1f, "spovus", app);
