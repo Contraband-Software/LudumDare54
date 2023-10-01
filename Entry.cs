@@ -1,4 +1,4 @@
-#define SAM
+#define JULIUS
 
 // ReSharper disable once ClassNeverInstantiated.Global
 public class Entry

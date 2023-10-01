@@ -54,9 +54,6 @@ public class App_Julius : Game
         starsShader.AddParam("strength", 3000);
         engine.bindShader(starsShader);
 
-        engine.addSprite(new LeviathanSprite(this, Matrix.CreateTranslation(new Vector3(10, 10, 0)),0.1f, new Vector2(400f), 2, starstex, false));
-        //engine.addSprite(new LeviathanSprite(this, Matrix.CreateTranslation(new Vector3(450, -50, 0)), new Point(500),2, starstex, false));
-        engine.addSprite(new LeviathanSprite(this, Matrix.CreateTranslation(new Vector3(200, 200, 0)),0f, new Vector2(100), colortex, normaltex));
 
         for (int i = 0; i < 8; i++)
         {
@@ -66,6 +63,10 @@ public class App_Julius : Game
                 engine.addSprite(testSprite);
             }
         }
+
+        engine.addSprite(new LeviathanSprite(this, Matrix.CreateTranslation(new Vector3(10, 10, 0)), 0f, new Vector2(400f), 2, starstex, false));
+        //engine.addSprite(new LeviathanSprite(this, Matrix.CreateTranslation(new Vector3(450, -50, 0)), new Point(500),2, starstex, false));
+        engine.addSprite(new LeviathanSprite(this, Matrix.CreateTranslation(new Vector3(200, 200, 0)), 0f, new Vector2(100), colortex, normaltex));
 
         SpriteFont testFont = Content.Load<SpriteFont>("Fonts/main");
         //engine.addUISprite(new LeviathanUIElement(this, Matrix.CreateTranslation(new Vector3(0)), new Point(100), colortex));
