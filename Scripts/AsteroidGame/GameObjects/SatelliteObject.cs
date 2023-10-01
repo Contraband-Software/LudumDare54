@@ -33,8 +33,7 @@ public class SatelliteObject : GameObject
         src.LoadSpriteData(
             transform,
             new Vector2(textureSize.X, textureSize.Y),
-            this.texture,
-            null);
+            this.texture);
         this.AddComponent(src);
 
         RigidBodyComponent rb = new RigidBodyComponent("SatelliteRB", this.app);

@@ -28,8 +28,7 @@ class LevelSquare : GameObject
             new Vector2(
                 (int)((this.texture.Width) * scale),
                 (int)((this.texture.Height) * scale)),
-            this.texture,
-            null);
+            this.texture);
 
         this.AddComponent(src);
 
@@ -66,8 +65,7 @@ class LevelBlock : GameObject
             new Vector2(
                 ((this.texture.Width) * scale),
                 ((this.texture.Height) * scale)),
-            this.texture,
-            null);
+            this.texture);
 
         this.AddComponent(src);
 
@@ -107,8 +105,7 @@ class PlayerBlock : GameObject
         src.LoadSpriteData(
             this.GetGlobalTransform(),
             new Vector2(this.texture.Width, this.texture.Height),
-            this.texture,
-            null);
+            this.texture);
 
         this.AddComponent(src);
 

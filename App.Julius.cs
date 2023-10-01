@@ -1,93 +1,62 @@
+global using static LD54.Engine.Dev.EngineDebug;
 namespace LD54;
 
-using System;
+using AsteroidGame.Scenes;
+using Engine;
+using Engine.Leviathan;
+using Engine.Collision;
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using Engine.Leviathan;
-using Microsoft.Xna.Framework.Graphics;
-using System.Diagnostics.Contracts;
 
 public class App_Julius : Game
 {
-    private LeviathanEngine engine;
-    private Random rnd = new Random();
-    private GraphicsDeviceManager graphics;
-    LeviathanShader starsShader;
-
-    // contentManager
+    private readonly GraphicsDeviceManager graphics;
+    private SceneController sc;
+    private LeviathanEngine le;
+    private CollisionSystem cs;
 
     public App_Julius()
     {
+        this.graphics = new GraphicsDeviceManager(this);
         this.Content.RootDirectory = "Content";
         this.IsMouseVisible = true;
-        graphics = new GraphicsDeviceManager(this);
-        //graphics.PreferredBackBufferWidth = 2560; //FIX THIS
-        //graphics.PreferredBackBufferHeight = 1440;
-
     }
 
-    protected override void Initialize() {
-        engine = new LeviathanEngine(this);
-        engine.cameraPosition = new Vector2(0);
-        this.Components.Add(engine);
-        this.Services.AddService(typeof(ILeviathanEngineService), engine);
+    protected override void Initialize()
+    {
 
-        //for (int i = 0; i < 4; i++)
-        //{
-        //    for (int j = 0; j < 4; j++)
-        //    {
-        //        engine.AddLight(new Vector2(i * 200, j * 200), new Vector3(i * 2000, j * 2000, 1000));
-        //    }
-        //}
-        engine.AddLight(new Vector2(100, 100), new Vector3(50000, 50000, 50000));
+        le = new LeviathanEngine(this);
+        this.Components.Add(le);
+        this.Services.AddService(typeof(ILeviathanEngineService), le);
 
-        Texture2D colortex = Content.Load<Texture2D>("Sprites/image");
-        Texture2D normaltex = Content.Load<Texture2D>("Sprites/normal");
+        sc = new SceneController(this);
+        this.Components.Add(sc);
+        this.Services.AddService(typeof(ISceneControllerService), sc);
 
-        Texture2D starstex = Content.Load<Texture2D>("Sprites/nebula");
+        cs = new CollisionSystem(this);
+        this.Components.Add(cs);
+        this.Services.AddService(typeof(ICollisionSystemService), cs);
 
-        LeviathanShader blackholeShader = new LeviathanShader(this, "Shaders/blackhole");
-        engine.bindShader(blackholeShader);
-        starsShader = new LeviathanShader(this, "Shaders/stars");
-        starsShader.AddParam("blackholeX", 200);
-        starsShader.AddParam("blackholeY", 200);
-        starsShader.AddParam("strength", 3000);
-        engine.bindShader(starsShader);
+        PrintLn("App: Game systems initialized.");
 
+        this.sc.AddScene(new JuliusScene(this));
 
-        for (int i = 0; i < 8; i++)
-        {
-            for (int j = 0; j < 4; j++)
-            {
-                LeviathanSprite testSprite = new LeviathanSprite(this, Matrix.CreateTranslation(new Vector3(i * 120, j * 120, 0)),0, new Vector2(25), colortex, normaltex);
-                engine.addSprite(testSprite);
-            }
-        }
+        PrintLn("App: Scenes loaded.");
 
-        engine.addSprite(new LeviathanSprite(this, Matrix.CreateTranslation(new Vector3(10, 10, 0f)), 0f, new Vector2(400f), 0, starstex, false,0.5f));
-        //engine.addSprite(new LeviathanSprite(this, Matrix.CreateTranslation(new Vector3(450, -50, 0)), new Point(500),2, starstex, false));
-        engine.addSprite(new LeviathanSprite(this, Matrix.CreateTranslation(new Vector3(200, 200, 0)), 0f, new Vector2(100), colortex, normaltex));
+        this.sc.ChangeScene("JuliusScene");
 
-        SpriteFont testFont = Content.Load<SpriteFont>("Fonts/main");
-        //engine.addUISprite(new LeviathanUIElement(this, Matrix.CreateTranslation(new Vector3(0)), new Point(100), colortex));
-        engine.addUISprite(new LeviathanUIElement(this, Matrix.CreateTranslation(new Vector3(100,400,0)), new Point(10), "hello world", testFont, Color.Red));
-        LeviathanShader bloomShader = new LeviathanShader(this, "Shaders/bloom");
-        bloomShader.AddParam("strength", 0.03f);
-        bloomShader.AddParam("brightnessThreshold", 20f);
-        engine.addPostProcess(bloomShader);
+        PrintLn("App: Game scene started.");
 
-        LeviathanShader abberationShader = new LeviathanShader(this,"Shaders/abberation");
-        abberationShader.AddParam("strength", 0.004f);
-        engine.addPostProcess(abberationShader);
-
+        // ALL BASE FUNCTION CALLS MUST COME LAST !!!! OTHERWISE NONE OF OUR SERVICES GET INITIALIZED
         base.Initialize();
-
-        PrintLn("Game initialized");
     }
-     
+
     protected override void LoadContent()
     {
         // TODO: GLOBAL LOAD CONTENT, USE THE GLOBAL CONTENT MANAGER CONTAINED IN GAME TO LOAD PERSISTENT CONTENT.
+        // The statement below demonstrates the global content manager
+        // this.Content.Load<>()
     }
 
     protected override void Update(GameTime gameTime)
@@ -96,23 +65,16 @@ public class App_Julius : Game
         {
             this.Exit();
         }
+
         // TODO: UPDATE OUR SERVICES HERE
-        //for (int i = 0; i < 64; i++)
-        //{
-        //    engine.updateLightPosition(i, new Vector2(MathF.Sin((float)gameTime.TotalGameTime.TotalSeconds) * 3, MathF.Cos((float)gameTime.TotalGameTime.TotalSeconds) * 3));
-        //    engine.updateLightPosition(i, new Vector2((float)(rnd.NextDouble() - 0.5) * 3, (float)(rnd.NextDouble() - 0.5) * 3));
-        //}
-        //for (int i = 0; i < 32; i++)
-        //{
-        //    engine.sprites[i].TranslatePosition(new Vector3((float)(rnd.NextDouble() - 0.5) * 2, (float)(rnd.NextDouble() - 0.5) * 2, 0));
-        //}
-        starsShader.UpdateParam("blackholeX", 300 + MathF.Sin((float)gameTime.TotalGameTime.TotalSeconds) * 100);
-        starsShader.UpdateParam("blackholeY", 300 + MathF.Cos((float)gameTime.TotalGameTime.TotalSeconds) * 100);
+
         base.Update(gameTime);
     }
 
     protected override void Draw(GameTime gameTime)
     {
+        this.GraphicsDevice.Clear(Color.CornflowerBlue);
+
         base.Draw(gameTime);
     }
 }

@@ -38,6 +38,10 @@ interface ILeviathanEngineService
     public void SetCameraPosition(Vector2 position);
 
     public void DebugDrawCircle(Vector2 position, float radius, Color color);
+
+    public Vector2 GetCameraPosition();
+
+    public void bindShader(LeviathanShader shader);
 }
 
 public struct DebugCircle
@@ -120,6 +124,10 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
     public void SetCameraPosition(Vector2 position)
     {
         this.cameraPosition = position;
+    }
+    public Vector2 GetCameraPosition()
+    {
+        return this.cameraPosition;
     }
 
     public Vector2 getWindowSize()
