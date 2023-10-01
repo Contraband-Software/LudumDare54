@@ -7,9 +7,9 @@ using MonoGame;
 
 interface ILeviathanEngineService
 {
-    public int addSprite(LeviathanSprite sprite);
+    public void addSprite(LeviathanSprite sprite);
 
-    public void removeSprite(int index);
+    public void removeSprite(LeviathanSprite index);
 
     public int AddLight(Vector2 position, Vector3 color);
 
@@ -23,13 +23,13 @@ interface ILeviathanEngineService
 
     public void updateLightPosition(int id, Vector2 offset);
 
-    public int addPostProcess(LeviathanShader shader);
+    public void addPostProcess(LeviathanShader shader);
 
-    public void removePostProcess(int i);
+    public void removePostProcess(LeviathanShader shader);
 
-    public int addUISprite(LeviathanUIElement uiSprite);
+    public void addUISprite(LeviathanUIElement uiSprite);
 
-    public void removeUISprite(int index);
+    public void removeUISprite(LeviathanUIElement index);
 
     public Vector2 getWindowSize();
 
@@ -125,40 +125,34 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
         return new Vector2(game.Window.ClientBounds.Width, game.Window.ClientBounds.Height);
     }
 
-    public int bindShader(LeviathanShader shader)
+    public void bindShader(LeviathanShader shader)
     {
         shaders.Add(shader);
-        return shaders.IndexOf(shader);
     }
 
-    public int addPostProcess(LeviathanShader shader)
+    public void addPostProcess(LeviathanShader shader)
     {
         postProcessShaders.Add(shader);
-        return postProcessShaders.IndexOf(shader);
     }
-    public void removePostProcess(int i)
+    public void removePostProcess(LeviathanShader shader)
     {
-        postProcessShaders.RemoveAt(i);
+        postProcessShaders.Remove(shader);
     }
-
-    public int addSprite(LeviathanSprite sprite)
+    public void addSprite(LeviathanSprite sprite)
     {
         sprites.Add(sprite);
-        return sprites.IndexOf(sprite);
     }
-    public int addUISprite(LeviathanUIElement uiSprite)
+    public void addUISprite(LeviathanUIElement uiSprite)
     {
         uiSprites.Add(uiSprite);
-        return uiSprites.IndexOf(uiSprite);
     }
-    public void removeSprite(int index)
+    public void removeSprite(LeviathanSprite sprite)
     {
-        sprites.RemoveAt(index);
+        sprites.Remove(sprite);
     }
-
-    public void removeUISprite(int index)
+    public void removeUISprite(LeviathanUIElement uiSprite)
     {
-        uiSprites.RemoveAt(index);
+        uiSprites.Remove(uiSprite);
     }
 
     public override void Draw(GameTime gameTime)
