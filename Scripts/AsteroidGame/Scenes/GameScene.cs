@@ -12,6 +12,7 @@ using AsteroidGame.GameObjects;
 using Engine.Components;
 using AsteroidGame.GameObjects;
 using Scripts.Engine;
+using LD54.Scripts.AsteroidGame.GameObjects;
 
 public class GameScene : Scene
 {
@@ -80,9 +81,16 @@ public class GameScene : Scene
         parentObject.AddChild(newtonianSystem);
         newtonianSystem.SetLocalPosition(new Vector2(-800, -800));
 
-        // player controller
         testObjectTexture = this.contentManager.Load<Texture2D>("Sprites/circle");
-        DebugPlayer player = new(testObjectTexture, "DebugPlayerController", this.app);
+
+        // player controller
+
+        //DebugPlayer playerd = new(testObjectTexture, "DebugPlayerController", this.app);
+        //newtonianSystem.AddChild(playerd);
+
+        Texture2D shipTexture = this.contentManager.Load<Texture2D>("Sprites/arrow");
+        Spaceship player = new Spaceship(shipTexture, "player", app);
+        player.SetLocalPosition(new Vector2(0, 0));
         newtonianSystem.AddChild(player);
 
         // black hole

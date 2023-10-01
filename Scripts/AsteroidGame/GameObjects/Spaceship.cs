@@ -15,7 +15,7 @@ namespace LD54.Scripts.AsteroidGame.GameObjects
     public class Spaceship : GameObject
     {
         Texture2D texture;
-        public float moveForce = 30f;
+        public float moveForce = 10f;
 
         //private float rotationSpeed;
         public float MaxRotationSpeed = 3.5f;
@@ -24,7 +24,7 @@ namespace LD54.Scripts.AsteroidGame.GameObjects
         private float maxVelocity = 5f;
         private float velocityDamping = 0.98f;
 
-        ColliderComponent collider;
+        CircleColliderComponent collider;
         RigidBodyComponent rb;
         SpriteRendererComponent src;
 
@@ -52,9 +52,13 @@ namespace LD54.Scripts.AsteroidGame.GameObjects
 
             Vector3 colliderDimensions = new Vector3(this.texture.Width, this.texture.Height, 0);
             collider = new CircleColliderComponent(colliderDimensions.X/2, Vector3.Zero, "playerCollider", this.app);
+            collider.isTrigger = true;
+            this.collider.DebugMode = true;
+
             this.AddComponent(collider);
 
             rb = new RigidBodyComponent("rbPlayer", app);
+            rb.Mass = 0;
             this.AddComponent(rb);
         }
 
@@ -66,13 +70,15 @@ namespace LD54.Scripts.AsteroidGame.GameObjects
             Move(gameTime);
 
             //limit velocity
-            if (rb.Velocity.Length() > maxVelocity)
+/*            if (rb.Velocity.Length() > maxVelocity)
             {
                 rb.Velocity = (rb.Velocity / rb.Velocity.Length()) * maxVelocity;
-            }
-            rb.Velocity *= velocityDamping;
-            //ILeviathanEngineService re = this.app.Services.GetService<ILeviathanEngineService>();
-            //re.SetCameraPosition(new Vector2(this.GetGlobalPosition().X, this.GetGlobalPosition().Y) - re.getWindowSize() / 2);
+            }*/
+            //rb.Velocity *= velocityDamping;
+            ILeviathanEngineService re = this.app.Services.GetService<ILeviathanEngineService>();
+            re.SetCameraPosition(new Vector2(
+                this.GetGlobalPosition().X + texture.Width/2,
+                this.GetGlobalPosition().Y + texture.Height/2) - re.getWindowSize() / 2);
 
         }
 
@@ -104,7 +110,7 @@ namespace LD54.Scripts.AsteroidGame.GameObjects
         {
             Vector2 directionVector = forwardVector();
             Vector2 forceVector = directionVector * moveForce * (gameTime.ElapsedGameTime.Milliseconds / 1000f);
-            rb.AddForce(forceVector);
+            rb.Velocity += new Vector3(forceVector, 0);
         }
 
 

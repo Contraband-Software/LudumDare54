@@ -312,6 +312,9 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
             spriteBatch.DrawCircle(circle.center, circle.radius, 128, circle.color);
         }
         spriteBatch.End();
+
+
+        debug.Clear();
     }
 
 

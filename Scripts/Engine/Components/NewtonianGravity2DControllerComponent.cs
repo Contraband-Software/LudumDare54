@@ -56,23 +56,27 @@ public class NewtonianGravity2DControllerComponent : Component
     {
         base.Update(gameTime);
 
-        Parallel.ForEach(Satellites,
-            rb =>
-            {
-                List<RigidBodyComponent> otherObjects = Satellites.ToList(); // OPTIMIZE THIS
-                otherObjects.Remove(rb);
-                Vector3 acceleration = ResolveGravityAcceleration(rb, otherObjects, this.ForceLaw, this.GravitationalConstant);
+        //Parallel.ForEach(Satellites,
+        //     rb =>
+        //     {
+        foreach (RigidBodyComponent rb in this.Satellites)
+        {
+            List<RigidBodyComponent> otherObjects = Satellites.ToList(); // OPTIMIZE THIS
+            otherObjects.Remove(rb);
+            Vector3 acceleration = ResolveGravityAcceleration(rb, otherObjects, this.ForceLaw, this.GravitationalConstant);
 
-                rb.Velocity += acceleration;
-            });
+            rb.Velocity += acceleration;
+        }
+        //    });
     }
     private static Vector3 ResolveGravityAcceleration(RigidBodyComponent rb, List<RigidBodyComponent> otherObjects, float forceLaw, float gravitationalConstant)
     {
         Vector3 sumAcceleration = Vector3.Zero;
         Vector3 position = rb.ContainingGameObject.GetGlobalPosition();
 
-        Parallel.ForEach(otherObjects,
-            other =>
+/*        Parallel.ForEach(otherObjects,
+            other =>*/
+            foreach (RigidBodyComponent other in otherObjects)
             {
                 Vector3 otherPosition = other.ContainingGameObject.GetGlobalPosition();
 
@@ -84,9 +88,9 @@ public class NewtonianGravity2DControllerComponent : Component
                     directionOfSeparation.Normalize();
                     sumAcceleration += gravitationalConstant * other.Mass / (MathF.Pow(distance, forceLaw)) * directionOfSeparation;
                 }
-            });
+            };
 
-        return new Vector3(sumAcceleration.X, sumAcceleration.Y,0);//?
+        return sumAcceleration;//?
     }
 
     public override void OnUnload()
