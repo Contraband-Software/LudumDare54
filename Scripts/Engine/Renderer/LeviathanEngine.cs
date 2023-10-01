@@ -1,6 +1,8 @@
 namespace LD54.Engine.Leviathan;
 
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame;
@@ -173,11 +175,11 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
 
         game.GraphicsDevice.SetRenderTarget(colorTarget);
         game.GraphicsDevice.Clear(Color.Black);
-        for (int i = 0; i < this.shaders.Count+1; i++)
+        for (int i = this.shaders.Count; i >= 0; i--)
         {
             if(i == 0)
             {
-                spriteBatch.Begin(transformMatrix: view);
+                spriteBatch.Begin(sortMode: SpriteSortMode.BackToFront, transformMatrix: view);
             }
             else
             {
@@ -186,13 +188,15 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
                 shaders[i - 1].shader.Parameters["width"]?.SetValue(width);
                 shaders[i - 1].shader.Parameters["height"]?.SetValue(height);
                 shaders[i - 1].SetAllParams();
-                spriteBatch.Begin(transformMatrix: view, effect: shaders[i-1].shader) ;
+                spriteBatch.Begin(sortMode: SpriteSortMode.BackToFront, transformMatrix: view, effect: shaders[i-1].shader) ;
             }
             foreach (LeviathanSprite sprite in sprites)
             {
                 if (sprite.shader == i)
                 {
-                    spriteBatch.Draw(sprite.color, new Rectangle(sprite.GetPositionXY().ToPoint()+ (sprite.size/2f).ToPoint(), sprite.size.ToPoint()), null, Color.White, sprite.rotation, new Vector2(sprite.color.Width / 2, sprite.color.Height / 2), SpriteEffects.None, 0f);
+
+                    spriteBatch.Draw(sprite.color, new Rectangle(sprite.GetPositionXY().ToPoint()+ (sprite.size/2f).ToPoint(), sprite.size.ToPoint()), null, Color.White, sprite.rotation, new Vector2(sprite.color.Width / 2, sprite.color.Height / 2), SpriteEffects.None, sprite.getDepth());
+                    PrintLn(sprite.getDepth().ToString());
                 }
             }
             spriteBatch.End();
@@ -207,11 +211,11 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
         {
             if (sprite.useNormal)
             {
-                spriteBatch.Draw(sprite.normal, new Rectangle(sprite.GetPositionXY().ToPoint() + (sprite.size / 2f).ToPoint(), sprite.size.ToPoint()), null, Color.White, sprite.rotation, new Vector2(sprite.normal.Width / 2, sprite.normal.Height / 2), SpriteEffects.None, 0f);
+                spriteBatch.Draw(sprite.normal, new Rectangle(sprite.GetPositionXY().ToPoint() + (sprite.size / 2f).ToPoint(), sprite.size.ToPoint()), null, Color.White, sprite.rotation, new Vector2(sprite.normal.Width / 2, sprite.normal.Height / 2), SpriteEffects.None, sprite.getDepth());
             }
             else
             {
-                spriteBatch.Draw(blankNormal, new Rectangle(sprite.GetPositionXY().ToPoint() + (sprite.size / 2f).ToPoint(), sprite.size.ToPoint()), null, Color.White, sprite.rotation, new Vector2(blankNormal.Width / 2, blankNormal.Height / 2), SpriteEffects.None, 0f);
+                spriteBatch.Draw(blankNormal, new Rectangle(sprite.GetPositionXY().ToPoint() + (sprite.size / 2f).ToPoint(), sprite.size.ToPoint()), null, Color.White, sprite.rotation, new Vector2(blankNormal.Width / 2, blankNormal.Height / 2), SpriteEffects.None, sprite.getDepth());
             }
         }
 
@@ -225,7 +229,7 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
         {
             if (sprite.isOccluder)
             {
-                spriteBatch.Draw(sprite.color, new Rectangle(sprite.GetPositionXY().ToPoint() + (sprite.size / 2f).ToPoint(), sprite.size.ToPoint()), null, Color.Black, sprite.rotation, new Vector2(sprite.color.Width / 2, sprite.color.Height / 2), SpriteEffects.None, 0f);
+                spriteBatch.Draw(sprite.color, new Rectangle(sprite.GetPositionXY().ToPoint() + (sprite.size / 2f).ToPoint(), sprite.size.ToPoint()), null, Color.Black, sprite.rotation, new Vector2(sprite.color.Width / 2, sprite.color.Height / 2), SpriteEffects.None, sprite.getDepth());
             }
         }
 
