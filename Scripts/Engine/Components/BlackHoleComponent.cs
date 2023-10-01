@@ -25,11 +25,11 @@ public class BlackHoleComponent : Component
     {
         gameObject = parentObject;
         re = this.app.Services.GetService<ILeviathanEngineService>();
-        Offset = Matrix.CreateTranslation(-100,-100, 0);
+        Offset = Matrix.CreateTranslation(-300,-300, 0);
 
 
 
-        bh = new LeviathanSprite(this.app,Matrix.CreateTranslation(200,100,0),0,new Vector2(200),1,this.app.Content.Load<Texture2D>("Sprites/image"),false,0);
+        bh = new LeviathanSprite(this.app,Matrix.CreateTranslation(200,100,0),0,new Vector2(600),1,this.app.Content.Load<Texture2D>("Sprites/noiseTexture"),false,0);
         re.addSprite(bh);
 
 

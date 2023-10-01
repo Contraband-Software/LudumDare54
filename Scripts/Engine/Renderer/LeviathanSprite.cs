@@ -54,6 +54,10 @@ public class LeviathanSprite
         this.layer = layer;
     }
 
+    public void SetColorTexture(Texture2D color)
+    {
+        this.color = color;
+    }
 
     public void SetTransform(Matrix transform)
     {

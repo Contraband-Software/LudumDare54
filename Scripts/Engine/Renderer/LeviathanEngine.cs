@@ -185,7 +185,7 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
             }
             else
             {
-                shaders[i - 1].shader.Parameters["viewProjection"]?.SetValue(projection);
+                shaders[i - 1].shader.Parameters["viewProjection"]?.SetValue(view*projection);
                 shaders[i - 1].shader.Parameters["time"]?.SetValue((float)gameTime.TotalGameTime.TotalSeconds);
                 shaders[i - 1].shader.Parameters["width"]?.SetValue(width);
                 shaders[i - 1].shader.Parameters["height"]?.SetValue(height);
