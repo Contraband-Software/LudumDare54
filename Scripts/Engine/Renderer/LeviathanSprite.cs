@@ -15,28 +15,9 @@ public class LeviathanSprite
     private Game game;
     public int shader = 0;
     public float rotation = 0;
+    private float layer = 0;
 
-    public LeviathanSprite(Game game, Matrix transform, float rotation, Vector2 size, Texture2D colorTexture, Texture2D? normalTexture = null, bool isOccluder = true) {
-        this.color = colorTexture;
-        this.normal = normalTexture;
-        this.useNormal = normalTexture != null;
-        this.transform = transform;
-        this.game = game;
-        this.size = size;
-        this.isOccluder = isOccluder;
-        this.rotation = rotation;
-    }
-    public LeviathanSprite(Game game, Matrix transform,float rotation, Vector2 size, int shader, Texture2D colorTexture, bool isOccluder = true)
-    {
-        this.color = colorTexture;
-        this.transform = transform;
-        this.game = game;
-        this.size = size;
-        this.isOccluder = isOccluder;
-        this.shader = shader;
-        this.rotation = rotation;
-    }
-    public LeviathanSprite(Game game, Matrix transform, float rotation, Vector2 size, int shader, Texture2D colorTexture, Texture2D? normalTexture = null, bool isOccluder = true)
+    public LeviathanSprite(Game game, Matrix transform, float rotation, Vector2 size, Texture2D colorTexture, Texture2D? normalTexture = null, bool isOccluder = true, float layer = 0)
     {
         this.color = colorTexture;
         this.normal = normalTexture;
@@ -45,8 +26,32 @@ public class LeviathanSprite
         this.game = game;
         this.size = size;
         this.isOccluder = isOccluder;
+        this.rotation = rotation;
+        this.layer = layer;
+    }
+    public LeviathanSprite(Game game, Matrix transform,float rotation, Vector2 size, int shader, Texture2D colorTexture, bool isOccluder = true, float layer = 0)
+    {
+        this.color = colorTexture;
+        this.transform = transform;
+        this.game = game;
+        this.size = size;
+        this.isOccluder = isOccluder;
         this.shader = shader;
         this.rotation = rotation;
+        this.layer = layer;
+    }
+    public LeviathanSprite(Game game, Matrix transform, float rotation, Vector2 size, int shader, Texture2D colorTexture, Texture2D? normalTexture = null, bool isOccluder = true, float layer = 0)
+    {
+        this.color = colorTexture;
+        this.normal = normalTexture;
+        this.useNormal = normalTexture != null;
+        this.transform = transform;
+        this.game = game;
+        this.size = size;
+        this.isOccluder = isOccluder;
+        this.shader = shader;
+        this.rotation = rotation;
+        this.layer = layer;
     }
 
 
@@ -77,5 +82,9 @@ public class LeviathanSprite
     public void TranslatePosition(Vector3 translation)
     {
         this.transform.Translation += translation;
+    }
+    public float getDepth()
+    {
+        return layer;
     }
 }
