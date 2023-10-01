@@ -3,7 +3,6 @@ namespace LD54.Engine.Leviathan;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGame;
 
 interface ILeviathanEngineService
 {
@@ -34,8 +33,6 @@ interface ILeviathanEngineService
     public Vector2 getWindowSize();
 
     public void SetCameraPosition(Vector2 position);
-
-    public void DebugDrawCircle(Vector2 position, float radius, Color color);
 }
 
 public struct DebugCircle
@@ -111,7 +108,7 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
         blankNormal = game.Content.Load<Texture2D>("Sprites/blank");
     }
 
-    public void DebugDrawCircle(Vector2 position, float radius, Color color)
+    public void FrawDebugCircle(Vector2 position, float radius, Color color)
     {
         debug.Add(new DebugCircle(position, radius, color));
     }
@@ -163,7 +160,7 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
 
     public override void Draw(GameTime gameTime)
     {
-        Matrix view = Matrix.CreateTranslation(-cameraPosition.X,-cameraPosition.Y, 0);
+        Matrix view = Matrix.Identity * Matrix.CreateTranslation(-cameraPosition.X,-cameraPosition.Y, 0);
 
         int width = game.GraphicsDevice.Viewport.Width;
         int height = game.GraphicsDevice.Viewport.Height;
@@ -173,11 +170,11 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
 
         game.GraphicsDevice.SetRenderTarget(colorTarget);
         game.GraphicsDevice.Clear(Color.Black);
-        for (int i = this.shaders.Count; i >=0; i--)
+        for (int i = 0; i < this.shaders.Count+1; i++)
         {
             if(i == 0)
             {
-                spriteBatch.Begin(sortMode: SpriteSortMode.BackToFront, transformMatrix: view);
+                spriteBatch.Begin(transformMatrix: view);
             }
             else
             {
@@ -186,13 +183,13 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
                 shaders[i - 1].shader.Parameters["width"]?.SetValue(width);
                 shaders[i - 1].shader.Parameters["height"]?.SetValue(height);
                 shaders[i - 1].SetAllParams();
-                spriteBatch.Begin(sortMode: SpriteSortMode.BackToFront, transformMatrix: view, effect: shaders[i-1].shader) ;
+                spriteBatch.Begin(transformMatrix: view, effect: shaders[i-1].shader) ;
             }
             foreach (LeviathanSprite sprite in sprites)
             {
                 if (sprite.shader == i)
                 {
-                    spriteBatch.Draw(sprite.color, new Rectangle(sprite.GetPositionXY().ToPoint()+ (sprite.size/2f).ToPoint(), sprite.size.ToPoint()), null, Color.White, sprite.rotation, new Vector2(sprite.color.Width / 2, sprite.color.Height / 2), SpriteEffects.None, sprite.getDepth());
+                    spriteBatch.Draw(sprite.color, new Rectangle(sprite.GetPositionXY().ToPoint()+ (sprite.size/2f).ToPoint(), sprite.size.ToPoint()), null, Color.White, sprite.rotation, new Vector2(sprite.color.Width / 2, sprite.color.Height / 2), SpriteEffects.None, 0f);
                 }
             }
             spriteBatch.End();
@@ -201,17 +198,17 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
 
         game.GraphicsDevice.SetRenderTarget(normalTarget);
         game.GraphicsDevice.Clear(new Color(0.5f, 0.5f, 1f));
-        spriteBatch.Begin(sortMode: SpriteSortMode.BackToFront, transformMatrix: view);
+        spriteBatch.Begin(transformMatrix: view);
 
         foreach (LeviathanSprite sprite in sprites)
         {
             if (sprite.useNormal)
             {
-                spriteBatch.Draw(sprite.normal, new Rectangle(sprite.GetPositionXY().ToPoint() + (sprite.size / 2f).ToPoint(), sprite.size.ToPoint()), null, Color.White, sprite.rotation, new Vector2(sprite.normal.Width / 2, sprite.normal.Height / 2), SpriteEffects.None, sprite.getDepth());
+                spriteBatch.Draw(sprite.normal, new Rectangle(sprite.GetPositionXY().ToPoint() + (sprite.size / 2f).ToPoint(), sprite.size.ToPoint()), null, Color.White, sprite.rotation, new Vector2(sprite.normal.Width / 2, sprite.normal.Height / 2), SpriteEffects.None, 0f);
             }
             else
             {
-                //spriteBatch.Draw(blankNormal, new Rectangle(sprite.GetPositionXY().ToPoint() + (sprite.size / 2f).ToPoint(), sprite.size.ToPoint()), null, Color.White, sprite.rotation, new Vector2(blankNormal.Width / 2, blankNormal.Height / 2), SpriteEffects.None, sprite.getDepth());
+                spriteBatch.Draw(blankNormal, new Rectangle(sprite.GetPositionXY().ToPoint() + (sprite.size / 2f).ToPoint(), sprite.size.ToPoint()), null, Color.White, sprite.rotation, new Vector2(blankNormal.Width / 2, blankNormal.Height / 2), SpriteEffects.None, 0f);
             }
         }
 
@@ -219,13 +216,13 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
 
         game.GraphicsDevice.SetRenderTarget(shadowTarget);
         game.GraphicsDevice.Clear(Color.White);
-        spriteBatch.Begin(sortMode: SpriteSortMode.BackToFront, transformMatrix: view);
+        spriteBatch.Begin(transformMatrix: view);
 
         foreach (LeviathanSprite sprite in sprites)
         {
             if (sprite.isOccluder)
             {
-                spriteBatch.Draw(sprite.color, new Rectangle(sprite.GetPositionXY().ToPoint() + (sprite.size / 2f).ToPoint(), sprite.size.ToPoint()), null, Color.Black, sprite.rotation, new Vector2(sprite.color.Width / 2, sprite.color.Height / 2), SpriteEffects.None, sprite.getDepth());
+                spriteBatch.Draw(sprite.color, new Rectangle(sprite.GetPositionXY().ToPoint() + (sprite.size / 2f).ToPoint(), sprite.size.ToPoint()), null, Color.Black, sprite.rotation, new Vector2(sprite.color.Width / 2, sprite.color.Height / 2), SpriteEffects.None, 0f);
             }
         }
 
@@ -309,13 +306,12 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
         }
 
         spriteBatch.End();
-        spriteBatch.Begin(transformMatrix: view);
-        foreach (DebugCircle circle in debug)
-        {
-            spriteBatch.DrawCircle(circle.center, circle.radius,128, circle.color);
-        }
-        spriteBatch.End();
-        debug.Clear();
+        //spriteBatch.Begin(transformMatrix: view);
+        //foreach (DebugCircle circle in debug)
+        //{
+        //    spriteBatch.DrawCirle()...?
+        //}
+
     }
 
     //public override void Update(GameTime gameTime)

@@ -26,11 +26,10 @@ public class BlackHole : GameObject
 
         SpriteRendererComponent src = new SpriteRendererComponent("Sprite1", this.app);
         Vector3 textureSize = new Vector3((float)this.texture.Width / scaleDivider, (float)this.texture.Height / scaleDivider, 0f);
-        Matrix blackholeTransform = this.GetGlobalTransform();
-        blackholeTransform.Translation -= textureSize / 2f;
-
+        Matrix transform = this.GetGlobalTransform();
+        transform.Translation -= textureSize / 2f;
         src.LoadSpriteData(
-            blackholeTransform,
+            transform,
             new Vector2(textureSize.X, textureSize.Y),
             this.texture,
             null);
@@ -45,12 +44,11 @@ public class BlackHole : GameObject
         collider = new CircleColliderComponent(textureSize.X / 2, textureSize / -2f, "BlackHoleCollider", this.app);
         this.collider.isTrigger = true;
         this.collider.TriggerEvent += this.EatIt;
-        // this.collider.DebugMode = true;
         this.AddComponent(collider);
     }
 
     private void EatIt(ColliderComponent other)
     {
-        //this.app.Services.GetService<ISceneControllerService>().DestroyObject(other.GetGameObject());
+        this.app.Services.GetService<ISceneControllerService>().DestroyObject(other.GetGameObject());
     }
 }

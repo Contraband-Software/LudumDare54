@@ -5,8 +5,6 @@ using LD54.Engine.Components;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Drawing;
-using Leviathan;
-using Color = Microsoft.Xna.Framework.Color;
 
 public abstract class ColliderComponent : Component
 {
@@ -31,6 +29,7 @@ public abstract class ColliderComponent : Component
 
     #endregion
 
+
     public ColliderComponent(string name, Game appCtx) : base(name, appCtx)
     {
     }
@@ -54,16 +53,6 @@ public abstract class ColliderComponent : Component
 
 public class CircleColliderComponent : ColliderComponent
 {
-    public bool DebugMode = false;
-    #if _DEBUG || DEBUG
-    private void ShowBoundsIfDebug()
-    {
-        if (this.DebugMode) this.app.Services.GetService<ILeviathanEngineService>().DebugDrawCircle(this.centre, this.radius, Color.Lime);
-    }
-    #else
-    private void DebugShowBounds() {}
-    #endif
-
     public Vector2 centre; //this is the equivalent of the aabb
     public float radius;
     private Vector3 offset;
@@ -93,8 +82,6 @@ public class CircleColliderComponent : ColliderComponent
             previousPosition = gameObject.GetGlobalPosition() + offset;
         }
         RecalculateCentre();
-
-        //ShowBoundsIfDebug();
     }
 
     public void RecalculateCentre()
