@@ -47,6 +47,7 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
     private Effect lightingShader;
     private Game game;
     public Vector2 cameraPosition = new Vector2(0);
+    private Texture2D blankNormal;
 
     RenderTarget2D colorTarget;
     RenderTarget2D normalTarget;
@@ -91,6 +92,7 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
 
         spriteBatch = new SpriteBatch(game.GraphicsDevice);
         lightingShader = game.Content.Load<Effect>("Shaders/lighting");
+        blankNormal = game.Content.Load<Texture2D>("Sprites/blank");
     }
 
     public void SetCameraPosition(Vector2 position)
@@ -170,7 +172,7 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
             {
                 if (sprite.shader == i)
                 {
-                    spriteBatch.Draw(sprite.color, new Rectangle(sprite.GetPositionXY().ToPoint(), sprite.size), null, Color.White, sprite.rotation, new Vector2(0), SpriteEffects.None, 0f);
+                    spriteBatch.Draw(sprite.color, new Rectangle(sprite.GetPositionXY().ToPoint()+ (sprite.size/2f).ToPoint(), sprite.size.ToPoint()), null, Color.White, sprite.rotation, new Vector2(sprite.color.Width / 2, sprite.color.Height / 2), SpriteEffects.None, 0f);
                 }
             }
             spriteBatch.End();
@@ -185,7 +187,11 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
         {
             if (sprite.useNormal)
             {
-                spriteBatch.Draw(sprite.normal, new Rectangle(sprite.GetPositionXY().ToPoint(), sprite.size), null, Color.White, sprite.rotation, new Vector2(0), SpriteEffects.None, 0f);
+                spriteBatch.Draw(sprite.normal, new Rectangle(sprite.GetPositionXY().ToPoint() + (sprite.size / 2f).ToPoint(), sprite.size.ToPoint()), null, Color.White, sprite.rotation, new Vector2(sprite.normal.Width / 2, sprite.normal.Height / 2), SpriteEffects.None, 0f);
+            }
+            else
+            {
+                spriteBatch.Draw(blankNormal, new Rectangle(sprite.GetPositionXY().ToPoint() + (sprite.size / 2f).ToPoint(), sprite.size.ToPoint()), null, Color.White, sprite.rotation, new Vector2(blankNormal.Width / 2, blankNormal.Height / 2), SpriteEffects.None, 0f);
             }
         }
 
@@ -199,7 +205,7 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
         {
             if (sprite.isOccluder)
             {
-                spriteBatch.Draw(sprite.color, new Rectangle(sprite.GetPositionXY().ToPoint(), sprite.size), Color.Black);
+                spriteBatch.Draw(sprite.color, new Rectangle(sprite.GetPositionXY().ToPoint() + (sprite.size / 2f).ToPoint(), sprite.size.ToPoint()), null, Color.Black, sprite.rotation, new Vector2(sprite.color.Width / 2, sprite.color.Height / 2), SpriteEffects.None, 0f);
             }
         }
 

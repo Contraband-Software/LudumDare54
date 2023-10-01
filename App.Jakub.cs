@@ -9,7 +9,42 @@ using LD54.Engine.Collision;
 using Engine.Components;
 
 
+class LevelSquare : GameObject
+{
+    Texture2D texture;
+    RigidBodyComponent rb;
+    private float scale = 1f;
+    public LevelSquare(Texture2D texture, float scale, string name, Game appCtx) : base(name, appCtx)
+    {
+        this.texture = texture;
+        this.scale = scale;
+    }
 
+    public override void OnLoad(GameObject? parentObject)
+    {
+        SpriteRendererComponent src = new SpriteRendererComponent("texture", this.app);
+        src.LoadSpriteData(
+            this.GetGlobalTransform(),
+            new Point(
+                (int)((this.texture.Width) * scale),
+                (int)((this.texture.Height) * scale)),
+            this.texture,
+            null);
+
+        this.AddComponent(src);
+
+        Vector3 colliderDimensions = new Vector3
+            ((int)((this.texture.Width) * scale),
+            (int)((this.texture.Height) * scale), 0);
+
+
+        BoxColliderComponent collider = new BoxColliderComponent(colliderDimensions, Vector3.Zero, "squareCollider", this.app);
+        this.AddComponent(collider);
+
+        rb = new RigidBodyComponent("rbPlayer", app);
+        this.AddComponent(rb);
+    }
+}
 
 
 class LevelBlock : GameObject
@@ -136,6 +171,7 @@ class JakubScene : Scene
     public override void OnLoad(GameObject? parentObject)
     {
         Texture2D blankTexure = this.contentManager.Load<Texture2D>("Sprites/circle");
+        Texture2D squong = this.contentManager.Load<Texture2D>("Sprites/block");
 
         PlayerBlock playerBlock = new PlayerBlock(blankTexure, "spovus", app);
         parentObject.AddChild(playerBlock);
@@ -147,6 +183,10 @@ class JakubScene : Scene
         LevelBlock levelBlock2 = new LevelBlock(blankTexure, 2, "spovus", app);
         levelBlock2.SetLocalPosition(new Vector3(440, 150, 1));
         parentObject.AddChild(levelBlock2);
+
+        LevelSquare levelSquare = new LevelSquare(squong, 1, "spovus", app);
+        levelSquare.SetLocalPosition(new Vector3(540, 50, 1));
+        parentObject.AddChild(levelSquare);
 
         this.app.Services.GetService<ILeviathanEngineService>().AddLight(new Vector2(200, 200), new Vector3(10000000, 10000000, 10000000));
     }
