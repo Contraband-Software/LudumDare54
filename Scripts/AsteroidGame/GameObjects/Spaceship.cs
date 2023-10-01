@@ -15,7 +15,8 @@ namespace LD54.Scripts.AsteroidGame.GameObjects
     public class Spaceship : GameObject
     {
         Texture2D texture;
-        public float Speed = 5f;
+        public float moveForce = 30f;
+        public float RotationSpeed = 5f;
         ColliderComponent collider;
         RigidBodyComponent rb;
         SpriteRendererComponent src;
@@ -48,66 +49,74 @@ namespace LD54.Scripts.AsteroidGame.GameObjects
 
             rb = new RigidBodyComponent("rbPlayer", app);
             this.AddComponent(rb);
+
+            rb.SetMaxVelocity(3f);
+            rb.SetDampingFactor(0.98f);
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
 
-            rb.Velocity = Vector3.Zero;
-            Move();
+            //rb.Velocity = Vector3.Zero;
+            Move(gameTime);
 
             //ILeviathanEngineService re = this.app.Services.GetService<ILeviathanEngineService>();
             //re.SetCameraPosition(new Vector2(this.GetGlobalPosition().X, this.GetGlobalPosition().Y) - re.getWindowSize() / 2);
 
         }
 
-        private void RotateLeft()
+        private void RotateLeft(GameTime gameTime)
         {
-            PrintLn("curr rotation: " + Rotation.ToString());
-            Rotation -= 0.1f;
-            PrintLn("curr rotation: " + Rotation.ToString());
+            Rotation -= RotationSpeed * (gameTime.ElapsedGameTime.Milliseconds / 1000f);
             src.Rotation = Rotation;
             
         }
-        private void RotateRight()
+        private void RotateRight(GameTime gameTime)
         {
-            PrintLn("curr rotation: " + Rotation.ToString());
-            Rotation += 0.1f;
-            PrintLn("curr rotation: " + Rotation.ToString());
+            Rotation += RotationSpeed * (gameTime.ElapsedGameTime.Milliseconds / 1000f);
             src.Rotation = Rotation;
         }
 
-        private void MoveInForwardDirection()
+        /// <summary>
+        /// Calculate and return the direction this object is facing in
+        /// </summary>
+        /// <returns>direction as a unit vector</returns>
+        private Vector2 forwardVector()
         {
             float x = MathF.Sin(Rotation);
             float y = -MathF.Cos(Rotation);
             Vector2 directionVector = new Vector2(x, y);
-            Vector2 motionVector = directionVector * Speed;
-            PrintLn(motionVector.ToString());
-            rb.AddVelocityForward(motionVector);
+            return directionVector;
+        }
+
+        private void MoveInForwardDirection(GameTime gameTime)
+        {
+            Vector2 directionVector = forwardVector();
+            Vector2 forceVector = directionVector * moveForce;
+            rb.AddForce(forceVector, gameTime);
         }
 
 
-        private void Move()
+        private void Move(GameTime gameTime)
         {
             if (Keyboard.GetState().IsKeyDown(Keys.W))
             {
-                MoveInForwardDirection();
+                MoveInForwardDirection(gameTime);
                 
             }
             if (Keyboard.GetState().IsKeyDown(Keys.A))
             {
-                RotateLeft();
+                RotateLeft(gameTime);
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.D))
             {
-                RotateRight();
+                RotateRight(gameTime);
             }
             if (Keyboard.GetState().IsKeyDown(Keys.S))
             {
-                rb.Velocity.Y += Speed;
+                //rb.Velocity.Y += Speed;
             }
         }
     }
