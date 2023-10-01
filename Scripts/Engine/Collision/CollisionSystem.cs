@@ -64,10 +64,14 @@ public class CollisionSystem : GameComponent, ICollisionSystemService
     {
         collider.RecalculateCentre();
         List<Collision> collisions = new List<Collision>();
-        foreach(CircleColliderComponent other in collisionSystemList)
+        for(int i = 0; i < collisionSystemList.Count; i++)
         {
-            if (other == collider) continue;
-            Overlap collision = TestCircleOverlap(collider, other);
+            ColliderComponent other = collisionSystemList[i];
+
+            if (other == null || other == collider || other is BoxColliderComponent) continue;
+            CircleColliderComponent ot = (CircleColliderComponent)other;
+
+            Overlap collision = TestCircleOverlap(collider, ot);
             if (collision.isOverlap)
             {
                 collisions.Add(new Collision(other, collision));
@@ -136,11 +140,15 @@ public class CollisionSystem : GameComponent, ICollisionSystemService
         collider.RecalculateAABB();
         AABB a = collider.aabb;
         List<Collision> collisions = new List<Collision>();
-        foreach (BoxColliderComponent other in collisionSystemList)
-        {
-            if (other == collider) continue;
 
-            AABB b = other.aabb;
+        for (int i = 0; i < collisionSystemList.Count; i++)
+        {
+            ColliderComponent other = collisionSystemList[i];
+            if (other == null || other == collider || other is CircleColliderComponent) continue;
+
+            BoxColliderComponent ot = (BoxColliderComponent)other;
+
+            AABB b = ot.aabb;
             Overlap collision = TestAABBOverlap(a, b);
             if (collision.isOverlap)
             {
