@@ -86,7 +86,7 @@ public class NewtonianGravity2DControllerComponent : Component
                 }
             });
 
-        return sumAcceleration;
+        return new Vector3(sumAcceleration.X, sumAcceleration.Y,0);//?
     }
 
     public override void OnUnload()

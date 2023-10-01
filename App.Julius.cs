@@ -64,7 +64,7 @@ public class App_Julius : Game
             }
         }
 
-        engine.addSprite(new LeviathanSprite(this, Matrix.CreateTranslation(new Vector3(10, 10, 0)), 0f, new Vector2(400f), 2, starstex, false));
+        engine.addSprite(new LeviathanSprite(this, Matrix.CreateTranslation(new Vector3(10, 10, 0f)), 0f, new Vector2(400f), 0, starstex, false,0.5f));
         //engine.addSprite(new LeviathanSprite(this, Matrix.CreateTranslation(new Vector3(450, -50, 0)), new Point(500),2, starstex, false));
         engine.addSprite(new LeviathanSprite(this, Matrix.CreateTranslation(new Vector3(200, 200, 0)), 0f, new Vector2(100), colortex, normaltex));
 
