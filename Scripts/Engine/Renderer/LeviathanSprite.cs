@@ -49,6 +49,10 @@ public class LeviathanSprite
         this.rotation = rotation;
     }
 
+    public float getDepth()
+    {
+        return transform.Translation.Z;
+    }
 
     public void SetTransform(Matrix transform)
     {
