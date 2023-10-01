@@ -40,8 +40,8 @@ namespace LD54.Scripts.AsteroidGame.GameObjects
             src.LoadSpriteData(
                 this.GetGlobalTransform(),
                 new Vector2((this.texture.Width * this.scale), (this.texture.Height * this.scale)),
-                this.texture,
-                null);
+                this.texture
+                );
             this.AddComponent(src);
 
             Vector3 colliderDimensions = new Vector3(
