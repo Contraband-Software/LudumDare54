@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using AsteroidGame.GameObjects;
 using Engine.Components;
-using Scripts.AsteroidGame.GameObjects;
+using AsteroidGame.GameObjects;
 
 public class GameScene : Scene
 {
@@ -26,6 +26,14 @@ public class GameScene : Scene
     public void SpawnAccretionDisk(GameObject parent, Vector2 boundsDimensions, Vector2 blackHole)
     {
         Random rnd = new Random();
+
+        Vector2 startPosition = new Vector2(
+            rnd.Next((int)boundsDimensions.X),
+            rnd.Next((int)boundsDimensions.Y));
+
+        Vector2 separation = startPosition - blackHole;
+        Vector2 perpendicular = separation;
+
         for (int i = 0; i < 10; i++)
         {
             GameObject newSat = new SatelliteObject(
@@ -37,10 +45,7 @@ public class GameScene : Scene
             );
 
             parent.AddChild(newSat);
-            newSat.SetLocalPosition(new Vector2(
-                rnd.Next((int)boundsDimensions.X),
-                rnd.Next((int)boundsDimensions.Y))
-            );
+            newSat.SetLocalPosition(startPosition);
         }
     }
 

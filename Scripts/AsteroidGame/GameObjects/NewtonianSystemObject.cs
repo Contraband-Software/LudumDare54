@@ -1,7 +1,8 @@
-namespace LD54.Scripts.AsteroidGame.GameObjects;
+namespace LD54.AsteroidGame.GameObjects;
 
 using System.Collections.Generic;
 using Engine.Components;
+using LD54.Engine.Components;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
