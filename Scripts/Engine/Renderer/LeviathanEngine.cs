@@ -3,6 +3,7 @@ namespace LD54.Engine.Leviathan;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame;
 
 interface ILeviathanEngineService
 {
@@ -108,7 +109,7 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
         blankNormal = game.Content.Load<Texture2D>("Sprites/blank");
     }
 
-    public void FrawDebugCircle(Vector2 position, float radius, Color color)
+    public void DrawDebugCircle(Vector2 position, float radius, Color color)
     {
         debug.Add(new DebugCircle(position, radius, color));
     }
@@ -306,18 +307,14 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
         }
 
         spriteBatch.End();
-        //spriteBatch.Begin(transformMatrix: view);
-        //foreach (DebugCircle circle in debug)
-        //{
-        //    spriteBatch.DrawCirle()...?
-        //}
-
+        spriteBatch.Begin(transformMatrix: view);
+        foreach (DebugCircle circle in debug)
+        {
+            spriteBatch.DrawCircle(circle.center, circle.radius, 128, circle.color);
+        }
+        spriteBatch.End();
     }
 
-    //public override void Update(GameTime gameTime)
-    //{
-
-    //}
 
     public int AddLight(Vector2 position, Vector3 color)
     {
