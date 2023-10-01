@@ -10,8 +10,6 @@ public interface ICollisionSystemService
 {
     public int AddColliderToSystem(ColliderComponent spriteCollider);
     public void RemoveColliderFromSystem(int spriteColliderID);
-
-    public void RequestResolveForBox(BoxColliderComponent requestingCollider, List<Collision> collisions);
 }
 
 public class CollisionSystem : GameComponent, ICollisionSystemService
@@ -51,12 +49,76 @@ public class CollisionSystem : GameComponent, ICollisionSystemService
             {
                 CalculateForBoxCollision((BoxColliderComponent)col);
             }
+            else if(col is CircleColliderComponent)
+            {
+                CalculateForCircleCollision((CircleColliderComponent)col);
+            }
             
+        }
+    }
+    /// <summary>
+    /// Calculates collisions for given CIRCLE COLLIDER
+    /// </summary>
+    /// <param name="col"></param>
+    private void CalculateForCircleCollision(CircleColliderComponent collider)
+    {
+        collider.RecalculateCentre();
+        List<Collision> collisions = new List<Collision>();
+        foreach(CircleColliderComponent other in collisionSystemList)
+        {
+            if (other == collider) continue;
+            Overlap collision = TestCircleOverlap(collider, other);
+            if (collision.isOverlap)
+            {
+                collisions.Add(new Collision(other, collision));
+            }
+        }
+        RequestResolveForCircle(collider, collisions);
+    }
+
+    private Overlap TestCircleOverlap(CircleColliderComponent a, CircleColliderComponent b)
+    {
+        Vector2 posDelta = new Vector2(b.centre.X - a.centre.X, b.centre.Y - a.centre.Y);
+        float distance = MathF.Abs(posDelta.Length());
+        float radiusSum = a.radius + b.radius;
+        if(distance < radiusSum)
+        {
+            return new Overlap(true, posDelta, radiusSum - distance);
+        }
+
+        return new Overlap(false);
+    }
+
+    private void RequestResolveForCircle(CircleColliderComponent requestingCollider, List<Collision> collisions)
+    {
+        GameObject requestingColliderObj = requestingCollider.GetGameObject();
+        RigidBodyComponent requestingColliderRb = (RigidBodyComponent)requestingColliderObj.GetComponent<RigidBodyComponent>();
+
+        //if it has a rigidbody, allow resolution, if not, it is forced to be a trigger
+        if (requestingColliderRb == null)
+        {
+            //invoke triggerEnter 
+            return;
+        }
+
+        foreach(Collision col in collisions)
+        {
+            //this ensures that the other collider is not moved
+            if(requestingColliderRb.Velocity.Length() == 0f)
+            {
+                continue;
+            }
+
+            Vector2 distanceToAdjustBy = Vector2.Normalize(col.overlap.posDelta) * col.overlap.overlapDistance;
+            Vector3 position = requestingColliderObj.GetGlobalTransform().Translation;
+            position -= new Vector3(distanceToAdjustBy.X, distanceToAdjustBy.Y, 0);
+            position -= requestingCollider.GetGameObject().GetParent().GetGlobalPosition();
+            requestingCollider.GetGameObject().SetLocalPosition(position);
         }
     }
 
     /// <summary>
-    /// Calculates collisions for given collider
+    /// Calculates collisions for given BOX COLLIDER
     /// </summary>
     /// <param name="collider"></param>
     private void CalculateForBoxCollision(BoxColliderComponent collider)
@@ -72,7 +134,7 @@ public class CollisionSystem : GameComponent, ICollisionSystemService
             Overlap collision = TestAABBOverlap(a, b);
             if (collision.isOverlap)
             {
-                collisions.Add(new Collision(b, other, collision));
+                collisions.Add(new Collision(other, collision));
             }
 
         }

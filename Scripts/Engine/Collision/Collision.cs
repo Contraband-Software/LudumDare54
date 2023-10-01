@@ -7,7 +7,7 @@ public class Collision
 {
     public Overlap overlap;
     public ColliderComponent collider;
-    public Collision(AABB aabb, ColliderComponent other, Overlap overlap)
+    public Collision(ColliderComponent other, Overlap overlap)
     {
         this.overlap = overlap;
         this.collider = other;

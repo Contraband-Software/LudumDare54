@@ -200,5 +200,10 @@ public abstract class GameObject : EngineObject, IUpdateable
 
         throw new ArgumentException("No component with that name on this GameObject");
     }
+
+    public IEnumerable<Component> GetAllComponents()
+    {
+        return this.components;
+    }
     #endregion
 }
