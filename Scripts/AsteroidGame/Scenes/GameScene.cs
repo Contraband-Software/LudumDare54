@@ -23,9 +23,8 @@ public class GameScene : Scene
     public const int SATELLITES = 100;
     public const float SPEED_MULT = 15f;
 
-    public const float MAP_SIZE = 2.4f;
+    public const float MAP_SIZE = 2f;
     #endregion
-
 
     private int sunLight = -1;
 

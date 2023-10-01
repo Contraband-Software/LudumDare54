@@ -18,16 +18,25 @@ public class BlackHole : GameObject
     }
     public override void OnLoad(GameObject? parentObject)
     {
+        float scaleDivider = 1f;
+
         SpriteRendererComponent src = new SpriteRendererComponent("Sprite1", this.app);
+        Vector3 textureSize = new Vector3((float)this.texture.Width / scaleDivider, (float)this.texture.Height / scaleDivider, 0f);
+        Matrix transform = this.GetGlobalTransform();
+        PrintLn(transform.Translation.ToString());
+        transform.Translation -= textureSize / 2f;
+        PrintLn(textureSize.ToString());
+        PrintLn(transform.Translation.ToString());
         src.LoadSpriteData(
-            this.GetGlobalTransform(),
-            new Point(this.texture.Width, this.texture.Height),
+            transform,
+            new Vector2(textureSize.X, textureSize.Y),
             this.texture,
             null);
         this.AddComponent(src);
 
         RigidBodyComponent rb = new RigidBodyComponent("BlackHoleRB", this.app);
         rb.Mass = this.Mass;
+        rb.Static = true;
         this.AddComponent(rb);
     }
 }

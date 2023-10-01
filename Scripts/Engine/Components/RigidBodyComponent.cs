@@ -6,6 +6,7 @@ public class RigidBodyComponent : Component
 {
     public Vector3 Velocity = Vector3.Zero;
     public float Mass = 1;
+    public bool Static = false;
 
     public RigidBodyComponent(string name, Game appCtx) : base(name, appCtx)
     {
@@ -22,6 +23,7 @@ public class RigidBodyComponent : Component
 
         base.Update(gameTime);
 
+        if (this.Static) return;
         this.gameObject.SetLocalPosition(this.gameObject.GetLocalPosition() + this.Velocity);
     }
 

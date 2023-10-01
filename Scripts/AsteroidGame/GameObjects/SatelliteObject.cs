@@ -24,9 +24,12 @@ public class SatelliteObject : GameObject
         float scaleDivider = 4;
 
         SpriteRendererComponent src = new SpriteRendererComponent("Sprite1", this.app);
+        Vector3 textureSize = new Vector3((this.texture.Width / scaleDivider), (this.texture.Height / scaleDivider), 0f);
+        Matrix transform = this.GetGlobalTransform();
+        transform.Translation -= textureSize / 2;
         src.LoadSpriteData(
-            this.GetGlobalTransform(),
-            new Point((int)(this.texture.Width / scaleDivider), (int)(this.texture.Height / scaleDivider)),
+            transform,
+            new Vector2(textureSize.X, textureSize.Y),
             this.texture,
             null);
         this.AddComponent(src);

@@ -32,7 +32,7 @@ class DebugPlayer : GameObject
         SpriteRendererComponent src = new SpriteRendererComponent("Sprite1", this.app);
         src.LoadSpriteData(
             this.GetGlobalTransform(),
-            new Point((int)(this.texture.Width / scaleDivider), (int)(this.texture.Height / scaleDivider)),
+            new Vector2((this.texture.Width / scaleDivider), (this.texture.Height / scaleDivider)),
             this.texture,
             null);
 
