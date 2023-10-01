@@ -3,6 +3,7 @@ namespace LD54.Engine.Dev;
 using Collision;
 using Components;
 using Engine;
+using Leviathan;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -55,6 +56,9 @@ class DebugPlayer : GameObject
         Move();
 
         this.SetLocalPosition(preMovePosition + rb.Velocity);
+
+        ILeviathanEngineService re = this.app.Services.GetService<ILeviathanEngineService>();
+        re.SetCameraPosition(new Vector2(this.GetGlobalPosition().X, this.GetGlobalPosition().Y) - re.getWindowSize() / 2);
 
         // this.app.Services.GetService<ICollisionSystemService>().RequestResolve(collider);
     }

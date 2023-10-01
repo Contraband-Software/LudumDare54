@@ -31,6 +31,8 @@ interface ILeviathanEngineService
     public void removeUISprite(int index);
 
     public Vector2 getWindowSize();
+
+    public void SetCameraPosition(Vector2 position);
 }
 
 public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
@@ -89,6 +91,11 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
 
         spriteBatch = new SpriteBatch(game.GraphicsDevice);
         lightingShader = game.Content.Load<Effect>("Shaders/lighting");
+    }
+
+    public void SetCameraPosition(Vector2 position)
+    {
+        this.cameraPosition = position;
     }
 
     public Vector2 getWindowSize()

@@ -20,7 +20,7 @@ public class CircleColliderComponent : ColliderComponent
     {
         base.OnLoad(parentObject);
         RecalculateCentre();
-        
+
     }
     public override void Update(GameTime gameTime)
     {

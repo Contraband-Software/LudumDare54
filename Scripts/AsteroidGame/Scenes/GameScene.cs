@@ -16,9 +16,32 @@ public class GameScene : Scene
 {
     private int sunLight = -1;
 
+    private Texture2D testObjectTexture;
+
     public GameScene(Game appCtx) : base("GameScene", appCtx)
     {
 
+    }
+
+    public void SpawnAccretionDisk(GameObject parent, Vector2 boundsDimensions, Vector2 blackHole)
+    {
+        Random rnd = new Random();
+        for (int i = 0; i < 10; i++)
+        {
+            GameObject newSat = new SatelliteObject(
+                0,
+                new Vector3(rnd.Next(2), rnd.Next(2), 1),
+                testObjectTexture,
+                "satelliteObject_" + i,
+                this.app
+            );
+
+            parent.AddChild(newSat);
+            newSat.SetLocalPosition(new Vector2(
+                rnd.Next((int)boundsDimensions.X),
+                rnd.Next((int)boundsDimensions.Y))
+            );
+        }
     }
 
     public override void OnLoad(GameObject? parentObject)
@@ -31,21 +54,20 @@ public class GameScene : Scene
 
         // sim set up
         NewtonianSystemObject newtonianSystem = new NewtonianSystemObject(
-            new List<GameObject>{},
             20,
             "GravitySimulationObject",
             this.app);
         parentObject.AddChild(newtonianSystem);
 
         // player controller
-        Texture2D blankTexure = this.contentManager.Load<Texture2D>("Sprites/block");
-        DebugPlayer player = new(blankTexure, "DebugPlayerController", this.app);
+        testObjectTexture = this.contentManager.Load<Texture2D>("Sprites/block");
+        DebugPlayer player = new(testObjectTexture, "DebugPlayerController", this.app);
         newtonianSystem.AddChild(player);
 
         // black hole
         GameObject blackHole = new BlackHole(
             100,
-            blankTexure,
+            testObjectTexture,
             "BlackHole",
             this.app
             );
@@ -56,22 +78,10 @@ public class GameScene : Scene
         );
 
         // some testing space junk spawning
-        Random rnd = new Random();
-        for (int i = 0; i < 10; i++)
-        {
-            GameObject newSat = new SatelliteObject(
-                0,
-                new Vector3(rnd.Next(2), rnd.Next(2), 1),
-                blankTexure,
-                "satelliteObject_" + i,
-                this.app
-                );
-            newtonianSystem.AddChild(newSat);
-            newSat.SetLocalPosition(new Vector2(
-                rnd.Next((int)windowSize.X),
-                rnd.Next((int)windowSize.Y))
-            );
-        }
+        SpawnAccretionDisk(newtonianSystem, windowSize, new Vector2(
+            windowSize.X / 2,
+            windowSize.Y / 2)
+        );
     }
 
     private bool printed = false;

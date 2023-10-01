@@ -11,12 +11,9 @@ public class NewtonianSystemObject : GameObject
     public float GravitationalConstant { get; private set; } = -1;
 
 
-    private List<GameObject> initializedSatellites;
-
-    public NewtonianSystemObject(List<GameObject> initializedSatellites, float gravitationalConstant, string name, Game appCtx) : base(name, appCtx)
+    public NewtonianSystemObject(float gravitationalConstant, string name, Game appCtx) : base(name, appCtx)
     {
         GravitationalConstant = gravitationalConstant;
-        this.initializedSatellites = initializedSatellites;
     }
 
     public override void Update(GameTime gameTime)
