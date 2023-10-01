@@ -93,7 +93,7 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
 
     public Vector2 getWindowSize()
     {
-        return new Vector2(game.Window.ClientBounds.Width, game.Window.ClientBounds.Width);
+        return new Vector2(game.Window.ClientBounds.Width, game.Window.ClientBounds.Height);
     }
 
     public int bindShader(LeviathanShader shader)

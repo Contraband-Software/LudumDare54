@@ -26,10 +26,12 @@ class DebugPlayer : GameObject
 
     public override void OnLoad(GameObject? parentObject)
     {
+        float scaleDivider = 3;
+
         SpriteRendererComponent src = new SpriteRendererComponent("Sprite1", this.app);
         src.LoadSpriteData(
             this.GetGlobalTransform(),
-            new Point(this.texture.Width, this.texture.Height),
+            new Point((int)(this.texture.Width / scaleDivider), (int)(this.texture.Height / scaleDivider)),
             this.texture,
             null);
 

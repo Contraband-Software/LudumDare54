@@ -84,17 +84,22 @@ public class SceneController : GameComponent, ISceneControllerService
     }
 
     #region SCENE_API
+    private const int POSITION_PADDING = 32;
+
     /// <summary>
     /// Prints a text-version of the scene tree (has indentation for children)
     /// </summary>
     public void DebugPrintGraph()
     {
-        PrintLn("SceneController");
+        string rootName = "SceneController";
+        PrintLn(rootName.PadLeft(POSITION_PADDING + rootName.Length));
         this.PrintChildren(this.rootGameObject, 0);
         this.PrintChildren(this.persistantGameObject, 0);
     }
     private void PrintChildren(GameObject gameObject, int depth)
     {
+        // depth first tree traversal
+
         ++depth;
 
         string space = "";
@@ -105,7 +110,10 @@ public class SceneController : GameComponent, ISceneControllerService
 
         string components = "";
         gameObject.GetAllComponents().ToList().ForEach(c => { components += c.GetType().Name + ":" + c.GetName() + ", "; });
-        PrintLn(space + gameObject.GetType().Name + ": '" + gameObject.GetName() + "' -> [" + components + "]");
+        PrintLn(
+            String.Format("{0," + POSITION_PADDING + "}", gameObject.GetGlobalPosition()) +
+            space                                                                      +
+            gameObject.GetType().Name                                                  + ": '" + gameObject.GetName() + "' -> [" + components + "]");
 
         IEnumerable<GameObject> g = gameObject.GetChildren();
         foreach (GameObject child in g.ToList())
@@ -186,6 +194,8 @@ public class SceneController : GameComponent, ISceneControllerService
 
     private void UpdateChildren(GameObject gameObject, GameTime gameTime)
     {
+        // depth first tree traversal
+
         IEnumerable<GameObject> g = gameObject.GetChildren();
 
         foreach (GameObject child in g.ToList().Where(child => child.Enabled))
@@ -201,6 +211,8 @@ public class SceneController : GameComponent, ISceneControllerService
     }
     private void UnloadChildren(GameObject gameObject)
     {
+        // depth first tree traversal
+
         IEnumerable<GameObject> g = gameObject.GetChildren();
 
         foreach (GameObject child in g.ToList().Where(child => child.Enabled))

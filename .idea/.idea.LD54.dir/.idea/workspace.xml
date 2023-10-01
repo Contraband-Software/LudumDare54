@@ -8,11 +8,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b177c274-5f29-4dd6-aecd-1ee6a42ae4d6" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Scripts/AsteroidGame/GameObjects/BlackHole.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.LD54.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.LD54.dir/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Scripts/AsteroidGame/GameObjects/NewtonianSystemObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/AsteroidGame/GameObjects/NewtonianSystemObject.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scripts/AsteroidGame/GameObjects/SatelliteObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/AsteroidGame/GameObjects/SatelliteObject.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Scripts/AsteroidGame/Scenes/GameScene.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/AsteroidGame/Scenes/GameScene.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scripts/Engine/Components/NewtonianGavity2DControllerComponent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/Engine/Components/NewtonianGravity2DControllerComponent.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scripts/Engine/Debugging/EngineDebug.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/Engine/Debugging/EngineDebug.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scripts/Engine/Components/NewtonianGravity2DControllerComponent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/Engine/Components/NewtonianGravity2DControllerComponent.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scripts/Engine/Components/RigidBodyComponent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/Engine/Components/RigidBodyComponent.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scripts/Engine/Debugging/DebugPlayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/Engine/Debugging/DebugPlayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scripts/Engine/Renderer/LeviathanEngine.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/Engine/Renderer/LeviathanEngine.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scripts/Engine/SceneGraph/Component.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/Engine/SceneGraph/Component.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Scripts/Engine/SceneGraph/GameObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/Engine/SceneGraph/GameObject.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Scripts/Engine/SceneGraph/SceneController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/Engine/SceneGraph/SceneController.cs" afterDir="false" />
     </list>
@@ -96,7 +101,7 @@
       <workItem from="1696085025658" duration="8256000" />
       <workItem from="1696094649045" duration="509000" />
       <workItem from="1696095254133" duration="6048000" />
-      <workItem from="1696104022872" duration="5641000" />
+      <workItem from="1696104022872" duration="13721000" />
     </task>
     <servers />
   </component>
