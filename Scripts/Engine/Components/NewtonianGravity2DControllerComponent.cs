@@ -25,7 +25,7 @@ public class NewtonianGravity2DControllerComponent : Component
 
         this.gameObject = parentObject;
 
-        // ForceLaw = ((GameScene)this.app.Services.GetService<ISceneControllerService>().GetCurrentScene()).FORCE_LAW;
+        ForceLaw = GameScene.FORCE_LAW;
 
         this.gameObject.ChildAttachedEvent += (gameObject) =>
         {

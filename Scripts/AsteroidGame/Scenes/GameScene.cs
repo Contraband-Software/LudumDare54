@@ -20,8 +20,8 @@ public class GameScene : Scene
     private Texture2D testObjectTexture;
 
     public const float FORCE_LAW = 2.5f;
-    public const float SPEED_MULT = 0.75f;
-    public const float GRAVITATIONAL_CONSTANT = 20f;
+    public const float SPEED_MULT = 10f;
+    public const float GRAVITATIONAL_CONSTANT = 30f;
     public const int SATELLITES = 50;
 
     public GameScene(Game appCtx) : base("GameScene", appCtx)
@@ -32,7 +32,7 @@ public class GameScene : Scene
     {
         Random rnd = new Random();
 
-        for (int i = 0; i < SATELLITES; i++)
+        for (int i = 0; i < GameScene.SATELLITES; i++)
         {
 
             Vector2 startPosition = new Vector2(
@@ -47,7 +47,7 @@ public class GameScene : Scene
 
             GameObject newSat = new SatelliteObject(
                 0,
-                new Vector3(perpendicular.X, perpendicular.Y, 0.76f) * SPEED_MULT * (1 / MathF.Pow(separation.Magnitude(), FORCE_LAW)),
+                new Vector3(perpendicular.X, perpendicular.Y, 0.76f) * GameScene.SPEED_MULT * (1 / MathF.Sqrt(separation.Magnitude())),
                 testObjectTexture,
                 "satelliteObject_" + i,
                 this.app
@@ -68,9 +68,10 @@ public class GameScene : Scene
 
         // sim set up
         NewtonianSystemObject newtonianSystem = new NewtonianSystemObject(
-            GRAVITATIONAL_CONSTANT,
+            GameScene.GRAVITATIONAL_CONSTANT,
             "GravitySimulationObject",
             this.app);
+        parentObject.AddChild(newtonianSystem);
 
         // player controller
         testObjectTexture = this.contentManager.Load<Texture2D>("Sprites/block");
