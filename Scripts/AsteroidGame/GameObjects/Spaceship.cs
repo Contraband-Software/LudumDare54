@@ -17,9 +17,12 @@ namespace LD54.Scripts.AsteroidGame.GameObjects
         Texture2D texture;
         public float moveForce = 30f;
 
-        private float rotationSpeed;
+        //private float rotationSpeed;
         public float MaxRotationSpeed = 3.5f;
-        public float RotationAccel = 1f;
+        //public float RotationAccel = 1f;
+
+        private float maxVelocity = 5f;
+        private float velocityDamping = 0.98f;
 
         ColliderComponent collider;
         RigidBodyComponent rb;
@@ -53,9 +56,6 @@ namespace LD54.Scripts.AsteroidGame.GameObjects
 
             rb = new RigidBodyComponent("rbPlayer", app);
             this.AddComponent(rb);
-
-            rb.SetMaxVelocity(5f);
-            rb.SetDampingFactor(0.98f);
         }
 
         public override void Update(GameTime gameTime)
@@ -65,6 +65,12 @@ namespace LD54.Scripts.AsteroidGame.GameObjects
             //rb.Velocity = Vector3.Zero;
             Move(gameTime);
 
+            //limit velocity
+            if (rb.Velocity.Length() > maxVelocity)
+            {
+                rb.Velocity = (rb.Velocity / rb.Velocity.Length()) * maxVelocity;
+            }
+            rb.Velocity *= velocityDamping;
             //ILeviathanEngineService re = this.app.Services.GetService<ILeviathanEngineService>();
             //re.SetCameraPosition(new Vector2(this.GetGlobalPosition().X, this.GetGlobalPosition().Y) - re.getWindowSize() / 2);
 
@@ -97,8 +103,8 @@ namespace LD54.Scripts.AsteroidGame.GameObjects
         private void MoveInForwardDirection(GameTime gameTime)
         {
             Vector2 directionVector = forwardVector();
-            Vector2 forceVector = directionVector * moveForce;
-            rb.AddForce(forceVector, gameTime);
+            Vector2 forceVector = directionVector * moveForce * (gameTime.ElapsedGameTime.Milliseconds / 1000f);
+            rb.AddForce(forceVector);
         }
 
 
