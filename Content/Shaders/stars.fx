@@ -45,7 +45,7 @@ float4 SpritePixelShader(PixelInput p) : SV_TARGET
     float2 blackholePos = float2(blackholeX, blackholeY);
     float2 screenCords = float2(p.Position.x, p.Position.y);
     float2 diff = screenCords - blackholePos;
-    float2 distortion = normalize(diff) * (strength / (diff.x*diff.x+diff.y*diff.y));
+    float2 distortion = -normalize(diff) * (strength / (diff.x*diff.x+diff.y*diff.y));
     float4 col = tex2D(colorSampler, p.TexCoord.xy+distortion);
     
     return col;

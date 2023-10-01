@@ -71,6 +71,7 @@ public class SceneController : GameComponent, ISceneControllerService
 
         if(this.activeScene != null)
         {
+            this.activeScene.Update(gameTime);
             this.UpdateGameObjects(gameTime);
         }
     }
@@ -88,6 +89,7 @@ public class SceneController : GameComponent, ISceneControllerService
     /// </summary>
     public void DebugPrintGraph()
     {
+        PrintLn("SceneController");
         this.PrintChildren(this.rootGameObject, 0);
         this.PrintChildren(this.persistantGameObject, 0);
     }
@@ -100,7 +102,10 @@ public class SceneController : GameComponent, ISceneControllerService
         {
             space += "   ";
         }
-        Console.Out.WriteLine(space + gameObject.GetName());
+
+        string components = "";
+        gameObject.GetAllComponents().ToList().ForEach(c => { components += c.GetType().Name + ":" + c.GetName() + ", "; });
+        PrintLn(space + gameObject.GetType().Name + ": '" + gameObject.GetName() + "' -> [" + components + "]");
 
         IEnumerable<GameObject> g = gameObject.GetChildren();
         foreach (GameObject child in g.ToList())

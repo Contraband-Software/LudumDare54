@@ -29,6 +29,8 @@ interface ILeviathanEngineService
     public int addUISprite(LeviathanUIElement uiSprite);
 
     public void removeUISprite(int index);
+
+    public Vector2 getWindowSize();
 }
 
 public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
@@ -43,7 +45,6 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
     private Effect lightingShader;
     private Game game;
     public Vector2 cameraPosition = new Vector2(0);
-    private Vector2 veiwportSize = new Vector2();
 
     RenderTarget2D colorTarget;
     RenderTarget2D normalTarget;
@@ -60,7 +61,6 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
     {
         game = g;
         graphics = g.Services.GetService<IGraphicsDeviceManager>();
-        veiwportSize = new Vector2(game.Window.ClientBounds.Width, game.Window.ClientBounds.Width);
         //graphics.GraphicsProfile = GraphicsProfile.HiDef;
         for (int i = 0; i < 64; i++)
         {
@@ -89,6 +89,11 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
 
         spriteBatch = new SpriteBatch(game.GraphicsDevice);
         lightingShader = game.Content.Load<Effect>("Shaders/lighting");
+    }
+
+    public Vector2 getWindowSize()
+    {
+        return new Vector2(game.Window.ClientBounds.Width, game.Window.ClientBounds.Width);
     }
 
     public int bindShader(LeviathanShader shader)

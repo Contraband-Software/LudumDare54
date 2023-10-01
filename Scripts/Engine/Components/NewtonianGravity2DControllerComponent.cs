@@ -2,13 +2,13 @@ namespace LD54.Engine.Components;
 
 using Microsoft.Xna.Framework;
 
-public class NewtonianGavity2DControllerComponent : Component
+public class NewtonianGravity2DControllerComponent : Component
 {
     public float GravitationalConstant { get; protected set; } = 1;
 
     public RigidBodyComponent Satellites { get; protected set; }
 
-    public NewtonianGavity2DControllerComponent(float gravitationalConstant, string name, Game appCtx) : base(name, appCtx)
+    public NewtonianGravity2DControllerComponent(float gravitationalConstant, string name, Game appCtx) : base(name, appCtx)
     {
         GravitationalConstant = gravitationalConstant;
     }
