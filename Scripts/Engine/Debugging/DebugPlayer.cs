@@ -50,16 +50,12 @@ class DebugPlayer : GameObject
         base.Update(gameTime);
 
         rb.Velocity = Vector3.Zero;
-        Vector3 preMovePosition = this.GetLocalPosition();
 
         Move();
-
-        this.SetLocalPosition(preMovePosition + rb.Velocity);
 
         ILeviathanEngineService re = this.app.Services.GetService<ILeviathanEngineService>();
         re.SetCameraPosition(new Vector2(this.GetGlobalPosition().X, this.GetGlobalPosition().Y) - re.getWindowSize() / 2);
 
-        // this.app.Services.GetService<ICollisionSystemService>().RequestResolve(collider);
     }
 
 
