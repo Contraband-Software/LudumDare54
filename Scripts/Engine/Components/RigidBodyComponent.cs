@@ -18,6 +18,8 @@ public class RigidBodyComponent : Component
 
     public override void Update(GameTime gameTime)
     {
+        if (!this.Enabled) return;
+
         base.Update(gameTime);
 
         this.gameObject.SetLocalPosition(this.gameObject.GetLocalPosition() + this.Velocity);

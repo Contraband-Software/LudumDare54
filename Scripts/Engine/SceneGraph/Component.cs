@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 
 public abstract class Component : EngineObject, IUpdateable
 {
-    public bool Enabled { get; } = true;
+    public bool Enabled { get; set; } = true;
     public int UpdateOrder { get; }
     public event EventHandler<EventArgs>? EnabledChanged;
     public event EventHandler<EventArgs>? UpdateOrderChanged;

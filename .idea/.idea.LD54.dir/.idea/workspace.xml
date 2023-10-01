@@ -12,8 +12,8 @@
       <change beforePath="$PROJECT_DIR$/Scripts/AsteroidGame/Scenes/GameScene.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/AsteroidGame/Scenes/GameScene.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Scripts/Engine/Components/NewtonianGravity2DControllerComponent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/Engine/Components/NewtonianGravity2DControllerComponent.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Scripts/Engine/Components/RigidBodyComponent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/Engine/Components/RigidBodyComponent.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scripts/Engine/Math.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/Engine/Math.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scripts/Engine/SceneGraph/GameObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/Engine/SceneGraph/GameObject.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scripts/Engine/SceneGraph/Component.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/Engine/SceneGraph/Component.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scripts/Engine/SceneGraph/SceneController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/Engine/SceneGraph/SceneController.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -96,7 +96,7 @@
       <workItem from="1696085025658" duration="8256000" />
       <workItem from="1696094649045" duration="509000" />
       <workItem from="1696095254133" duration="6048000" />
-      <workItem from="1696104022872" duration="23292000" />
+      <workItem from="1696104022872" duration="27532000" />
     </task>
     <servers />
   </component>
