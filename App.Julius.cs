@@ -59,14 +59,14 @@ public class App_Julius : Game
         {
             for (int j = 0; j < 4; j++)
             {
-                LeviathanSprite testSprite = new LeviathanSprite(this, Matrix.CreateTranslation(new Vector3(i * 120, j * 120, 0)),0, new Vector2(25), colortex, normaltex);
+                LeviathanSprite testSprite = new LeviathanSprite(this, Matrix.CreateTranslation(new Vector3(i * 120, j * 120, 1)),0, new Vector2(25), colortex, normaltex);
                 engine.addSprite(testSprite);
             }
         }
 
-        engine.addSprite(new LeviathanSprite(this, Matrix.CreateTranslation(new Vector3(10, 10, 0.0f)), 0f, new Vector2(400f),0, starstex, false));
+        engine.addSprite(new LeviathanSprite(this, Matrix.CreateTranslation(new Vector3(10, 10, 0)), 0f, new Vector2(400f),2, starstex, false));
         //engine.addSprite(new LeviathanSprite(this, Matrix.CreateTranslation(new Vector3(450, -50, 0)), new Point(500),2, starstex, false));
-        engine.addSprite(new LeviathanSprite(this, Matrix.CreateTranslation(new Vector3(200, 200, 0)), 0f, new Vector2(100), colortex, normaltex));
+        engine.addSprite(new LeviathanSprite(this, Matrix.CreateTranslation(new Vector3(200, 200, 0.5f)), 0f, new Vector2(100), colortex, normaltex));
 
         SpriteFont testFont = Content.Load<SpriteFont>("Fonts/main");
         //engine.addUISprite(new LeviathanUIElement(this, Matrix.CreateTranslation(new Vector3(0)), new Point(100), colortex));
