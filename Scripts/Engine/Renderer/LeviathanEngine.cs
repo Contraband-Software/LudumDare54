@@ -190,7 +190,6 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
                 {
 
                     spriteBatch.Draw(sprite.color, new Rectangle(sprite.GetPositionXY().ToPoint()+ (sprite.size/2f).ToPoint(), sprite.size.ToPoint()), null, Color.White, sprite.rotation, new Vector2(sprite.color.Width / 2, sprite.color.Height / 2), SpriteEffects.None, sprite.getDepth());
-                    PrintLn(sprite.getDepth().ToString());
                 }
             }
             spriteBatch.End();
