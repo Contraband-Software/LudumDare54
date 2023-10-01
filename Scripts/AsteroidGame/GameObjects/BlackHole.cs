@@ -26,10 +26,11 @@ public class BlackHole : GameObject
 
         SpriteRendererComponent src = new SpriteRendererComponent("Sprite1", this.app);
         Vector3 textureSize = new Vector3((float)this.texture.Width / scaleDivider, (float)this.texture.Height / scaleDivider, 0f);
-        Matrix transform = this.GetGlobalTransform();
-        transform.Translation -= textureSize / 2f;
+        Matrix blackholeTransform = this.GetGlobalTransform();
+        blackholeTransform.Translation -= textureSize / 2f;
+
         src.LoadSpriteData(
-            transform,
+            blackholeTransform,
             new Vector2(textureSize.X, textureSize.Y),
             this.texture,
             null);
