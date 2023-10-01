@@ -119,12 +119,23 @@ class PlayerBlock : GameObject
         rb = new RigidBodyComponent("rbPlayer", app);
         this.AddComponent(rb);
 
-        collider.CollideEvent += OnCollisionEnter;
+        collider.TriggerEvent += OnTriggerEnter;
     }
 
     private void OnTriggerEnter(ColliderComponent other)
     {
         PrintLn("TRIGGERED ON: " + other.GetName());
+
+        //see if gameobject collided with is of type Asteroid
+        //if so, start its death countdown
+        if(other.GetGameObject() is Asteroid)
+        {
+            Asteroid asteroid = (Asteroid)other.GetGameObject();
+            if(asteroid != null)
+            {
+                asteroid.StartDeathCountdown();
+            }
+        }
     }
     private void OnCollisionEnter(ColliderComponent other)
     {
@@ -177,6 +188,7 @@ class JakubScene : Scene
         Texture2D asteroidTex1 = this.contentManager.Load<Texture2D>("Sprites/asteroid_1");
         Texture2D asteroidTex2 = this.contentManager.Load<Texture2D>("Sprites/asteroid_2");
         Texture2D asteroidTex3 = this.contentManager.Load<Texture2D>("Sprites/asteroid_3");
+        Texture2D asteroid_broken = this.contentManager.Load<Texture2D>("Sprites/asteroid_broken");
         List<Texture2D> asteroids = new List<Texture2D>() { asteroidTex1, asteroidTex2, asteroidTex3};
 
         //PlayerBlock playerBlock = new PlayerBlock(blankTexure, "spovus", app);
@@ -187,7 +199,7 @@ class JakubScene : Scene
 
 
         LevelBlock levelBlock = new LevelBlock(blankTexure,1f, "spovus", app);
-        levelBlock.SetLocalPosition(new Vector3(300, 300, 1));
+        levelBlock.SetLocalPosition(new Vector3(600, 300, 1));
         parentObject.AddChild(levelBlock);
 
         LevelBlock levelBlock2 = new LevelBlock(blankTexure, 2, "spovus", app);
@@ -198,18 +210,22 @@ class JakubScene : Scene
         levelSquare.SetLocalPosition(new Vector3(540, 50, 1));
         parentObject.AddChild(levelSquare);
 
+        PlayerBlock playerBlock = new PlayerBlock(blankTexure, "player", app);
+        playerBlock.SetLocalPosition(new Vector3(300, 300, 1));
+        parentObject.AddChild(playerBlock);
+
 
         Random rnd = new Random();
-        Asteroid asteroid1 = new Asteroid(asteroids[rnd.Next(0, 3)], "asteroid", app);
+        Asteroid asteroid1 = new Asteroid(asteroids[rnd.Next(0, 3)], asteroid_broken, "asteroid", app);
         asteroid1.SetLocalPosition(new Vector3(0, 0, 1));
         parentObject.AddChild(asteroid1);
 
-        Asteroid asteroid2 = new Asteroid(asteroids[rnd.Next(0, 3)], "asteroid", app);
-        asteroid2.SetLocalPosition(new Vector3(50, 70, 1));
+        Asteroid asteroid2 = new Asteroid(asteroids[rnd.Next(0, 3)], asteroid_broken, "asteroid", app);
+        asteroid2.SetLocalPosition(new Vector3(80, 0, 1));
         parentObject.AddChild(asteroid2);
 
-        Asteroid asteroid3 = new Asteroid(asteroids[rnd.Next(0, 3)], "asteroid", app);
-        asteroid3.SetLocalPosition(new Vector3(150, 150, 1));
+        Asteroid asteroid3 = new Asteroid(asteroids[rnd.Next(0, 3)], asteroid_broken, "asteroid", app);
+        asteroid3.SetLocalPosition(new Vector3(0, 100, 1));
         parentObject.AddChild(asteroid3);
 
         this.app.Services.GetService<ILeviathanEngineService>().AddLight(new Vector2(200, 200), new Vector3(10000000, 10000000, 10000000));
