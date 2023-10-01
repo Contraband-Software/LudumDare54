@@ -54,15 +54,15 @@ public class App_Julius : Game
         starsShader.AddParam("strength", 3000);
         engine.bindShader(starsShader);
 
-        engine.addSprite(new LeviathanSprite(this, Matrix.CreateTranslation(new Vector3(-500, -500, 0)),0.2f, new Point(2000), 2, starstex, false));
+        engine.addSprite(new LeviathanSprite(this, Matrix.CreateTranslation(new Vector3(10, 10, 0)),0.1f, new Vector2(400f), 2, starstex, false));
         //engine.addSprite(new LeviathanSprite(this, Matrix.CreateTranslation(new Vector3(450, -50, 0)), new Point(500),2, starstex, false));
-        engine.addSprite(new LeviathanSprite(this, Matrix.CreateTranslation(new Vector3(200, 200, 0)),0.2f, new Point(100), colortex, normaltex));
+        engine.addSprite(new LeviathanSprite(this, Matrix.CreateTranslation(new Vector3(200, 200, 0)),0f, new Vector2(100), colortex, normaltex));
 
         for (int i = 0; i < 8; i++)
         {
             for (int j = 0; j < 4; j++)
             {
-                LeviathanSprite testSprite = new LeviathanSprite(this, Matrix.CreateTranslation(new Vector3(i * 120, j * 120, 0)),0, new Point(25), colortex, normaltex);
+                LeviathanSprite testSprite = new LeviathanSprite(this, Matrix.CreateTranslation(new Vector3(i * 120, j * 120, 0)),0, new Vector2(25), colortex, normaltex);
                 engine.addSprite(testSprite);
             }
         }
