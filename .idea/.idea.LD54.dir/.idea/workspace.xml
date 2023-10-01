@@ -7,15 +7,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b177c274-5f29-4dd6-aecd-1ee6a42ae4d6" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.LD54.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.LD54.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scripts/AsteroidGame/GameObjects/BlackHole.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/AsteroidGame/GameObjects/BlackHole.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scripts/AsteroidGame/GameObjects/SatelliteObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/AsteroidGame/GameObjects/SatelliteObject.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scripts/Engine/Collision/ColliderComponent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/Engine/Collision/ColliderComponent.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scripts/Engine/Components/SpriteRendererComponent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/Engine/Components/SpriteRendererComponent.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scripts/Engine/Debugging/DebugPlayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/Engine/Debugging/DebugPlayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scripts/Engine/SceneGraph/SceneController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/Engine/SceneGraph/SceneController.cs" afterDir="false" />
-    </list>
+    <list default="true" id="b177c274-5f29-4dd6-aecd-1ee6a42ae4d6" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -102,7 +94,7 @@
       <workItem from="1696094649045" duration="509000" />
       <workItem from="1696095254133" duration="6048000" />
       <workItem from="1696104022872" duration="27532000" />
-      <workItem from="1696158508716" duration="3460000" />
+      <workItem from="1696158508716" duration="3992000" />
     </task>
     <servers />
   </component>
