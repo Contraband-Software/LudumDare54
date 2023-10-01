@@ -123,7 +123,7 @@ public abstract class GameObject : EngineObject, IUpdateable
         this.children.Remove(gameObject);
         gameObject.parent = null;
 
-        if (ChildAttachedEvent is not null) ChildRemovedEvent(gameObject);
+        if (ChildRemovedEvent is not null) ChildRemovedEvent(gameObject);
     }
 
     public void ClearChildren()
@@ -144,7 +144,7 @@ public abstract class GameObject : EngineObject, IUpdateable
         this.components.Add(component);
         component.OnLoad(this);
 
-        if (ChildAttachedEvent is not null) ComponentAttachedEvent(component);
+        if (ComponentAttachedEvent is not null) ComponentAttachedEvent(component);
     }
 
     public void RemoveComponent(Component component)

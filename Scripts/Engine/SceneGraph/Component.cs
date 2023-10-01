@@ -10,7 +10,8 @@ public abstract class Component : EngineObject, IUpdateable
     public event EventHandler<EventArgs>? EnabledChanged;
     public event EventHandler<EventArgs>? UpdateOrderChanged;
 
-    protected GameObject? gameObject;
+    protected GameObject gameObject;
+    public GameObject ContainingGameObject => this.gameObject;
 
     protected Component(string name, Game appCtx) : base(name, appCtx) { }
 }
