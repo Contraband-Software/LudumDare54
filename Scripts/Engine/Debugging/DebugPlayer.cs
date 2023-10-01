@@ -55,9 +55,7 @@ class DebugPlayer : GameObject
 
         ILeviathanEngineService re = this.app.Services.GetService<ILeviathanEngineService>();
         re.SetCameraPosition(new Vector2(this.GetGlobalPosition().X, this.GetGlobalPosition().Y) - re.getWindowSize() / 2);
-
     }
-
 
     private void Move()
     {

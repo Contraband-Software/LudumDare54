@@ -59,7 +59,7 @@ public class NewtonianGravity2DControllerComponent : Component
         Parallel.ForEach(Satellites,
             rb =>
             {
-                List<RigidBodyComponent> otherObjects = Satellites.ToList();
+                List<RigidBodyComponent> otherObjects = Satellites.ToList(); // OPTIMIZE THIS
                 otherObjects.Remove(rb);
                 Vector3 acceleration = ResolveGravityAcceleration(rb, otherObjects, this.ForceLaw, this.GravitationalConstant);
 

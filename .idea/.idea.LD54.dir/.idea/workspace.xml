@@ -9,13 +9,9 @@
   <component name="ChangeListManager">
     <list default="true" id="b177c274-5f29-4dd6-aecd-1ee6a42ae4d6" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.LD54.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.LD54.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scripts/AsteroidGame/GameObjects/BlackHole.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/AsteroidGame/GameObjects/BlackHole.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scripts/AsteroidGame/GameObjects/SatelliteObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/AsteroidGame/GameObjects/SatelliteObject.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scripts/AsteroidGame/Scenes/GameScene.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/AsteroidGame/Scenes/GameScene.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scripts/Engine/Components/SpriteRendererComponent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/Engine/Components/SpriteRendererComponent.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scripts/Engine/Renderer/LeviathanEngine.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/Engine/Renderer/LeviathanEngine.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scripts/Engine/SceneGraph/GameObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/Engine/SceneGraph/GameObject.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scripts/Engine/SceneGraph/SceneController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/Engine/SceneGraph/SceneController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App.cs" beforeDir="false" afterPath="$PROJECT_DIR$/App.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scripts/Engine/Components/NewtonianGravity2DControllerComponent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/Engine/Components/NewtonianGravity2DControllerComponent.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scripts/Engine/Debugging/DebugPlayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/Engine/Debugging/DebugPlayer.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
