@@ -39,7 +39,7 @@ public class App_Julius : Game
         //        engine.AddLight(new Vector2(i * 200, j * 200), new Vector3(i * 2000, j * 2000, 1000));
         //    }
         //}
-        engine.AddLight(new Vector2(10000, 100), new Vector3(10000000000, 10000000000, 10000000000));
+        engine.AddLight(new Vector2(100, 100), new Vector3(50000, 50000, 50000));
 
         Texture2D colortex = Content.Load<Texture2D>("Sprites/image");
         Texture2D normaltex = Content.Load<Texture2D>("Sprites/normal");

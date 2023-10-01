@@ -35,9 +35,22 @@ interface ILeviathanEngineService
     public void SetCameraPosition(Vector2 position);
 }
 
+public struct DebugCircle
+{
+    public DebugCircle(Vector2 center, float radius, Color color)
+    {
+        this.center = center;
+        this.radius = radius;
+        this.color = color;
+    }
+    public Vector2 center;
+    public float radius;
+    public Color color;
+}
+
 public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
 {
-
+    private List<DebugCircle> debug = new List<DebugCircle>();
     private Vector2[] lightPositions = new Vector2[64];
     private Vector3[] lightColors = new Vector3[64];
     private List<LeviathanShader> shaders = new List<LeviathanShader>();
@@ -95,6 +108,10 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
         blankNormal = game.Content.Load<Texture2D>("Sprites/blank");
     }
 
+    public void FrawDebugCircle(Vector2 position, float radius, Color color)
+    {
+        debug.Add(new DebugCircle(position, radius, color));
+    }
     public void SetCameraPosition(Vector2 position)
     {
         this.cameraPosition = position;
@@ -289,6 +306,11 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
         }
 
         spriteBatch.End();
+        //spriteBatch.Begin(transformMatrix: view);
+        //foreach (DebugCircle circle in debug)
+        //{
+        //    spriteBatch.DrawCirle()...?
+        //}
 
     }
 
