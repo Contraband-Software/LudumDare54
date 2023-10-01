@@ -10,8 +10,6 @@ public class SpriteRendererComponent : Component
 
     private ILeviathanEngineService re;
 
-    private int spriteID;
-
     public Vector3 Offset = Vector3.Zero;
 
     public float Rotation = 0;
@@ -27,7 +25,7 @@ public class SpriteRendererComponent : Component
 
         sprite = new(this.app, transform,0 , size, colorTexture, normalTexture);
 
-        spriteID = re.addSprite(sprite);
+        re.addSprite(sprite);
     }
 
     public override void OnLoad(GameObject? parentObject)
@@ -46,7 +44,7 @@ public class SpriteRendererComponent : Component
 
     public override void OnUnload()
     {
-        this.app.Services.GetService<ILeviathanEngineService>().removeSprite(spriteID);
-        // PrintLn("OnUnload: SpriteRendererComponent");
+        this.app.Services.GetService<ILeviathanEngineService>().removeSprite(sprite);
+        PrintLn("OnUnload: SpriteRendererComponent");
     }
 }

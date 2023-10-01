@@ -52,6 +52,7 @@ public abstract class GameObject : EngineObject, IUpdateable
 
     public override void OnUnload()
     {
+        PrintLn("Unloading components for: " + this.GetName());
         this.UnloadComponents();
     }
 
@@ -168,9 +169,11 @@ public abstract class GameObject : EngineObject, IUpdateable
 
     protected void UnloadComponents()
     {
-        foreach (Component c in this.components.Where(c => c.Enabled))
+        foreach (Component c in this.components.Where(c => c.Enabled).ToList())
         {
+            PrintLn(c.GetType().Name + ": " + c.GetName());
             c.OnUnload();
+            c.Enabled = false;
         }
     }
 
