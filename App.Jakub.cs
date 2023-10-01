@@ -42,6 +42,7 @@ class LevelBlock : GameObject
 
 
         ColliderComponent collider = new CircleColliderComponent(colliderDimensions.X / 2, "playerCollider", this.app);
+        collider.isTrigger = true;
         this.AddComponent(collider);
 
         rb = new RigidBodyComponent("rbPlayer", app);

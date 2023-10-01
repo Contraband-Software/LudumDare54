@@ -94,7 +94,7 @@ public abstract class ColliderComponent : Component
 {
     private int colliderID;
     public Vector3 previousPosition;
-    public bool isTrigger = false;
+    public bool isTrigger;
 
     public ColliderComponent(string name, Game appCtx) : base(name, appCtx)
     {
