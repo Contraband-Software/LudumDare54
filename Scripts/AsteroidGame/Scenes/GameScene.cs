@@ -13,6 +13,7 @@ using Engine.Components;
 using AsteroidGame.GameObjects;
 using Engine;
 using LD54.AsteroidGame.GameObjects;
+using LD54.Scripts.AsteroidGame.GameObjects;
 
 public class GameScene : Scene
 {
@@ -40,6 +41,8 @@ public class GameScene : Scene
     Vector2 windowSize;
     NewtonianSystemObject newtonianSystem;
     GameObject blackHole;
+
+    SpriteFont gameUIFont;
 
     public GameScene(Game appCtx) : base("GameScene", appCtx)
     {
@@ -181,6 +184,10 @@ public class GameScene : Scene
         Texture2D asteroidTexture3 = this.contentManager.Load<Texture2D>("Sprites/asteroid_3");
         asteroidTexture_broken = this.contentManager.Load<Texture2D>("Sprites/asteroid_broken");
 
+        gameUIFont = this.contentManager.Load<SpriteFont>("Fonts/EditUndoBrk");
+        GameUIContainer gameUI = new GameUIContainer(gameUIFont, "gameUI", app);
+        parentObject.AddChild(gameUI);
+
         asteroidTextures = new List<Texture2D>() { asteroidTexture1, asteroidTexture2, asteroidTexture3 };
 
         // player controller
@@ -211,7 +218,7 @@ public class GameScene : Scene
         re.bindShader(backgroundShader);
 
         LeviathanShader bloom = new LeviathanShader(this.app, "Shaders/bloom");
-        bloom.AddParam("strength", 0.005f);
+        bloom.AddParam("strength", 0.02f);
         bloom.AddParam("brightnessThreshold", 0);
         re.addPostProcess(bloom);
 

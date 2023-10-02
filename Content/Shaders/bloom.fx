@@ -47,9 +47,9 @@ float4 SpritePixelShader(PixelInput p) : SV_TARGET
     float brightness = 0;
     float3 avarageColor = float3(0, 0, 0);
     
-    for (int i = -9; i < 10; i++)
+    for (int i = -4; i < 5; i++)
     {
-        for (int j = -9; j < 10; j++)
+        for (int j = -3; j < 4; j++)
         {
             float3 sample = tex2D(colorSampler, p.TexCoord.xy + float2(i * oneOverWidth, j * oneOverWidth)).rgb;
             avarageColor += sample;
@@ -58,7 +58,7 @@ float4 SpritePixelShader(PixelInput p) : SV_TARGET
     }    
     if (brightness > brightnessThreshold)
     {
-        return col + float4(avarageColor * strength / 400, 0) * length(avarageColor);
+        return col + float4(avarageColor * strength / 64, 0) * length(avarageColor);
     }
     return col;
 }
