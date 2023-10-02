@@ -1,5 +1,4 @@
 
-
 #----------------------------- Global Properties ----------------------------#
 
 /outputDir:bin/$(Platform)
@@ -219,11 +218,7 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/image.png
 
-<<<<<<< HEAD
 #begin Sprites/nebula.png
-=======
-#begin Sprites/nebula.jpg
->>>>>>> 65e91436723157554635482bee73c2ad36eec759
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -233,11 +228,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-<<<<<<< HEAD
 /build:Sprites/nebula.png
-=======
-/build:Sprites/nebula.jpg
->>>>>>> 65e91436723157554635482bee73c2ad36eec759
 
 #begin Sprites/noiseTexture.png
 /importer:TextureImporter
@@ -262,6 +253,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Sprites/normal.png
+
+#begin Sprites/rockIcon.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/rockIcon.png
 
 #begin Sprites/ship.png
 /importer:TextureImporter
