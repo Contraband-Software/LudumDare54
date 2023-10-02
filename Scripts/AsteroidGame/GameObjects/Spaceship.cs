@@ -27,9 +27,9 @@ namespace LD54.AsteroidGame.GameObjects
 
         public  const float moveForce = 30f;
         public  const float MaxRotationSpeed = 3.5f;
-        private const float velocityDamping = 0.98f;
+        private const float velocityDamping = 0.88f;
 
-        private const float maxVelocityFactor = 8f;
+        private const float maxVelocityFactor = 10f;
         private const float warmupFactor = 38;
 
         private const float forceConstant = 0.001f;
@@ -146,7 +146,7 @@ namespace LD54.AsteroidGame.GameObjects
             //limit velocity
             if (rb.Velocity.Length() > maxVelocityFactor) //(1 - 1 / (d == 0 ? 1 : d)) *
             {
-                rb.Velocity = (rb.Velocity / rb.Velocity.Length()) * maxVelocityFactor;
+                rb.Velocity *= velocityDamping;
             }
             #region TOY_ORBIT_PHYSICS_CONT
             {
