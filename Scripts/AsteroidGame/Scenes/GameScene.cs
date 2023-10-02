@@ -237,7 +237,7 @@ public class GameScene : Scene
         // simple scene-wide illumination
         //re.AddLight(new Vector2(2000, -300), new Vector3(4000000, 40000000, 80000000));
 
-        StaticSprite background = new StaticSprite(blackHole, backgroundShader, this.contentManager.Load<Texture2D>("Sprites/nebula"), new Vector2(0), new Vector2(2000), "background", this.app);
+        StaticSprite background = new StaticSprite(blackHole, backgroundShader, this.contentManager.Load<Texture2D>("Sprites/nebula"), new Vector2(0), new Vector2(6000), "background", this.app);
         parentObject.AddChild(background);
 
         // some testing space junk spawning
