@@ -26,8 +26,8 @@ namespace LD54.Scripts.AsteroidGame.GameObjects
 
         private float deathCountdownTime = 1f;
 
-        private enum State { ALIVE, DYING};
-        State state = State.ALIVE;
+        public enum State { ALIVE, DYING};
+        public State state { get; private set; } = State.ALIVE;
 
         float scale;
 

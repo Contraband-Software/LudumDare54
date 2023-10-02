@@ -133,7 +133,27 @@ class PlayerBlock : GameObject
             Asteroid asteroid = (Asteroid)other.GetGameObject();
             if(asteroid != null)
             {
-                asteroid.StartDeathCountdown();
+                if(asteroid.state == Asteroid.State.ALIVE)
+                {
+                    asteroid.StartDeathCountdown();
+                    //get velocity of asteroid
+                    Vector3 asteroidVel = ((RigidBodyComponent)asteroid.GetComponent<RigidBodyComponent>()).Velocity;
+
+                    //get position delta from asteroid to player
+                    Vector3 asteroidPos = asteroid.GetGlobalPosition();
+                    Vector3 thisPos = GetGlobalPosition();
+                    Vector3 posDelta = new Vector3(
+                        thisPos.X - asteroidPos.X,
+                        thisPos.Y - asteroidPos.Y,
+                        0);
+
+                    float dotProduct = Vector3.Dot(asteroidVel, posDelta);
+                    if (dotProduct > 0)
+                    {
+                        PrintLn("MOVED BY ASTEROID");
+                        rb.Velocity += asteroidVel;
+                    }
+                }
             }
         }
     }
@@ -144,7 +164,7 @@ class PlayerBlock : GameObject
 
     public override void Update(GameTime gameTime)
     {
-        rb.Velocity = Vector3.Zero;
+        //rb.Velocity = Vector3.Zero;
         Move();
 
         base.Update(gameTime);
