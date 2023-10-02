@@ -43,11 +43,12 @@ public class App : Game
 
         PrintLn("App: Game systems initialized.");
 
+        this.sc.AddScene(new StartScene(5, this));
         this.sc.AddScene(new GameScene(this));
 
         PrintLn("App: Scenes loaded.");
 
-        this.sc.ChangeScene("GameScene");
+        this.sc.ChangeScene("StartScene");
 
         PrintLn("App: Game scene started.");
 
@@ -69,7 +70,7 @@ public class App : Game
             this.Exit();
         }
 
-        // TODO: UPDATE OUR SERVICES HERE
+
 
         base.Update(gameTime);
     }
