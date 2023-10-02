@@ -26,13 +26,13 @@ public class BlackHoleComponent : Component
     {
         gameObject = parentObject;
         re = this.app.Services.GetService<ILeviathanEngineService>();
-        Offset = Matrix.CreateTranslation(-300,-300, 0);
+        Offset = Matrix.CreateTranslation(-800,-800, 0);
 
 
 
-        bh = new LeviathanSprite(this.app,Matrix.CreateTranslation(200,100,0),0,new Vector2(600),1,this.app.Content.Load<Texture2D>("Sprites/noiseTexture"), this.app.Content.Load<Texture2D>("Sprites/discnormal"), false,0);
+        bh = new LeviathanSprite(this.app,Matrix.CreateTranslation(0,0,0),0,new Vector2(1600),1,this.app.Content.Load<Texture2D>("Sprites/noiseTexture"), this.app.Content.Load<Texture2D>("Sprites/discnormal"), false,0);
         re.addSprite(bh);
-        light = re.AddLight(new Vector2(200, 200), new Vector3(40000, 15000, 30000));
+        light = re.AddLight(new Vector2(200, 200), new Vector3(400000, 150000, 300000));
 
     }
 

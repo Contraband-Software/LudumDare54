@@ -210,7 +210,7 @@ public class GameScene : Scene
         re.bindShader(blackholeShader);
 
         backgroundShader = new LeviathanShader(this.app, "Shaders/stars");
-        backgroundShader.AddParam("strength", 7000);
+        backgroundShader.AddParam("strength", 70000);
         backgroundShader.AddParam("blackholeX", 0);
         backgroundShader.AddParam("blackholeY", 0);
         re.bindShader(backgroundShader);
@@ -225,7 +225,7 @@ public class GameScene : Scene
         re.addPostProcess(abberation);
 
         // simple scene-wide illumination
-        re.AddLight(new Vector2(2000, -300), new Vector3(4000000, 40000000, 80000000));
+        //re.AddLight(new Vector2(2000, -300), new Vector3(4000000, 40000000, 80000000));
 
         StaticSprite background = new StaticSprite(blackHole, backgroundShader, this.contentManager.Load<Texture2D>("Sprites/nebula"), new Vector2(0), new Vector2(2000), "background", this.app);
         parentObject.AddChild(background);

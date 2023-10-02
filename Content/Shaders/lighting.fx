@@ -59,31 +59,32 @@ float4 SpritePixelShader(PixelInput p) : SV_TARGET
             float2 marchVector = -normalize(distAxis) * 3; //-?
             float2 marchPos = screenCords;
             float3 shadowFactor = float3(1, 1, 1);
-            
-            //for (int j = 0; j < 32; j++)
+
+            //if (i == 0)
             //{
-            //    if (dot(shadowFactor, float3(1, 1, 1) <= 0))
+            //    for (int j = 0; j < 32; j++)
             //    {
-            //        shadowFactor = float3(0, 0, 0);
-            //        break;
+            //        if (dot(shadowFactor, float3(1, 1, 1) <= 0))
+            //        {
+            //            shadowFactor = float3(0, 0, 0);
+            //            break;
+            //        }
+            //        if (marchPos.x < 0 || marchPos.x > width || marchPos.y < 0 || marchPos.y > height)
+            //        {
+            //            break;
+            //        }
+            //        if (abs(translatedPos - marchPos).x < 3 && abs(translatedPos - marchPos).y < 3)
+            //        {
+            //            break;
+            //        }
+            //        float3 occluderSample = tex2D(occluderSampler, marchPos / float2(width, height)).rgb;
+            //        if (dot(occluderSample, float3(1, 1, 1)) == 0)
+            //        {
+            //            shadowFactor -= float3(0.1, 0.1, 0.1);
+            //        }
+            //        marchPos += marchVector;
             //    }
-            //    if (marchPos.x < 0 || marchPos.x > width || marchPos.y < 0 || marchPos.y > height)
-            //    {
-            //        break;
-            //    }
-            //    if (abs(translatedPos - marchPos).x < 3 && abs(translatedPos - marchPos).y < 3)
-            //    {
-            //        break;
-            //    }
-            //    float3 occluderSample = tex2D(occluderSampler, marchPos / float2(width, height)).rgb;
-            //    if (dot(occluderSample, float3(1, 1, 1)) == 0)
-            //    {
-            //        shadowFactor -= float3(0.1, 0.1, 0.1);
-            //    }
-            //    marchPos += marchVector;
             //}
-
-
             lighting += (lightColors[i] / distSquared) * max(dot(normal.xyz, normalize(float3(-distAxis.x, distAxis.y, 100))), 0) * shadowFactor; // not technically correct
         }
     }
