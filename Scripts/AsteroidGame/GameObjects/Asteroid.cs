@@ -74,7 +74,7 @@ namespace LD54.Scripts.AsteroidGame.GameObjects
             // PrintLn(this.rotationSpeed.ToString());
             collider = new CircleColliderComponent(colliderDimensions.X / 2, Vector3.Zero, "asteroidCollider", this.app);
             collider.isTrigger = true;
-            this.collider.DebugMode = true;
+            this.collider.DebugMode = false;
 
             this.AddComponent(collider);
 
