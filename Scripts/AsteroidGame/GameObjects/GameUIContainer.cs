@@ -21,15 +21,6 @@ namespace LD54.Scripts.AsteroidGame.GameObjects
         public GameUIContainer(List<SpriteFont> gameUI, string name, Game appCtx) : base(name, appCtx)
         {
             fonts = gameUI;
-        }
-
-        public override void OnLoad(GameObject? parentObject)
-        {
-            this.SetLocalPosition(new Vector2(0,0));
-
-            //SpriteFont font = new SpriteFont()
-
-
             scoreText = new UITextComponent("ui", app);
             scoreText.LoadTextElementData(
                 app,
@@ -40,9 +31,11 @@ namespace LD54.Scripts.AsteroidGame.GameObjects
                 new Color(255, 255, 255));
             this.AddComponent(scoreText);
             scoreText.PositionXAtRightEdge(new Vector2(-20, 10));
+        }
 
-            //
-
+        public override void OnLoad(GameObject? parentObject)
+        {
+            this.SetLocalPosition(new Vector2(0,0));
 
 
 
@@ -68,7 +61,6 @@ namespace LD54.Scripts.AsteroidGame.GameObjects
             }
             PrintLn("GAAAAAAME OVERRRRRRRRRRRRRRRRR");
             state = UIState.PLAYER_DEAD;
-            scoreText.Enabled = false;
 
             gameOverText = new UITextComponent("ui", app);
             gameOverText.LoadTextElementData(
