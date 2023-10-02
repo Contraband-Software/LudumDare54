@@ -13,6 +13,7 @@ using Engine.Components;
 using AsteroidGame.GameObjects;
 using Engine;
 using LD54.AsteroidGame.GameObjects;
+using LD54.Scripts.AsteroidGame.GameObjects;
 
 public class GameScene : Scene
 {
@@ -40,6 +41,8 @@ public class GameScene : Scene
     Vector2 windowSize;
     NewtonianSystemObject newtonianSystem;
     GameObject blackHole;
+
+    SpriteFont gameUIFont;
 
     public GameScene(Game appCtx) : base("GameScene", appCtx)
     {
@@ -180,6 +183,10 @@ public class GameScene : Scene
         Texture2D asteroidTexture2 = this.contentManager.Load<Texture2D>("Sprites/asteroid_2");
         Texture2D asteroidTexture3 = this.contentManager.Load<Texture2D>("Sprites/asteroid_3");
         asteroidTexture_broken = this.contentManager.Load<Texture2D>("Sprites/asteroid_broken");
+
+        gameUIFont = this.contentManager.Load<SpriteFont>("Fonts/EditUndoBrk");
+        GameUIContainer gameUI = new GameUIContainer(gameUIFont, "gameUI", app);
+        parentObject.AddChild(gameUI);
 
         asteroidTextures = new List<Texture2D>() { asteroidTexture1, asteroidTexture2, asteroidTexture3 };
 
