@@ -8,9 +8,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b177c274-5f29-4dd6-aecd-1ee6a42ae4d6" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Content/Fonts/EditUndoBrk.spritefont" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Fonts/EditUndoLineBrk.spritefont" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.LD54.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.LD54.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scripts/AsteroidGame/GameObjects/TitleScreenSystem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/AsteroidGame/GameObjects/TitleScreenSystem.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scripts/AsteroidGame/Scenes/StartScene.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/AsteroidGame/Scenes/StartScene.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Content.mgcb" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Content.mgcb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Fonts/EditUndoBrk-RwaV.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Fonts/EditUndoBrk.ttf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Fonts/EditUndoLineBrk-8y9M.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Fonts/EditUndoLineBrk.ttf" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,29 +46,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;XThreadsFramesViewSplitterKey&quot;: &quot;0.29752067&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.sourceCode.C#&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "XThreadsFramesViewSplitterKey": "0.29752067",
+    "git-widget-placeholder": "master",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.sourceCode.C#",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;rider.external.source.directories&quot;: [
-      &quot;/home/seraph/.config/JetBrains/Rider2023.2/resharper-host/DecompilerCache&quot;,
-      &quot;/home/seraph/.config/JetBrains/Rider2023.2/resharper-host/SourcesCache&quot;,
-      &quot;/home/seraph/.local/share/Symbols/src&quot;
+  "keyToStringList": {
+    "rider.external.source.directories": [
+      "/home/seraph/.config/JetBrains/Rider2023.2/resharper-host/DecompilerCache",
+      "/home/seraph/.config/JetBrains/Rider2023.2/resharper-host/SourcesCache",
+      "/home/seraph/.local/share/Symbols/src"
     ]
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration name="LD54" type="DotNetProject" factoryName=".NET Project">
       <option name="EXE_PATH" value="" />
@@ -102,7 +106,7 @@
       <workItem from="1696215502465" duration="29000" />
       <workItem from="1696215739375" duration="735000" />
       <workItem from="1696243793479" duration="7253000" />
-      <workItem from="1696268273312" duration="5041000" />
+      <workItem from="1696268273312" duration="5663000" />
     </task>
     <servers />
   </component>
@@ -121,6 +125,7 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
   </component>
 </project>
