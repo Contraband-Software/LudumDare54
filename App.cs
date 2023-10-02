@@ -25,19 +25,28 @@ public class App : Game
         this.graphics = new GraphicsDeviceManager(this);
 
         #region VIDEO_MODE_SELECTION
-        float largestResolution = 0;
-        DisplayMode preferredMode = null;
-        foreach (DisplayMode mode in GraphicsAdapter.DefaultAdapter.SupportedDisplayModes)
+        bool debugVideoMode = true;
+        if (debugVideoMode)
         {
-            float size = mode.Width * mode.Height;
-            if (size > largestResolution)
-            {
-                preferredMode = mode;
-            }
+            this.graphics.PreferredBackBufferWidth = 1200;
+            this.graphics.PreferredBackBufferHeight = 800;
         }
-        this.graphics.PreferredBackBufferWidth = preferredMode.Width;
-        this.graphics.PreferredBackBufferHeight = preferredMode.Height;
-        this.graphics.ToggleFullScreen();
+        else
+        {
+            float largestResolution = 0;
+            DisplayMode preferredMode = null;
+            foreach (DisplayMode mode in GraphicsAdapter.DefaultAdapter.SupportedDisplayModes)
+            {
+                float size = mode.Width * mode.Height;
+                if (size > largestResolution)
+                {
+                    preferredMode = mode;
+                }
+            }
+            this.graphics.PreferredBackBufferWidth = preferredMode.Width;
+            this.graphics.PreferredBackBufferHeight = preferredMode.Height;
+            this.graphics.ToggleFullScreen();
+        }
         #endregion
 
         this.Content.RootDirectory = "Content";
