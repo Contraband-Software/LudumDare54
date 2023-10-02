@@ -167,8 +167,7 @@ public class GameScene : Scene
         PrintLn("Screen resolution: " + windowSize);
 
         // simple scene-wide illumination
-        sunLight = this.app.Services.GetService<ILeviathanEngineService>().AddLight(new Vector2(200, 200), new Vector3(10000000, 10000000, 10000000));
-
+        ILeviathanEngineService re = this.app.Services.GetService<ILeviathanEngineService>();
         // sim set up
         newtonianSystem = new NewtonianSystemObject(
             GameScene.GRAVITATIONAL_CONSTANT,
@@ -206,6 +205,30 @@ public class GameScene : Scene
         Spaceship player = new Spaceship(blackHole as BlackHole, shipTexture, "player", app);
         player.SetLocalPosition(new Vector2(-300, 150));
         parentObject.AddChild(player);
+        LeviathanShader backgroundShader = new LeviathanShader(this.app, "Shaders/stars");
+        LeviathanShader blackholeShader = new LeviathanShader(this.app, "Shaders/blackhole");
+        re.bindShader(blackholeShader);
+
+        backgroundShader = new LeviathanShader(this.app, "Shaders/stars");
+        backgroundShader.AddParam("strength", 7000);
+        backgroundShader.AddParam("blackholeX", 0);
+        backgroundShader.AddParam("blackholeY", 0);
+        re.bindShader(backgroundShader);
+
+        LeviathanShader bloom = new LeviathanShader(this.app, "Shaders/bloom");
+        bloom.AddParam("strength", 0.2f);
+        bloom.AddParam("brightnessThreshold", 220);
+        re.addPostProcess(bloom);
+
+        LeviathanShader abberation = new LeviathanShader(this.app, "Shaders/abberation");
+        abberation.AddParam("strength", 0.005f);
+        re.addPostProcess(abberation);
+
+        // simple scene-wide illumination
+        re.AddLight(new Vector2(2000, -300), new Vector3(4000000, 40000000, 80000000));
+
+        StaticSprite background = new StaticSprite(blackHole, backgroundShader, this.contentManager.Load<Texture2D>("Sprites/nebula"), new Vector2(0), new Vector2(2000), "background", this.app);
+        parentObject.AddChild(background);
 
         // some testing space junk spawning
         SpawnAsteroidDisk(newtonianSystem,
