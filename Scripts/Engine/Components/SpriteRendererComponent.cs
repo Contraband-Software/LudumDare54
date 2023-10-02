@@ -45,4 +45,12 @@ public class SpriteRendererComponent : Component
         this.app.Services.GetService<ILeviathanEngineService>().removeSprite(sprite);
         PrintLn("OnUnload: SpriteRendererComponent");
     }
+
+    public void SetSprite(Texture2D texture)
+    {
+        if(sprite != null)
+        {
+            sprite.SetColorTexture(texture);
+        }
+    }
 }

@@ -34,6 +34,7 @@ namespace LD54.Scripts.AsteroidGame.GameObjects
         public Asteroid(Texture2D texture, Texture2D brokenText, string name, Game appCtx) : base(name, appCtx)
         {
             this.texture = texture;
+            this.brokenTexture = brokenText;
             Random rnd = new Random();
             this.scale = 0.3f + (rnd.NextSingle() * 0.7f);
 
@@ -97,6 +98,7 @@ namespace LD54.Scripts.AsteroidGame.GameObjects
                 PrintLn("starting DEATH sequence for asteroid");
                 state = State.DYING;
                 rotationSpeed = 0;
+                src.SetSprite(brokenTexture);
             }    
         }
     }
