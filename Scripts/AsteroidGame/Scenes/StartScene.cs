@@ -8,13 +8,12 @@ using Microsoft.Xna.Framework.Graphics;
 
 public class StartScene : Scene
 {
-    private readonly float showTime = 0;
-    private float timeShowed = 0;
+    private readonly int showTime = 0;
 
     private ILeviathanEngineService? render;
     private ISceneControllerService? scene;
 
-    public StartScene(float showTime, Game appCtx) : base("StartScene", appCtx)
+    public StartScene(int showTime, Game appCtx) : base("StartScene", appCtx)
     {
         this.showTime = showTime;
     }
@@ -24,34 +23,19 @@ public class StartScene : Scene
         render = this.app.Services.GetService<ILeviathanEngineService>();
         scene = this.app.Services.GetService<ISceneControllerService>();
 
-        GameObject titleUI = new TitleScreenSystem(this.contentManager.Load<SpriteFont>("Fonts/TitleFont"), this.app);
+        GameObject titleUI = new TitleScreenSystem(
+            this.showTime,
+            this.contentManager.Load<SpriteFont>("Fonts/TitleFont"),
+            this.contentManager.Load<SpriteFont>("Fonts/SubtitleFont"),
+            this.app
+            );
+
         parentObject.AddChild(titleUI);
     }
 
     public override void Update(GameTime gameTime)
     {
         base.Update(gameTime);
-
-        timeShowed += gameTime.TotalGameTime.Seconds;
-
-        float increment = this.showTime / 4;
-
-        // if (this.timeShowed > increment && !showedTitle)
-        // {
-        //     showedTitle = true;
-        // } else if (this.timeShowed > increment * 2 && !showedStudio)
-        // {
-        //     showedStudio = true;
-        //
-        // } else if (this.timeShowed > increment * 3 && !showedEngine)
-        // {
-        //     showedEngine = true;
-        //
-        // } else if (this.timeShowed > increment * 4)
-        // {
-        //     this.scene.ChangeScene("GameScene");
-        // }
-        this.scene.ChangeScene("GameScene");
     }
 
     public override void OnUnload()
