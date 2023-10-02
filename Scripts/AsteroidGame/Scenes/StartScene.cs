@@ -3,6 +3,8 @@ namespace LD54.AsteroidGame.Scenes;
 using Engine.Leviathan;
 using Microsoft.Xna.Framework;
 using Engine;
+using GameObjects;
+using Microsoft.Xna.Framework.Graphics;
 
 public class StartScene : Scene
 {
@@ -21,6 +23,9 @@ public class StartScene : Scene
     {
         render = this.app.Services.GetService<ILeviathanEngineService>();
         scene = this.app.Services.GetService<ISceneControllerService>();
+
+        GameObject titleUI = new TitleScreenSystem(this.contentManager.Load<SpriteFont>("Fonts/main"), this.app);
+        parentObject.AddChild(titleUI);
     }
 
     public override void Update(GameTime gameTime)

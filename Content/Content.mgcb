@@ -13,6 +13,16 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin Fonts/EditUndoBrk-RwaV.ttf
+/importer:
+/processor:
+/build:Fonts/EditUndoBrk-RwaV.ttf;Fonts/EditUndoBrk.ttf
+
+#begin Fonts/EditUndoLineBrk-8y9M.ttf
+/importer:
+/processor:
+/build:Fonts/EditUndoLineBrk-8y9M.ttf;Fonts/EditUndoLineBrk.ttf
+
 #begin Fonts/main.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
