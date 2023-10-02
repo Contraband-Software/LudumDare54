@@ -116,31 +116,26 @@ namespace LD54.AsteroidGame.GameObjects
 
                 // Always being pulled in
                 finalAbsoluteVelocity += new Vector3(orbitNormal, 0) * fallFactor * MathF.Abs(speedAbs == 0f ? 1f : (1 / MathF.Pow(speedAbs, 0.9f)));
-                // finalAbsoluteVelocity -= new Vector3(orbitTangent, 0) * fallFactor * (1 / (distanceToBlackHole < 0.1f ? 0.0000001f : MathF.Pow(distanceToBlackHole, 0.9f)));
+                Vector3 slowdown = new Vector3(orbitTangent * -tangentVelocity, 0).RNormalize() * fallFactor * (1 / (distanceToBlackHole < 0.1f ? 0.0000001f : MathF.Pow(distanceToBlackHole, 0.9f)));
+                finalAbsoluteVelocity += slowdown;
 
-                if (speedAbs < deathSpeed)
-                {
-                    // finalAbsoluteVelocity += new Vector3(orbitNormal, 0) * maxVelocityFactor;
-                }
+                //if (speedAbs < deathSpeed)
+                //{
+                //   finalAbsoluteVelocity += new Vector3(orbitNormal, 0) * maxVelocityFactor * (deathSpeed - speedAbs);
+                //}
 
-                if (Math.IsFinite(finalAbsoluteVelocity))
-                {
-                    this.rb.Velocity = finalAbsoluteVelocity;
-                }
-                else
-                {
-                    PrintLn("nan");
-                }
+                if (Math.IsFinite(finalAbsoluteVelocity)) this.rb.Velocity = finalAbsoluteVelocity;
 
                 // Debug stuff, no more math after here
                 // Vector2 overlapOffset = new Vector2(1, 1) * 10;
                 float velScale = 50;
                 render.DebugDrawCircle(new Vector2(blackHolePosition.X, blackHolePosition.Y), r, Color.Lime);
 
-                render.DebugDrawLine(this.GetGlobalPosition().SwizzleXY(), this.GetGlobalPosition().SwizzleXY() + positionDelta, Color.Pink);
+                // render.DebugDrawLine(this.GetGlobalPosition().SwizzleXY(), this.GetGlobalPosition().SwizzleXY() + positionDelta, Color.Pink);
+                // render.DebugDrawLine(this.GetGlobalPosition().SwizzleXY(), this.GetGlobalPosition().SwizzleXY() + slowdown.SwizzleXY() * velScale * 100, Color.Pink);
 
-                render.DebugDrawLine(this.GetGlobalPosition().SwizzleXY(), this.GetGlobalPosition().SwizzleXY() + accelerationToCenter.SwizzleXY(), Color.Lime);
-                render.DebugDrawLine(this.GetGlobalPosition().SwizzleXY(), this.GetGlobalPosition().SwizzleXY() + finalAbsoluteVelocity.SwizzleXY(), Color.Pink);
+                render.DebugDrawLine(this.GetGlobalPosition().SwizzleXY(), this.GetGlobalPosition().SwizzleXY() + orbitNormal * 100, Color.Crimson);
+                // render.DebugDrawLine(this.GetGlobalPosition().SwizzleXY(), this.GetGlobalPosition().SwizzleXY() + finalAbsoluteVelocity.SwizzleXY(), Color.Pink);
                 render.DebugDrawLine(this.GetGlobalPosition().SwizzleXY(), this.GetGlobalPosition().SwizzleXY() + tangentVelocity * velScale * orbitTangent, Color.Cyan);
                 // render.DebugDrawLine(this.GetGlobalPosition().SwizzleXY(), this.GetGlobalPosition().SwizzleXY() + tangent, Color.Cyan);
                 // render.DebugDrawLine(this.GetGlobalPosition().SwizzleXY() + overlapOffset, this.GetGlobalPosition().SwizzleXY() + overlapOffset + positionDelta * 140, Color.Lime);
