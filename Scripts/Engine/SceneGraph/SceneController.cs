@@ -32,6 +32,7 @@ public interface ISceneControllerService
     public Scene? GetCurrentScene();
     public void AddScene(Scene scene);
     public void ChangeScene(string next);
+    public void ReloadCurrentScene();
 }
 
 public class SceneController : GameComponent, ISceneControllerService
@@ -151,6 +152,11 @@ public class SceneController : GameComponent, ISceneControllerService
         {
             this.nextScene = nextScene;
         }
+    }
+
+    public void ReloadCurrentScene()
+    {
+        this.nextScene = this.activeScene;
     }
     #endregion
 
