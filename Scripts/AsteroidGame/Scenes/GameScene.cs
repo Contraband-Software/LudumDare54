@@ -79,7 +79,7 @@ public class GameScene : Scene
             "GravitySimulationObject",
             this.app);
         parentObject.AddChild(newtonianSystem);
-        newtonianSystem.SetLocalPosition(new Vector2(300, 400));
+        newtonianSystem.SetLocalPosition(new Vector2(150, 150));
 
         testObjectTexture = this.contentManager.Load<Texture2D>("Sprites/circle");
 
@@ -102,7 +102,7 @@ public class GameScene : Scene
 
         Texture2D shipTexture = this.contentManager.Load<Texture2D>("Sprites/arrow");
         Spaceship player = new Spaceship(blackHole as BlackHole, shipTexture, "player", app);
-        player.SetLocalPosition(new Vector2(0, 0));
+        player.SetLocalPosition(new Vector2(-300, 150));
         parentObject.AddChild(player);
 
         // some testing space junk spawning

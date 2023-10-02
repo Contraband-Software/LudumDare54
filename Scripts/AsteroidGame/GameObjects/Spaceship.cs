@@ -16,33 +16,29 @@ namespace LD54.Scripts.AsteroidGame.GameObjects
 
     public class Spaceship : GameObject
     {
+        BlackHole blackHole;
+
         Texture2D texture;
-        public float moveForce = 10f;
-
-        //private float rotationSpeed;
-        public float MaxRotationSpeed = 3.5f;
-        //public float RotationAccel = 1f;
-
-        private float maxVelocity = 5f;
-        private float velocityDamping = 0.98f;
 
         CircleColliderComponent collider;
         RigidBodyComponent rb;
         SpriteRendererComponent src;
 
-        private const float spaceshipConstant = 0.01f;
-        BlackHole blackHole;
+        public float moveForce = 30f;
+        public float MaxRotationSpeed = 3.5f;
+        private float velocityDamping = 0.98f;
+
+        private float maxVelocityFactor = 5f;
+
+        private const float forceConstant = 0.001f;
+        private const float boostFactor = 0.1f;
+        private const float fallFactor = 0.5f;
 
 
         public Spaceship(BlackHole blackHole, Texture2D texture, string name, Game appCtx) : base(name, appCtx)
         {
             this.blackHole = blackHole;
             this.texture = texture;
-
-            Matrix pos = this.GetLocalTransform();
-            pos.Translation = new Vector3(150, 150, 1);
-
-            this.SetLocalTransform(pos);
         }
 
         public override void OnLoad(GameObject? parentObject)
@@ -53,8 +49,8 @@ namespace LD54.Scripts.AsteroidGame.GameObjects
             src.LoadSpriteData(
                 this.GetGlobalTransform(),
                 new Vector2((this.texture.Width / scaleDivider), (this.texture.Height / scaleDivider)),
-                this.texture,
-                null);
+                this.texture
+                );
             this.AddComponent(src);
 
             Vector3 colliderDimensions = new Vector3(this.texture.Width, this.texture.Height, 0);
@@ -66,46 +62,70 @@ namespace LD54.Scripts.AsteroidGame.GameObjects
 
             rb = new RigidBodyComponent("rbPlayer", app);
             rb.Mass = 0;
-            rb.Velocity += new Vector3(1, 1, 0);
+            rb.Velocity += new Vector3(0, 0, 0);
             this.AddComponent(rb);
         }
 
         public override void Update(GameTime gameTime)
         {
-
+            #region TOY_ORBIT_PHYSICS
+            float distanceToBlackHole = 0;
             {
-/*                Vector3 blackHolePosition = blackHole.GetGlobalPosition();
+                var render = this.app.Services.GetService<ILeviathanEngineService>();
+
+                Vector3 blackHolePosition = blackHole.GetGlobalPosition();
                 Vector3 shipPosition = this.GetGlobalPosition();
 
+                // Distance to black hole
                 Vector2 positionDelta = new Vector2(
                     blackHolePosition.X - shipPosition.X,
                     blackHolePosition.Y - shipPosition.Y
                 );
-
                 float r = positionDelta.Magnitude();
+                distanceToBlackHole = r;
+                render.DebugDrawLine(this.GetGlobalPosition().SwizzleXY(), this.GetGlobalPosition().SwizzleXY() + positionDelta, Color.Pink);
 
-                positionDelta.Normalize(); // positionDelta would become the orbit normal
 
-                Vector2 tangentNormalized = positionDelta.PerpendicularClockwise();
+                Vector2 orbitTangent = positionDelta.PerpendicularCounterClockwise();
+                float tangentVelocity = Vector2.Dot(this.rb.Velocity.SwizzleXY(), orbitTangent) / orbitTangent.Length();
 
-                Vector2 tangentVelocity = Vector2.Dot(new Vector2(rb.Velocity), tangentNormalized);
+                Vector2 orbitNormal = positionDelta.RNormalize(); // positionDelta would become the orbit normal
+                Vector3 accelerationToCenter = new Vector3(orbitNormal * MathF.Abs(tangentVelocity) * r * (gameTime.ElapsedGameTime.Milliseconds / 1000f), 0) * forceConstant;
 
-                Vector3 vel = new Vector3(positionDelta * (r * tangentVelocity), 0) * spaceshipConstant;
+                orbitTangent.Normalize();
+                Vector3 finalAbsoluteVelocity = accelerationToCenter + new Vector3((tangentVelocity) * orbitTangent, 0);
 
-                rb.Velocity += vel;*/
+                // More speed = more radius increase per frame
+                float speedAbs = this.rb.Velocity.Copy().Length();
+                finalAbsoluteVelocity += new Vector3(-orbitNormal, 0) * boostFactor * speedAbs;
 
-                /*this.app.Services.GetService<ILeviathanEngineService>().DebugDrawCircle(
-                    new Vector2(blackHolePosition.X, blackHolePosition.Y), r, Color.Lime);*/
+                // Always being pulled in
+                finalAbsoluteVelocity += new Vector3(orbitNormal, 0) * fallFactor;
+                this.rb.Velocity = finalAbsoluteVelocity;
+
+
+                // Debug stuff, no more math after here
+                Vector2 overlapOffset = new Vector2(1, 1) * 10;
+                float velScale = 50;
+                render.DebugDrawCircle(new Vector2(blackHolePosition.X, blackHolePosition.Y), r, Color.Lime);
+
+                render.DebugDrawLine(this.GetGlobalPosition().SwizzleXY(), this.GetGlobalPosition().SwizzleXY() + accelerationToCenter.SwizzleXY(), Color.Lime);
+                render.DebugDrawLine(this.GetGlobalPosition().SwizzleXY(), this.GetGlobalPosition().SwizzleXY() + finalAbsoluteVelocity.SwizzleXY(), Color.Pink);
+                render.DebugDrawLine(this.GetGlobalPosition().SwizzleXY(), this.GetGlobalPosition().SwizzleXY() + tangentVelocity * velScale * orbitTangent, Color.Cyan);
+                // render.DebugDrawLine(this.GetGlobalPosition().SwizzleXY(), this.GetGlobalPosition().SwizzleXY() + tangent, Color.Cyan);
+                // render.DebugDrawLine(this.GetGlobalPosition().SwizzleXY() + overlapOffset, this.GetGlobalPosition().SwizzleXY() + overlapOffset + positionDelta * 140, Color.Lime);
+                render.DebugDrawLine(this.GetGlobalPosition().SwizzleXY() + overlapOffset * 2, this.GetGlobalPosition().SwizzleXY() + overlapOffset * 2 + this.rb.Velocity.SwizzleXY() * velScale, Color.Yellow);
             }
+            #endregion
 
             //rb.Velocity = Vector3.Zero;
             Move(gameTime);
 
             //limit velocity
-/*            if (rb.Velocity.Length() > maxVelocity)
+            if (rb.Velocity.Length() > distanceToBlackHole * this.maxVelocityFactor)
             {
-                rb.Velocity = (rb.Velocity / rb.Velocity.Length()) * maxVelocity;
-            }*/
+                rb.Velocity = (rb.Velocity / rb.Velocity.Length()) * this.maxVelocityFactor;
+            }
             //rb.Velocity *= velocityDamping;
             ILeviathanEngineService re = this.app.Services.GetService<ILeviathanEngineService>();
             re.SetCameraPosition(new Vector2(
@@ -119,7 +139,7 @@ namespace LD54.Scripts.AsteroidGame.GameObjects
         {
             Rotation -= MaxRotationSpeed * (gameTime.ElapsedGameTime.Milliseconds / 1000f);
             src.Rotation = Rotation;
-            
+
         }
         private void RotateRight(GameTime gameTime)
         {
@@ -152,7 +172,7 @@ namespace LD54.Scripts.AsteroidGame.GameObjects
             if (Keyboard.GetState().IsKeyDown(Keys.W))
             {
                 MoveInForwardDirection(gameTime);
-                
+
             }
             if (Keyboard.GetState().IsKeyDown(Keys.A))
             {
