@@ -101,7 +101,7 @@ public class CollisionSystem : GameComponent, ICollisionSystemService
 
         //if it has a rigidbody, allow resolution, if not, it is forced to be a trigger
         //also wont resolve if its a static
-        if (requestingColliderRb == null || requestingColliderRb.Static)
+        if (requestingColliderRb == null || requestingColliderRb.Static || requestingCollider.isTrigger)
         {
             //invoke triggerEnter
             return;
