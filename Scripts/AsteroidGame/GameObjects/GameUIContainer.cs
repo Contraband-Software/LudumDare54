@@ -11,12 +11,16 @@ namespace LD54.Scripts.AsteroidGame.GameObjects
 
     public class GameUIContainer : GameObject
     {
-        SpriteFont gameUIFont;
         float timeElapsed;
         UITextComponent scoreText;
-        public GameUIContainer(SpriteFont gameUI, string name, Game appCtx) : base(name, appCtx)
+        UITextComponent gameOverText;
+        UITextComponent finalScore;
+        List<SpriteFont> fonts;
+        private enum UIState { PLAYER_ALIVE, PLAYER_DEAD};
+        private UIState state = UIState.PLAYER_ALIVE;
+        public GameUIContainer(List<SpriteFont> gameUI, string name, Game appCtx) : base(name, appCtx)
         {
-            gameUIFont = gameUI;
+            fonts = gameUI;
         }
 
         public override void OnLoad(GameObject? parentObject)
@@ -31,18 +35,97 @@ namespace LD54.Scripts.AsteroidGame.GameObjects
                 this.GetGlobalTransform(),
                 new Vector2(1, 1),
                 "SCORE SCORE",
-                gameUIFont,
+                fonts[0],
                 new Color(255, 255, 255));
             this.AddComponent(scoreText);
-
             scoreText.PositionXAtRightEdge(new Vector2(-20, 10));
+
+            //
+
+
+
+
             timeElapsed = 0;
+            state = UIState.PLAYER_ALIVE;
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
 
+            if(state == UIState.PLAYER_ALIVE)
+            {
+                UpdateTimer(gameTime);
+            }
+        }
+
+        public void OnGameOver()
+        {
+            PrintLn("GAAAAAAME OVERRRRRRRRRRRRRRRRR");
+            state = UIState.PLAYER_DEAD;
+            scoreText.Enabled = false;
+
+            gameOverText = new UITextComponent("ui", app);
+            gameOverText.LoadTextElementData(
+                app,
+                this.GetGlobalTransform(),
+                new Vector2(1, 1),
+                "GAME OVER",
+                fonts[1],
+                Color.Red,
+                true);
+            this.AddComponent(gameOverText);
+            gameOverText.PositionXAtScreenCentre();
+            gameOverText.PositionYAtScreenCentre(new Vector2(0,0));
+
+            //========================================
+
+            finalScore = new UITextComponent("ui", app);
+            finalScore.LoadTextElementData(
+                app,
+                this.GetGlobalTransform(),
+                new Vector2(1, 1),
+                "FINAL SCORE",
+                fonts[0],
+                Color.White,
+                true);
+            this.AddComponent(finalScore);
+
+            int totalSeconds = (int)MathF.Round(timeElapsed);
+            int minutes = totalSeconds / 60;
+            int seconds = totalSeconds % 60;
+
+            string minutesText = (minutes > 9) ? minutes.ToString() : "0" + minutes.ToString();
+            string secondsText = (seconds > 9) ? seconds.ToString() : "0" + seconds.ToString();
+
+            if (minutes > 0)
+            {
+                finalScore.SetText("Time Survived= " + minutesText + ":" + secondsText);
+            }
+            else
+            {
+                finalScore.SetText("Time Survived= 00:" + secondsText);
+            }
+            finalScore.PositionXAtScreenCentre();
+            finalScore.PositionYAtScreenCentre(new Vector2(0,100));
+
+            //============================
+            UITextComponent restartText = new UITextComponent("ui", app);
+            restartText.LoadTextElementData(
+                app,
+                this.GetGlobalTransform(),
+                new Vector2(1, 1),
+                "PRESS [R] TO [R]ESTART",
+                fonts[0],
+                Color.White,
+                true);
+            this.AddComponent(restartText);
+            restartText.PositionXAtScreenCentre();
+            restartText.PositionYAtScreenCentre(new Vector2(0, 200));
+        }
+
+        private void UpdateTimer(GameTime gameTime)
+        {
             //update time score thingy
             //reposition text sprite to be on right top corner
             timeElapsed += (gameTime.ElapsedGameTime.Milliseconds / 1000f);
