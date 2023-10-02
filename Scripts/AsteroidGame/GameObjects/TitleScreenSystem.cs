@@ -25,9 +25,9 @@ public class TitleScreenSystem : GameObject
         string titleText = "EVENT HORIZON";
         float titleScale = 10;
 
-        // Matrix fuckingTitlePosition = this.GetGlobalTransform();
-        // fuckingTitlePosition.Translation += new Vector3(titlePos - font.MeasureString(), 0);
-        // gameTitle = new LeviathanUIElement(this.app, fuckingTitlePosition, new Vector2(titleScale), titleText, this.font, Color.White);
+        Matrix fuckingTitlePosition = this.GetGlobalTransform();
+        fuckingTitlePosition.Translation += new Vector3(titlePos - font.MeasureString(), 0);
+        gameTitle = new LeviathanUIElement(this.app, fuckingTitlePosition, new Vector2(titleScale), titleText, this.font, Color.White);
 
         this.render.addUISprite(gameTitle);
     }

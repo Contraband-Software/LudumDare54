@@ -24,7 +24,7 @@ public class StartScene : Scene
         render = this.app.Services.GetService<ILeviathanEngineService>();
         scene = this.app.Services.GetService<ISceneControllerService>();
 
-        GameObject titleUI = new TitleScreenSystem(this.contentManager.Load<SpriteFont>("Fonts/main"), this.app);
+        GameObject titleUI = new TitleScreenSystem(this.contentManager.Load<SpriteFont>("Fonts/EditUndoLineBrk"), this.app);
         parentObject.AddChild(titleUI);
     }
 
