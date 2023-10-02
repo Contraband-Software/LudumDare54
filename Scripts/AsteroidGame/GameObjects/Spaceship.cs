@@ -7,7 +7,6 @@ namespace LD54.AsteroidGame.GameObjects
     using Microsoft.Xna.Framework.Input;
     using Microsoft.Xna.Framework;
     using System;
-    using LD54.Scripts.AsteroidGame.GameObjects;
     using Math = Engine.Math;
 
     public class Spaceship : GameObject
@@ -56,19 +55,19 @@ namespace LD54.AsteroidGame.GameObjects
                 );
             this.AddComponent(src);
 
-            // Vector3 colliderDimensions = new Vector3(this.texture.Width, this.texture.Height, 0);
-            // collider = new CircleColliderComponent(colliderDimensions.X/2, Vector3.Zero, "playerCollider", this.app);
-            // collider.isTrigger = true;
-            // this.collider.DebugMode = true;
-            // collider.TriggerEvent += OnTriggerEnter;
-            // this.AddComponent(collider);
+            Vector3 colliderDimensions = new Vector3(this.texture.Width, this.texture.Height, 0);
+            collider = new CircleColliderComponent(colliderDimensions.X/2, Vector3.Zero, "playerCollider", this.app);
+            collider.isTrigger = true;
+            this.collider.DebugMode = true;
+            collider.TriggerEvent += OnTriggerEnter;
+            this.AddComponent(collider);
 
             rb = new RigidBodyComponent("rbPlayer", app);
             rb.Mass = 0;
             rb.Velocity += new Vector3(0, -80, 0);
             this.AddComponent(rb);
 
-            light = renderer.AddLight(this.GetGlobalPosition().SwizzleXY(), new Vector3(0, 0, 0));
+            light = renderer.AddLight(this.GetGlobalPosition().SwizzleXY(), new Vector3(0, 1, 1) * 200000f);
         }
 
         public override void Update(GameTime gameTime)

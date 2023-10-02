@@ -13,7 +13,6 @@ using Engine.Components;
 using AsteroidGame.GameObjects;
 using Engine;
 using LD54.AsteroidGame.GameObjects;
-using LD54.Scripts.AsteroidGame.GameObjects;
 
 public class GameScene : Scene
 {
@@ -201,10 +200,6 @@ public class GameScene : Scene
         newtonianSystem.AddChild(blackHole);
         blackHole.SetLocalPosition(blackHolePosition);
 
-        Texture2D shipTexture = this.contentManager.Load<Texture2D>("Sprites/arrow");
-        Spaceship player = new Spaceship(blackHole as BlackHole, shipTexture, "player", app);
-        player.SetLocalPosition(new Vector2(-300, 150));
-        parentObject.AddChild(player);
         LeviathanShader backgroundShader = new LeviathanShader(this.app, "Shaders/stars");
         LeviathanShader blackholeShader = new LeviathanShader(this.app, "Shaders/blackhole");
         re.bindShader(blackholeShader);
@@ -250,6 +245,13 @@ public class GameScene : Scene
             ),
             blackHolePosition
         );
+
+        #region PLAYER_INITIALIZATION
+        Texture2D shipTexture = this.contentManager.Load<Texture2D>("Sprites/arrow");
+        Spaceship player = new Spaceship(blackHole as BlackHole, shipTexture, "player", app);
+        player.SetLocalPosition(new Vector2(-300, 150));
+        parentObject.AddChild(player);
+        #endregion
     }
 
     private bool printed = false;

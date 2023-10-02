@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using LD54.Engine.Leviathan;
 using LD54.Engine.Collision;
 using Engine.Components;
-using LD54.Scripts.AsteroidGame.GameObjects;
+using LD54.AsteroidGame.GameObjects;
 using System.Collections.Generic;
 using System;
 
