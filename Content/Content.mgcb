@@ -27,6 +27,13 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts/EditUndoLineBrk.spritefont
 
+#begin Fonts/GameOverFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/GameOverFont.spritefont
+
 #begin Fonts/main.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor

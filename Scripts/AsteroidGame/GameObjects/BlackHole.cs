@@ -2,6 +2,7 @@ namespace LD54.AsteroidGame.GameObjects;
 
 using Engine.Collision;
 using Engine.Components;
+using LD54.AsteroidGame.Scenes;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -59,6 +60,18 @@ public class BlackHole : GameObject
         //PrintLn("");
         //PrintLn("Eaten Object: " + other.GetGameObject().GetName());
         DestroyedObjects++;
+
+        //if it eats the player, invoke game over
+        if(other.GetGameObject() is Spaceship)
+        {
+            GameScene gameScene = this.app.Services.GetService<ISceneControllerService>().GetCurrentScene() as GameScene;
+            if (gameScene != null)
+            {
+                gameScene.InvokeGameOverEvent();
+            }
+        }
+
+
         this.app.Services.GetService<ISceneControllerService>().DestroyObject(other.GetGameObject());
         //PrintLn("Blackholed Objects: " + this.DestroyedObjects);
     }

@@ -14,6 +14,7 @@ using AsteroidGame.GameObjects;
 using Engine;
 using LD54.AsteroidGame.GameObjects;
 using LD54.Scripts.AsteroidGame.GameObjects;
+using LD54.Engine.Collision;
 
 public class GameScene : Scene
 {
@@ -30,6 +31,15 @@ public class GameScene : Scene
     public const float MAX_ASTEROID_SPAWN_INVERVAL = 0.01f;
     #endregion
 
+    #region EVENTS
+    public delegate void GameOver();
+    public event GameOver GameOverEvent;
+    public void InvokeGameOverEvent()
+    {
+        if (GameOverEvent is not null) GameOverEvent();
+    }
+    #endregion
+
     private int sunLight = -1;
 
     private Texture2D testObjectTexture;
@@ -43,6 +53,7 @@ public class GameScene : Scene
     GameObject blackHole;
 
     SpriteFont gameUIFont;
+    SpriteFont bigFont;
 
     public GameScene(Game appCtx) : base("GameScene", appCtx)
     {
@@ -185,8 +196,10 @@ public class GameScene : Scene
         asteroidTexture_broken = this.contentManager.Load<Texture2D>("Sprites/asteroid_broken");
 
         gameUIFont = this.contentManager.Load<SpriteFont>("Fonts/UIFont");
-        GameUIContainer gameUI = new GameUIContainer(gameUIFont, "gameUI", app);
+        bigFont = this.contentManager.Load<SpriteFont>("Fonts/GameOverFont");
+        GameUIContainer gameUI = new GameUIContainer(new List<SpriteFont>() { gameUIFont, bigFont }, "gameUI", app);
         parentObject.AddChild(gameUI);
+        GameOverEvent += gameUI.OnGameOver;
 
         asteroidTextures = new List<Texture2D>() { asteroidTexture1, asteroidTexture2, asteroidTexture3 };
 

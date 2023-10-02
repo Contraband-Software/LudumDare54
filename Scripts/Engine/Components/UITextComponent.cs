@@ -68,6 +68,16 @@ namespace LD54.Scripts.Engine.Components
             textSprite.SetPosition(new Vector3(posX, currY,0));
         }
 
+        public void PositionYAtScreenCentre(Vector2 offset)
+        {
+            CalculateTextDimensions();
+
+            float screenHeight = re.getWindowSize().Y;
+            float posY = (screenHeight / 2f) - (textHeight / 2f) + offset.Y;
+            float currX = textSprite.GetPositionXY().X + offset.X;
+            textSprite.SetPosition(new Vector3(currX, posY, 0));
+        }
+
         public void PositionXAtRightEdge(Vector2 offset)
         {
             CalculateTextDimensions();
