@@ -1,4 +1,4 @@
-namespace LD54.Scripts.Engine;
+namespace LD54.Engine;
 
 using System;
 using Microsoft.Xna.Framework;

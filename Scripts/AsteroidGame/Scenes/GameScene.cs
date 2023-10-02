@@ -11,8 +11,8 @@ using Microsoft.Xna.Framework.Graphics;
 using AsteroidGame.GameObjects;
 using Engine.Components;
 using AsteroidGame.GameObjects;
-using Scripts.Engine;
-using LD54.Scripts.AsteroidGame.GameObjects;
+using Engine;
+using LD54.AsteroidGame.GameObjects;
 
 public class GameScene : Scene
 {
