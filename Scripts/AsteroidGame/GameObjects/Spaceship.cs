@@ -268,7 +268,7 @@ namespace LD54.AsteroidGame.GameObjects
             if (Keyboard.GetState().IsKeyDown(Keys.S))
             {
                 //rb.Velocity.Y += Speed;
-                this.app.Services.GetService<ISceneControllerService>().ReloadCurrentScene();
+                // this.app.Services.GetService<ISceneControllerService>().ReloadCurrentScene();
             }
 
             return forceVector;
