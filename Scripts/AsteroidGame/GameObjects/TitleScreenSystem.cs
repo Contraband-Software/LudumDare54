@@ -10,15 +10,17 @@ public class TitleScreenSystem : GameObject
 
     private SpriteFont titleFont;
     private SpriteFont subTitleFont;
+    private Texture2D rock;
 
     private readonly int showTime = 0;
     private float timeShowed = 0;
 
-    public TitleScreenSystem(int showTime, SpriteFont titleFont, SpriteFont subtitleFont, Game appCtx) : base("TitleScreenObject", appCtx)
+    public TitleScreenSystem(int showTime, SpriteFont titleFont, SpriteFont subtitleFont, Texture2D rock, Game appCtx) : base("TitleScreenObject", appCtx)
     {
         this.titleFont = titleFont;
         this.subTitleFont = subtitleFont;
         this.showTime = showTime;
+        this.rock = rock;
     }
 
     private LeviathanUIElement gameTitle;
@@ -49,7 +51,7 @@ public class TitleScreenSystem : GameObject
             Matrix fuckingTitlePosition = this.GetGlobalTransform();
 
             Vector2 subTitle1Pos = this.render.getWindowSize() / 2f + new Vector2(0, 200);
-            string subTitle1Text = "With the Poo Machine Game Engine";
+            string subTitle1Text = "Made with the GreenRock Engine";
             fuckingTitlePosition.Translation += new Vector3(subTitle1Pos - subTitleFont.MeasureString(subTitle1Text) / 2, 0);
             gameSubtitle2 = new LeviathanUIElement(this.app, fuckingTitlePosition, new Vector2(1), subTitle1Text, this.subTitleFont, Color.White);
         }

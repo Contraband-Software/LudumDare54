@@ -27,6 +27,7 @@ public class StartScene : Scene
             this.showTime,
             this.contentManager.Load<SpriteFont>("Fonts/TitleFont"),
             this.contentManager.Load<SpriteFont>("Fonts/SubtitleFont"),
+            this.contentManager.Load<Texture2D>("Sprites/rockIcon"),
             this.app
             );
 
