@@ -145,6 +145,7 @@ namespace LD54.AsteroidGame.GameObjects
                 // render.DebugDrawLine(this.GetGlobalPosition().SwizzleXY(), this.GetGlobalPosition().SwizzleXY() + tangentVelocity * velScale * orbitTangent, Color.Cyan);
                 // render.DebugDrawLine(this.GetGlobalPosition().SwizzleXY(), this.GetGlobalPosition().SwizzleXY() + tangent, Color.Cyan);
                 // render.DebugDrawLine(this.GetGlobalPosition().SwizzleXY() + overlapOffset, this.GetGlobalPosition().SwizzleXY() + overlapOffset + positionDelta * 140, Color.Lime);
+
             }
             #endregion
             Vector2 movementVector = Move(gameTime);
@@ -170,6 +171,9 @@ namespace LD54.AsteroidGame.GameObjects
             src.Rotation = Rotation;
 
             renderer.SetLightPosition(light, this.GetGlobalPosition().SwizzleXY());
+
+            System.Random rnd = new Random();
+            if (this.rb.Velocity.Length() < 0.001f) this.rb.Velocity += new Vector3(rnd.Next(), rnd.Next(), 0);
         }
 
         private void RotateLeft(GameTime gameTime)
