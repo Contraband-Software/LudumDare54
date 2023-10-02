@@ -21,17 +21,18 @@ namespace LD54.AsteroidGame.GameObjects
         RigidBodyComponent rb;
         SpriteRendererComponent src;
 
-        public  const float moveForce = 30f;
-        public  const float MaxRotationSpeed = 3.5f;
+        #region PARAMS
+        // PLEASE DO NOT EDIT THESE, ONE THING CHANGES AND EVERYTHING NEEDS TO BE ADJUSTED - ASK SAM
+        private const float moveForce = 30f;
+        private const float MaxRotationSpeed = 3.5f;
         private const float velocityDamping = 0.88f;
-
         private const float maxVelocityFactor = 10f;
         private const float warmupFactor = 38;
-
         private const float forceConstant = 0.001f;
         private const float boostFactor = 0.4f;
         private const float fallFactor = 14f;
         private const float deathSpeed = 3;
+        #endregion
 
         public Spaceship(BlackHole blackHole, Texture2D texture, string name, Game appCtx) : base(name, appCtx)
         {
@@ -115,8 +116,8 @@ namespace LD54.AsteroidGame.GameObjects
                 finalAbsoluteVelocity += new Vector3(-orbitNormal, 0) * boostFactor * speedAbs;
 
                 // Always being pulled in
-                finalAbsoluteVelocity += new Vector3(orbitNormal, 0) * fallFactor * MathF.Abs(speedAbs == 0f ? 1f : (1 / MathF.Pow(speedAbs, 0.9f)));
-                Vector3 slowdown = new Vector3(orbitTangent * -tangentVelocity, 0).RNormalize() * fallFactor * (1 / (distanceToBlackHole < 0.1f ? 0.0000001f : MathF.Pow(distanceToBlackHole, 0.9f)));
+                finalAbsoluteVelocity += new Vector3(orbitNormal, 0) * fallFactor * MathF.Abs(speedAbs == 0f ? 1f : (1 / MathF.Pow(speedAbs, 0.7f))); // change this final float to change how fast the player needs to keep going
+                Vector3 slowdown = new Vector3(orbitTangent * -tangentVelocity, 0).RNormalize() * fallFactor * (1 / (distanceToBlackHole < 0.1f ? 0.0000001f : MathF.Pow(distanceToBlackHole, 0.75f))); // change this final float to affect how much more powerful the blackhole suckage gets when you get closer
                 finalAbsoluteVelocity += slowdown;
 
                 //if (speedAbs < deathSpeed)
