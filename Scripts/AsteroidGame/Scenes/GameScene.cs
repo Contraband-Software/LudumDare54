@@ -22,7 +22,7 @@ public class GameScene : Scene
     public const float GRAVITATIONAL_CONSTANT = 43f;
 
     public const float BLACK_HOLE_MASS = 100;   // no need to edit, GRAVITATIONAL_CONSTANT is already directly proportional (Satellites are massless)
-    public const int SATELLITES = 40;
+    public const int SATELLITES = 120;
     public const float SPEED_MULT = 15f;
 
     public const float MAP_SIZE = 2f;

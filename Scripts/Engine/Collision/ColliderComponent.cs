@@ -10,10 +10,6 @@ using Color = Microsoft.Xna.Framework.Color;
 
 public abstract class ColliderComponent : Component
 {
-    private int colliderID;
-    public Vector3 previousPosition;
-    public bool isTrigger;
-
     #region EVENTS
     public delegate void Trigger(ColliderComponent collidedWith);
     public event Trigger TriggerEvent;
@@ -31,6 +27,9 @@ public abstract class ColliderComponent : Component
 
     #endregion
 
+    private int colliderID;
+    public Vector3 previousPosition;
+    public bool isTrigger;
 
     public ColliderComponent(string name, Game appCtx) : base(name, appCtx)
     {
@@ -39,12 +38,12 @@ public abstract class ColliderComponent : Component
     public override void OnLoad(GameObject? parentObject)
     {
         this.gameObject = parentObject;
-        this.colliderID = this.app.Services.GetService<ICollisionSystemService>().AddColliderToSystem(this);
+        this.app.Services.GetService<ICollisionSystemService>().AddColliderToSystem(this);
     }
 
     public override void OnUnload()
     {
-        this.app.Services.GetService<ICollisionSystemService>().RemoveColliderFromSystem(colliderID);
+        this.app.Services.GetService<ICollisionSystemService>().RemoveColliderFromSystem(this);
     }
 
     public GameObject GetGameObject()
@@ -79,8 +78,8 @@ public class CircleColliderComponent : ColliderComponent
     {
         base.OnLoad(parentObject);
         RecalculateCentre();
-
     }
+
     public override void Update(GameTime gameTime)
     {
         base.Update(gameTime);
@@ -96,6 +95,11 @@ public class CircleColliderComponent : ColliderComponent
         RecalculateCentre();
 
         ShowBoundsIfDebug();
+    }
+
+    public override void OnUnload()
+    {
+        base.OnUnload();
     }
 
     public void RecalculateCentre()

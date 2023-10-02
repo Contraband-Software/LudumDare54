@@ -25,15 +25,17 @@ namespace LD54.AsteroidGame.GameObjects
         RigidBodyComponent rb;
         SpriteRendererComponent src;
 
-        public float moveForce = 30f;
-        public float MaxRotationSpeed = 3.5f;
-        private float velocityDamping = 0.98f;
+        public  const float moveForce = 30f;
+        public  const float MaxRotationSpeed = 3.5f;
+        private const float velocityDamping = 0.98f;
 
-        private float maxVelocityFactor = 8f;
+        private const float maxVelocityFactor = 8f;
+        private const float warmupFactor = 38;
 
         private const float forceConstant = 0.001f;
         private const float boostFactor = 0.4f;
         private const float fallFactor = 14f;
+        private const float deathSpeed = 3;
 
         public Spaceship(BlackHole blackHole, Texture2D texture, string name, Game appCtx) : base(name, appCtx)
         {
@@ -64,7 +66,7 @@ namespace LD54.AsteroidGame.GameObjects
 
             rb = new RigidBodyComponent("rbPlayer", app);
             rb.Mass = 0;
-            rb.Velocity += new Vector3(0, 0, 0);
+            rb.Velocity += new Vector3(0, -80, 0);
             this.AddComponent(rb);
         }
 
@@ -117,6 +119,12 @@ namespace LD54.AsteroidGame.GameObjects
                 // Always being pulled in
                 finalAbsoluteVelocity += new Vector3(orbitNormal, 0)  * fallFactor * (1 / (speedAbs            < 0.1f ? 0.0000001f : MathF.Pow(speedAbs, 0.9f)));
                 finalAbsoluteVelocity += new Vector3(orbitTangent, 0) * fallFactor * (1 / (distanceToBlackHole < 0.1f ? 0.0000001f : MathF.Pow(distanceToBlackHole, 0.9f)));
+
+                if (speedAbs < deathSpeed)
+                {
+                    finalAbsoluteVelocity += new Vector3(orbitNormal, 0) * 20;
+                }
+
                 this.rb.Velocity = finalAbsoluteVelocity;
 
                 // Debug stuff, no more math after here
@@ -136,9 +144,9 @@ namespace LD54.AsteroidGame.GameObjects
             #endregion
             Vector2 movementVector = Move(gameTime);
             //limit velocity
-            if (rb.Velocity.Length() > this.maxVelocityFactor) //(1 - 1 / (d == 0 ? 1 : d)) *
+            if (rb.Velocity.Length() > maxVelocityFactor) //(1 - 1 / (d == 0 ? 1 : d)) *
             {
-                rb.Velocity = (rb.Velocity / rb.Velocity.Length()) * this.maxVelocityFactor;
+                rb.Velocity = (rb.Velocity / rb.Velocity.Length()) * maxVelocityFactor;
             }
             #region TOY_ORBIT_PHYSICS_CONT
             {
@@ -219,15 +227,15 @@ namespace LD54.AsteroidGame.GameObjects
             return directionVector;
         }
 
-        private float warmupFactor = 0;
+        private float enginePower = 0;
         private Vector2 MoveInForwardDirection(GameTime gameTime)
         {
             Vector2 directionVector = ForwardVector();
             Vector2 forceVector = directionVector * moveForce * (gameTime.ElapsedGameTime.Milliseconds / 1000f);
 
-            this.warmupFactor += (1 - this.warmupFactor) / 45;
+            this.enginePower += (1 - this.enginePower) / warmupFactor;
             //PrintLn(this.warmupFactor.ToString());
-            rb.Velocity += new Vector3(forceVector, 0) * this.warmupFactor;
+            rb.Velocity += new Vector3(forceVector, 0) * this.enginePower;
 
             return forceVector;
         }
@@ -241,7 +249,7 @@ namespace LD54.AsteroidGame.GameObjects
             }
             else
             {
-                warmupFactor = 0;
+                this.enginePower = 0;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.A))
             {

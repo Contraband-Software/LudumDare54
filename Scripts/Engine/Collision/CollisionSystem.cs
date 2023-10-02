@@ -9,8 +9,8 @@ using Engine.Dev;
 
 public interface ICollisionSystemService
 {
-    public int AddColliderToSystem(ColliderComponent spriteCollider);
-    public void RemoveColliderFromSystem(int spriteColliderID);
+    public void AddColliderToSystem(ColliderComponent spriteCollider);
+    public void RemoveColliderFromSystem(ColliderComponent spriteCollider);
 }
 
 public class CollisionSystem : GameComponent, ICollisionSystemService
@@ -22,16 +22,15 @@ public class CollisionSystem : GameComponent, ICollisionSystemService
         collisionSystemList = new List<ColliderComponent>();
     }
 
-    public int AddColliderToSystem(ColliderComponent spriteCollider)
+    public void AddColliderToSystem(ColliderComponent spriteCollider)
     {
         collisionSystemList.Add(spriteCollider);
         //PrintLn("Collider added, count: " + collisionSystemList.Count.ToString());
-        return collisionSystemList.IndexOf(spriteCollider);
     }
 
-    public void RemoveColliderFromSystem(int spriteColliderID)
+    public void RemoveColliderFromSystem(ColliderComponent spriteCollider)
     {
-        collisionSystemList.RemoveAt(spriteColliderID);
+        collisionSystemList.Remove(spriteCollider);
     }
 
 
