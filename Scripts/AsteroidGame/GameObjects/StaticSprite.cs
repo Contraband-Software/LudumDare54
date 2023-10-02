@@ -15,10 +15,12 @@ public class StaticSprite : GameObject
     private ILeviathanEngineService re;
     private LeviathanShader shader;
     private GameObject blackhole;
+    private Texture2D normal;
 
-    public StaticSprite(GameObject blackhole,LeviathanShader shader, Texture2D texture, Vector2 position, Vector2 size  ,string name, Game appCtx) : base(name, appCtx)
+    public StaticSprite(GameObject blackhole,LeviathanShader shader, Texture2D texture, Vector2 position, Vector2 size  ,string name, Game appCtx, Texture2D? normal = null) : base(name, appCtx)
     {
         this.texture = texture;
+        this.normal = normal;
         this.position = position;
         this.size = size;
         this.shader = shader;
@@ -29,7 +31,7 @@ public class StaticSprite : GameObject
     {
         re = this.app.Services.GetService<ILeviathanEngineService>();
         sr = new SpriteRendererComponent("spriteRenderer",this.app);
-        sr.LoadSpriteData(Matrix.CreateTranslation(position.X, position.Y, 0), this.size, texture,0f,null,2);
+        sr.LoadSpriteData(Matrix.CreateTranslation(position.X, position.Y, 0), this.size, texture, 0f, normal, 2);
         this.AddComponent(sr);
     }
     public override void Update(GameTime gameTime)

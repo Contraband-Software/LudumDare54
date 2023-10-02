@@ -75,15 +75,22 @@ public class JuliusScene : Scene
         re.bindShader(blackholeShader);
 
         backgroundShader = new LeviathanShader(this.app, "Shaders/stars");
-        backgroundShader.AddParam("strength", 3000);
+        backgroundShader.AddParam("strength", 7000);
         backgroundShader.AddParam("blackholeX", 0);
         backgroundShader.AddParam("blackholeY", 0);
         re.bindShader(backgroundShader);
 
+        LeviathanShader bloom = new LeviathanShader(this.app, "Shaders/bloom");
+        bloom.AddParam("strength", 0.2f);
+        bloom.AddParam("brightnessThreshold", 220);
+        re.addPostProcess(bloom);
 
+        LeviathanShader abberation = new LeviathanShader(this.app, "Shaders/abberation");
+        abberation.AddParam("strength", 0.005f);
+        re.addPostProcess(abberation);
 
         // simple scene-wide illumination
-        sunLight = this.app.Services.GetService<ILeviathanEngineService>().AddLight(new Vector2(200, 200), new Vector3(40000, 40000, 60000));
+        re.AddLight(new Vector2(2000, -300), new Vector3(4000000, 40000000, 80000000));
 
         // sim set up
 
