@@ -8,4 +8,6 @@ curl "https://download.visualstudio.microsoft.com/download/pr/44d08222-aaa9-4d35
 
 rm dotnet-sdk.zip
 
+export MGFXC_WINE_PATH="$HOME/.winemonogame/"
+
 echo "Reboot now"
