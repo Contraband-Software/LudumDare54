@@ -240,6 +240,16 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
             }
             spriteBatch.End();
         }
+        spriteBatch.Begin(transformMatrix: view);
+        foreach (DebugCircle circle in debugCircle)
+        {
+            spriteBatch.DrawCircle(circle.center, circle.radius, 128, circle.color,4);
+        }
+        foreach (DebugLine line in debugLine)
+        {
+            spriteBatch.DrawLine(line.start, line.end, line.color,4);
+        }
+        spriteBatch.End();
         game.GraphicsDevice.SetRenderTarget(unlitTarget);
         game.GraphicsDevice.Clear(Color.White);
         spriteBatch.Begin(sortMode: SpriteSortMode.FrontToBack, transformMatrix: view);
@@ -367,16 +377,6 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
             }
         }
 
-        spriteBatch.End();
-        spriteBatch.Begin(transformMatrix: view);
-        foreach (DebugCircle circle in debugCircle)
-        {
-            spriteBatch.DrawCircle(circle.center, circle.radius, 128, circle.color);
-        }
-        foreach (DebugLine line in debugLine)
-        {
-            spriteBatch.DrawLine(line.start, line.end, line.color);
-        }
         spriteBatch.End();
 
         debugCircle.Clear();
