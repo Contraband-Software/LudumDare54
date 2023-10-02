@@ -150,7 +150,6 @@ class PlayerBlock : GameObject
                     float dotProduct = Vector3.Dot(asteroidVel, posDelta);
                     if (dotProduct > 0)
                     {
-                        PrintLn("MOVED BY ASTEROID");
                         rb.Velocity += asteroidVel;
                     }
                 }
@@ -236,15 +235,16 @@ class JakubScene : Scene
 
 
         Random rnd = new Random();
-        Asteroid asteroid1 = new Asteroid(asteroids[rnd.Next(0, 3)], asteroid_broken, "asteroid", app);
+        Vector3 vel = new Vector3(1, 1, 0);
+        Asteroid asteroid1 = new Asteroid(0, vel, asteroids[rnd.Next(0, 3)], asteroid_broken, "asteroid", app);
         asteroid1.SetLocalPosition(new Vector3(0, 0, 1));
         parentObject.AddChild(asteroid1);
 
-        Asteroid asteroid2 = new Asteroid(asteroids[rnd.Next(0, 3)], asteroid_broken, "asteroid", app);
+        Asteroid asteroid2 = new Asteroid(0, vel, asteroids[rnd.Next(0, 3)], asteroid_broken, "asteroid", app);
         asteroid2.SetLocalPosition(new Vector3(80, 0, 1));
         parentObject.AddChild(asteroid2);
 
-        Asteroid asteroid3 = new Asteroid(asteroids[rnd.Next(0, 3)], asteroid_broken, "asteroid", app);
+        Asteroid asteroid3 = new Asteroid(0, vel, asteroids[rnd.Next(0, 3)], asteroid_broken, "asteroid", app);
         asteroid3.SetLocalPosition(new Vector3(0, 100, 1));
         parentObject.AddChild(asteroid3);
 

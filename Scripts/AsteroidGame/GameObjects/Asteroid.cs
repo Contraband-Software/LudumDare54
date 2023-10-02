@@ -15,6 +15,9 @@ namespace LD54.Scripts.AsteroidGame.GameObjects
 
     public  class Asteroid : GameObject
     {
+        public float Mass { get; set; } = 1;
+        private Vector3 initialVelocity = Vector3.Zero;
+
         Texture2D texture;
         Texture2D brokenTexture;
 
@@ -31,12 +34,23 @@ namespace LD54.Scripts.AsteroidGame.GameObjects
 
         float scale;
 
-        public Asteroid(Texture2D texture, Texture2D brokenText, string name, Game appCtx) : base(name, appCtx)
+        public Asteroid(
+            float mass,
+            Vector3 initialVelocity,
+            Texture2D texture,
+            Texture2D brokenText,
+            string name,
+            Game appCtx) : base(name, appCtx)
         {
             this.texture = texture;
             this.brokenTexture = brokenText;
+
+            this.initialVelocity = initialVelocity;
+            this.Mass = mass;
+
+
             Random rnd = new Random();
-            this.scale = 0.3f + (rnd.NextSingle() * 0.7f);
+            this.scale = 0.4f + (rnd.NextSingle() * 0.7f);
 
             rotationSpeed = (0.1f + (rnd.NextSingle() * 0.8f)) * (MathF.Sign(rnd.NextSingle()-0.5f));
         }
@@ -65,8 +79,9 @@ namespace LD54.Scripts.AsteroidGame.GameObjects
             this.AddComponent(collider);
 
             rb = new RigidBodyComponent("rbAsteroid", app);
+            rb.Mass = this.Mass;
+            rb.Velocity = this.initialVelocity;
             this.AddComponent(rb);
-            rb.Velocity = new Vector3(1, 1, 0);
         }
 
         public override void Update(GameTime gameTime)
