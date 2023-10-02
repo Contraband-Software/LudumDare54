@@ -146,6 +146,25 @@ namespace LD54.AsteroidGame.GameObjects
                 // render.DebugDrawLine(this.GetGlobalPosition().SwizzleXY(), this.GetGlobalPosition().SwizzleXY() + tangent, Color.Cyan);
                 // render.DebugDrawLine(this.GetGlobalPosition().SwizzleXY() + overlapOffset, this.GetGlobalPosition().SwizzleXY() + overlapOffset + positionDelta * 140, Color.Lime);
 
+
+                {
+                    float maxRadius = 500;
+
+                    Vector3 blackHolePosition2 = blackHole.GetGlobalPosition();
+                    Vector3 shipPosition2 = this.GetGlobalPosition();
+
+                    // Distance to black hole
+                    Vector2 positionDelta2 = new Vector2(
+                        blackHolePosition2.X - shipPosition2.X,
+                        blackHolePosition2.Y - shipPosition2.Y
+                    );
+                    float r2 = positionDelta.Magnitude();
+
+                    if (r2 > maxRadius)
+                    {
+                        this.SetLocalPosition(this.GetLocalPosition() + new Vector3(positionDelta.RNormalize() * (r2 - maxRadius), 0));
+                    }
+                }
             }
             #endregion
             Vector2 movementVector = Move(gameTime);
