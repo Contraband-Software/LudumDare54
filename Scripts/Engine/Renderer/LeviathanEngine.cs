@@ -266,19 +266,19 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
 
         spriteBatch.End();
 
-        game.GraphicsDevice.SetRenderTarget(shadowTarget);
-        game.GraphicsDevice.Clear(Color.White);
-        spriteBatch.Begin(transformMatrix: view);
+        //game.GraphicsDevice.SetRenderTarget(shadowTarget);
+        //game.GraphicsDevice.Clear(Color.White);
+        //spriteBatch.Begin(transformMatrix: view);
 
-        foreach (LeviathanSprite sprite in sprites)
-        {
-            if (sprite.isOccluder)
-            {
-                spriteBatch.Draw(sprite.color, new Rectangle(sprite.GetPositionXY().ToPoint() + (sprite.size / 2f).ToPoint(), sprite.size.ToPoint()), null, Color.Black, sprite.rotation, new Vector2(sprite.color.Width / 2, sprite.color.Height / 2), SpriteEffects.None, sprite.getDepth());
-            }
-        }
+        //foreach (LeviathanSprite sprite in sprites)
+        //{
+        //    if (sprite.isOccluder)
+        //    {
+        //        spriteBatch.Draw(sprite.color, new Rectangle(sprite.GetPositionXY().ToPoint() + (sprite.size / 2f).ToPoint(), sprite.size.ToPoint()), null, Color.Black, sprite.rotation, new Vector2(sprite.color.Width / 2, sprite.color.Height / 2), SpriteEffects.None, sprite.getDepth());
+        //    }
+        //}
 
-        spriteBatch.End();
+        //spriteBatch.End();
 
         lightingShader.Parameters["translation"]?.SetValue(new Vector2(translation.X, translation.Y));
         lightingShader.Parameters["viewProjection"]?.SetValue(projection);

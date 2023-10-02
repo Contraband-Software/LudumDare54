@@ -211,7 +211,7 @@ public class GameScene : Scene
         re.bindShader(backgroundShader);
 
         LeviathanShader bloom = new LeviathanShader(this.app, "Shaders/bloom");
-        bloom.AddParam("strength", 0.005f);
+        bloom.AddParam("strength", 0.02f);
         bloom.AddParam("brightnessThreshold", 0);
         re.addPostProcess(bloom);
 
