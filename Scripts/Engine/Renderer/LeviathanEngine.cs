@@ -47,6 +47,8 @@ interface ILeviathanEngineService
     public void DebugDrawCircle(Vector2 position, float radius, Color color);
 
     public void DebugDrawLine(Vector2 start, Vector2 end, Color color);
+
+    public void UnbindShaders();
 }
 
 public struct DebugCircle

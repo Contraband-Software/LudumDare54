@@ -292,6 +292,6 @@ public class GameScene : Scene
 
     public override void OnUnload()
     {
-        // this.app.Services.GetService<ILeviathanEngineService>().removeLight(this.sunLight);
+        this.app.Services.GetService<ILeviathanEngineService>().UnbindShaders();
     }
 }
