@@ -29,6 +29,7 @@ namespace LD54.Scripts.AsteroidGame.GameObjects
 
             //SpriteFont font = new SpriteFont()
 
+
             scoreText = new UITextComponent("ui", app);
             scoreText.LoadTextElementData(
                 app,
@@ -61,6 +62,10 @@ namespace LD54.Scripts.AsteroidGame.GameObjects
 
         public void OnGameOver()
         {
+            if(state == UIState.PLAYER_DEAD)
+            {
+                return;
+            }
             PrintLn("GAAAAAAME OVERRRRRRRRRRRRRRRRR");
             state = UIState.PLAYER_DEAD;
             scoreText.Enabled = false;

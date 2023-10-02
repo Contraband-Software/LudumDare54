@@ -15,6 +15,7 @@ using Engine;
 using LD54.AsteroidGame.GameObjects;
 using LD54.Scripts.AsteroidGame.GameObjects;
 using LD54.Engine.Collision;
+using Microsoft.Xna.Framework.Input;
 
 public class GameScene : Scene
 {
@@ -54,6 +55,9 @@ public class GameScene : Scene
 
     SpriteFont gameUIFont;
     SpriteFont bigFont;
+
+    public enum GameState { PLAYING, GAMEOVER};
+    public GameState gameState = GameState.PLAYING;
 
     public GameScene(Game appCtx) : base("GameScene", appCtx)
     {
@@ -176,6 +180,9 @@ public class GameScene : Scene
 
     public override void OnLoad(GameObject? parentObject)
     {
+        gameState = GameState.PLAYING;
+        GameOverEvent += OnGameOver;
+
         windowSize = this.app.Services.GetService<ILeviathanEngineService>().getWindowSize();
         PrintLn("Screen resolution: " + windowSize);
 
@@ -270,7 +277,7 @@ public class GameScene : Scene
         // within a radius around
 
 
-        Texture2D shipTexture = this.contentManager.Load<Texture2D>("Sprites/arrow");
+        Texture2D shipTexture = this.contentManager.Load<Texture2D>("Sprites/spaceship");
         Spaceship player = new Spaceship(blackHole as BlackHole, shipTexture, "player", app);
         player.SetLocalPosition(new Vector2(-400, 150));
         parentObject.AddChild(player);
@@ -301,10 +308,25 @@ public class GameScene : Scene
                 windowSize.X * MAP_SIZE,
                 windowSize.Y * MAP_SIZE
             ), blackholePosition);
+
+        //
+        if (Keyboard.GetState().IsKeyDown(Keys.R))
+        {
+            if (gameState == GameState.GAMEOVER)
+            {
+                this.app.Services.GetService<ISceneControllerService>().ReloadCurrentScene();
+            }
+        }
     }
 
     public override void OnUnload()
     {
         this.app.Services.GetService<ILeviathanEngineService>().UnbindShaders();
+    }
+
+    private void OnGameOver()
+    {
+        PrintLn("GAME STATE IS GAMEOVER");
+        this.gameState = GameState.GAMEOVER;
     }
 }
