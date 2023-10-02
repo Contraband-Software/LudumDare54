@@ -130,11 +130,9 @@ namespace LD54.AsteroidGame.GameObjects
                 // render.DebugDrawLine(this.GetGlobalPosition().SwizzleXY(), this.GetGlobalPosition().SwizzleXY() + tangent, Color.Cyan);
                 // render.DebugDrawLine(this.GetGlobalPosition().SwizzleXY() + overlapOffset, this.GetGlobalPosition().SwizzleXY() + overlapOffset + positionDelta * 140, Color.Lime);
                 render.DebugDrawLine(this.GetGlobalPosition().SwizzleXY() + overlapOffset * 2, this.GetGlobalPosition().SwizzleXY() + overlapOffset * 2 + this.rb.Velocity.SwizzleXY() * velScale, Color.Yellow);
-
             }
             #endregion
-
-            readonly Vector2 movementVectorMove(gameTime);
+            Vector2 movementVector = Move(gameTime);
             //limit velocity
             if (rb.Velocity.Length() > this.maxVelocityFactor) //(1 - 1 / (d == 0 ? 1 : d)) *
             {
@@ -142,7 +140,7 @@ namespace LD54.AsteroidGame.GameObjects
             }
             #region TOY_ORBIT_PHYSICS_CONT
             {
-
+                // gonna do summin here wit movementVector
             }
             #endregion
 
