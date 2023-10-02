@@ -1,6 +1,7 @@
 global using static LD54.Engine.Dev.EngineDebug;
 namespace LD54;
 
+using System;
 using System.Diagnostics;
 using AsteroidGame.Scenes;
 using Engine;
@@ -8,11 +9,13 @@ using Engine.Leviathan;
 using Engine.Collision;
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 public class App : Game
 {
     private readonly GraphicsDeviceManager graphics;
+
     private readonly SceneController sc;
     private readonly LeviathanEngine le;
     private readonly CollisionSystem cs;
@@ -20,8 +23,22 @@ public class App : Game
     public App()
     {
         this.graphics = new GraphicsDeviceManager(this);
-        this.graphics.PreferredBackBufferWidth = 1200;
-        this.graphics.PreferredBackBufferHeight = 800;
+
+        #region VIDEO_MODE_SELECTION
+        float largestResolution = 0;
+        DisplayMode preferredMode = null;
+        foreach (DisplayMode mode in GraphicsAdapter.DefaultAdapter.SupportedDisplayModes)
+        {
+            float size = mode.Width * mode.Height;
+            if (size > largestResolution)
+            {
+                preferredMode = mode;
+            }
+        }
+        this.graphics.PreferredBackBufferWidth = preferredMode.Width;
+        this.graphics.PreferredBackBufferHeight = preferredMode.Height;
+        this.graphics.ToggleFullScreen();
+        #endregion
 
         this.Content.RootDirectory = "Content";
         this.IsMouseVisible = true;
