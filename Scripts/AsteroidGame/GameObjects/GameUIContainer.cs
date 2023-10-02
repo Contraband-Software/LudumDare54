@@ -29,7 +29,7 @@ namespace LD54.Scripts.AsteroidGame.GameObjects
             scoreText.LoadTextElementData(
                 app,
                 this.GetGlobalTransform(),
-                new Vector2(3, 3),
+                new Vector2(1, 1),
                 "SCORE SCORE",
                 gameUIFont,
                 new Color(255, 255, 255));
@@ -46,7 +46,23 @@ namespace LD54.Scripts.AsteroidGame.GameObjects
             //update time score thingy
             //reposition text sprite to be on right top corner
             timeElapsed += (gameTime.ElapsedGameTime.Milliseconds / 1000f);
-            scoreText.SetText("T=t+ " + MathF.Round(timeElapsed).ToString());
+            int totalSeconds = (int)MathF.Round(timeElapsed);
+            int minutes = totalSeconds / 60;
+            int seconds = totalSeconds % 60;
+
+            string minutesText = (minutes > 9) ? minutes.ToString() : "0" + minutes.ToString();
+            string secondsText = (seconds > 9) ? seconds.ToString() : "0" + seconds.ToString();
+
+
+            if (minutes > 0)
+            {
+                scoreText.SetText("T=t+ " + minutesText + ":" + secondsText);
+            }
+            else
+            {
+                scoreText.SetText("T=t+ 00:" + secondsText);
+            }
+
             scoreText.PositionXAtRightEdge(new Vector2(-20, 10));
         }
     }

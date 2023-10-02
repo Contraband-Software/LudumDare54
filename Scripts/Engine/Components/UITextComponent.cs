@@ -54,8 +54,8 @@ namespace LD54.Scripts.Engine.Components
 
         private void CalculateTextDimensions()
         {
-            textWidth = font.MeasureString(text).X * scale.X;
-            textHeight = font.MeasureString(text).Y * scale.Y;
+            textWidth = font.MeasureString(text).X;
+            textHeight = font.MeasureString(text).Y;
         }
 
         public void PositionXAtScreenCentre()

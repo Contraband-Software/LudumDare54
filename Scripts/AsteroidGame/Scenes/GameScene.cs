@@ -184,7 +184,7 @@ public class GameScene : Scene
         Texture2D asteroidTexture3 = this.contentManager.Load<Texture2D>("Sprites/asteroid_3");
         asteroidTexture_broken = this.contentManager.Load<Texture2D>("Sprites/asteroid_broken");
 
-        gameUIFont = this.contentManager.Load<SpriteFont>("Fonts/EditUndoBrk");
+        gameUIFont = this.contentManager.Load<SpriteFont>("Fonts/UIFont");
         GameUIContainer gameUI = new GameUIContainer(gameUIFont, "gameUI", app);
         parentObject.AddChild(gameUI);
 
