@@ -39,6 +39,7 @@ public class SatelliteObject : GameObject
         RigidBodyComponent rb = new RigidBodyComponent("SatelliteRB", this.app);
         rb.Mass = this.Mass;
         rb.Velocity = this.startingVelocity;
+        // rb.Static = true;
         this.AddComponent(rb);
 
         collider = new CircleColliderComponent(textureSize.X / 2, textureSize / -2f, "Sat", this.app);

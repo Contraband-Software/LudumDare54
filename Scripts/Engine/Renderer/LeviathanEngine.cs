@@ -40,11 +40,13 @@ interface ILeviathanEngineService
 
     public void SetCameraPosition(Vector2 position);
 
-    public void DebugDrawCircle(Vector2 position, float radius, Color color);
-
     public Vector2 GetCameraPosition();
 
     public void bindShader(LeviathanShader shader);
+
+    public void DebugDrawCircle(Vector2 position, float radius, Color color);
+
+    public void DebugDrawLine(Vector2 start, Vector2 end, Color color);
 }
 
 public struct DebugCircle
@@ -60,9 +62,24 @@ public struct DebugCircle
     public Color color;
 }
 
+public struct DebugLine
+{
+    public DebugLine(Vector2 start, Vector2 end, Color color)
+    {
+        this.start = start;
+        this.end = end;
+        this.color = color;
+    }
+    public Vector2 start;
+    public Vector2 end;
+    public Color color;
+}
+
 public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
 {
-    private List<DebugCircle> debug = new List<DebugCircle>();
+    private List<DebugCircle> debugCircle = new List<DebugCircle>();
+    private List<DebugLine> debugLine = new List<DebugLine>();
+
     private Vector2[] lightPositions = new Vector2[64];
     private Vector3[] lightColors = new Vector3[64];
     private List<LeviathanShader> shaders = new List<LeviathanShader>();
@@ -122,8 +139,13 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
 
     public void DebugDrawCircle(Vector2 position, float radius, Color color)
     {
-        debug.Add(new DebugCircle(position, radius, color));
+        debugCircle.Add(new DebugCircle(position, radius, color));
     }
+    public void DebugDrawLine(Vector2 start, Vector2 end, Color color)
+    {
+        debugLine.Add(new DebugLine(start, end, color));
+    }
+
     public void SetCameraPosition(Vector2 position)
     {
         this.cameraPosition = position;
@@ -318,14 +340,18 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
 
         spriteBatch.End();
         spriteBatch.Begin(transformMatrix: view);
-        foreach (DebugCircle circle in debug)
+        foreach (DebugCircle circle in debugCircle)
         {
             spriteBatch.DrawCircle(circle.center, circle.radius, 128, circle.color);
         }
+        foreach (DebugLine line in debugLine)
+        {
+            spriteBatch.DrawLine(line.start, line.end, line.color);
+        }
         spriteBatch.End();
 
-
-        debug.Clear();
+        debugCircle.Clear();
+        debugLine.Clear();
     }
 
 

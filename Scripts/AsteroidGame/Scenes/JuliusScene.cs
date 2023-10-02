@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Graphics;
 using AsteroidGame.GameObjects;
 using Engine.Components;
 using AsteroidGame.GameObjects;
-using Scripts.Engine;
+using Engine;
 
 public class JuliusScene : Scene
 {

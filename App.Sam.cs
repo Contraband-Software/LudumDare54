@@ -41,6 +41,9 @@ public class App_Sam : Game
     public App_Sam()
     {
         this.graphics = new GraphicsDeviceManager(this);
+        // this.graphics.ToggleFullScreen();
+        this.graphics.PreferredBackBufferHeight = 1000;
+        this.graphics.PreferredBackBufferWidth = 1600;
         this.Content.RootDirectory = "Content";
         this.IsMouseVisible = true;
     }
@@ -60,11 +63,11 @@ public class App_Sam : Game
 
         PrintLn("App: Game systems initialized.");
 
-        this.sc.AddScene(new GameScene(this));
+        this.sc.AddScene(new SamScene(this));
 
         PrintLn("App: Scenes loaded.");
 
-        this.sc.ChangeScene("GameScene");
+        this.sc.ChangeScene("SamScene");
 
         PrintLn("App: Game scene started.");
 

@@ -1,6 +1,7 @@
 global using static LD54.Engine.Dev.EngineDebug;
 namespace LD54;
 
+using System.Diagnostics;
 using AsteroidGame.Scenes;
 using Engine;
 using Engine.Leviathan;
@@ -19,6 +20,7 @@ public class App : Game
     public App()
     {
         this.graphics = new GraphicsDeviceManager(this);
+
         this.Content.RootDirectory = "Content";
         this.IsMouseVisible = true;
 
