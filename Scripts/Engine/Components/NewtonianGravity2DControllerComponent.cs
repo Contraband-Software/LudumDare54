@@ -61,9 +61,7 @@ public class NewtonianGravity2DControllerComponent : Component
         //     {
         foreach (RigidBodyComponent rb in this.Satellites)
         {
-            List<RigidBodyComponent> otherObjects = Satellites.ToList(); // OPTIMIZE THIS
-            otherObjects.Remove(rb);
-            Vector3 acceleration = ResolveGravityAcceleration(rb, otherObjects, this.ForceLaw, this.GravitationalConstant);
+            Vector3 acceleration = ResolveGravityAcceleration(rb, this.Satellites, this.ForceLaw, this.GravitationalConstant);
 
             rb.Velocity += acceleration;
         }
@@ -78,6 +76,8 @@ public class NewtonianGravity2DControllerComponent : Component
             other =>*/
             foreach (RigidBodyComponent other in otherObjects)
             {
+                if (other.ContainingGameObject == rb.ContainingGameObject) continue;
+
                 Vector3 otherPosition = other.ContainingGameObject.GetGlobalPosition();
 
                 float distance = Vector3.Distance(position, otherPosition);
