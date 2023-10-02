@@ -14,7 +14,7 @@ using AsteroidGame.GameObjects;
 using Engine;
 using LD54.AsteroidGame.GameObjects;
 
-public class GameScene : Scene
+public class SamScene : Scene
 {
     #region PARAMS
     public const float FORCE_LAW = 2.4f;
@@ -31,7 +31,7 @@ public class GameScene : Scene
 
     private Texture2D testObjectTexture;
 
-    public GameScene(Game appCtx) : base("GameScene", appCtx)
+    public SamScene(Game appCtx) : base("SamScene", appCtx)
     {
     }
 

@@ -96,10 +96,6 @@ namespace LD54.AsteroidGame.GameObjects
 
                 #region ROTATION
                 {
-                    Vector2 positionC = this.GetGlobalPosition().SwizzleXY();
-                    Vector2 positionB = positionC + finalAbsoluteVelocity.SwizzleXY();
-                    Vector2 positionA = blackHolePosition.SwizzleXY();
-
                     float a = finalAbsoluteVelocity.SwizzleXY().Length();
                     float b = r;
                     float c = r;
@@ -117,7 +113,8 @@ namespace LD54.AsteroidGame.GameObjects
                 finalAbsoluteVelocity += new Vector3(-orbitNormal, 0) * boostFactor * speedAbs;
 
                 // Always being pulled in
-                finalAbsoluteVelocity += new Vector3(orbitNormal, 0) * fallFactor * (1 / (speedAbs < 0.1f ? 0.0000001f : MathF.Pow(speedAbs, 0.9f)));
+                finalAbsoluteVelocity += new Vector3(orbitNormal, 0)  * fallFactor * (1 / (speedAbs            < 0.1f ? 0.0000001f : MathF.Pow(speedAbs, 0.9f)));
+                finalAbsoluteVelocity += new Vector3(orbitTangent, 0) * fallFactor * (1 / (distanceToBlackHole < 0.1f ? 0.0000001f : MathF.Pow(distanceToBlackHole, 0.9f)));
                 this.rb.Velocity = finalAbsoluteVelocity;
 
                 // Debug stuff, no more math after here
@@ -177,10 +174,18 @@ namespace LD54.AsteroidGame.GameObjects
             return directionVector;
         }
 
+        // private Vector3 enginePower = Vector3.Zero;
+        // private float max
         private void MoveInForwardDirection(GameTime gameTime)
         {
             Vector2 directionVector = ForwardVector();
             Vector2 forceVector = directionVector * moveForce * (gameTime.ElapsedGameTime.Milliseconds / 1000f);
+
+            // enginePower += new Vector3(forceVector, 0);
+            // if (enginePower.Length() > this.maxVelocityFactor) //(1 - 1 / (d == 0 ? 1 : d)) *
+            // {
+            //     rb.Velocity = (rb.Velocity / rb.Velocity.Length()) * this.maxVelocityFactor;
+            // }
             rb.Velocity += new Vector3(forceVector, 0);
         }
 

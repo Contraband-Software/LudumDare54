@@ -63,11 +63,11 @@ public class App_Sam : Game
 
         PrintLn("App: Game systems initialized.");
 
-        this.sc.AddScene(new GameScene(this));
+        this.sc.AddScene(new SamScene(this));
 
         PrintLn("App: Scenes loaded.");
 
-        this.sc.ChangeScene("GameScene");
+        this.sc.ChangeScene("SamScene");
 
         PrintLn("App: Game scene started.");
 
