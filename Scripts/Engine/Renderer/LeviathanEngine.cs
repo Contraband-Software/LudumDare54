@@ -140,6 +140,12 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
         lightingShader = game.Content.Load<Effect>("Shaders/lighting");
         blankNormal = game.Content.Load<Texture2D>("Sprites/blank");
     }
+    public void UnbindShaders()
+    {
+        shaders.Clear();
+        postProcessShaders.Clear();
+    }
+
 
     public void DebugDrawCircle(Vector2 position, float radius, Color color)
     {

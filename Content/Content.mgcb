@@ -211,7 +211,7 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/image.png
 
-#begin Sprites/nebula.jpg
+#begin Sprites/nebula.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -221,7 +221,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sprites/nebula.jpg
+/build:Sprites/nebula.png
 
 #begin Sprites/noiseTexture.png
 /importer:TextureImporter
