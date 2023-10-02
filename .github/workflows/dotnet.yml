@@ -20,6 +20,10 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 6.0.x
+    - name: Install wine
+      run: sudo apt install wine64 p7zip-full
+    - name: Install shader compiler script for mgcb
+      run: wget -qO- https://raw.githubusercontent.com/MonoGame/MonoGame/master/Tools/MonoGame.Effect.Compiler/mgfxc_wine_setup.sh | bash
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
