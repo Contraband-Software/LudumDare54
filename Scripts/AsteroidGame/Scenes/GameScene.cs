@@ -216,12 +216,12 @@ public class GameScene : Scene
         re.bindShader(backgroundShader);
 
         LeviathanShader bloom = new LeviathanShader(this.app, "Shaders/bloom");
-        bloom.AddParam("strength", 0.2f);
-        bloom.AddParam("brightnessThreshold", 220);
+        bloom.AddParam("strength", 0.005f);
+        bloom.AddParam("brightnessThreshold", 0);
         re.addPostProcess(bloom);
 
         LeviathanShader abberation = new LeviathanShader(this.app, "Shaders/abberation");
-        abberation.AddParam("strength", 0.005f);
+        abberation.AddParam("strength", 0.001f);
         re.addPostProcess(abberation);
 
         // simple scene-wide illumination

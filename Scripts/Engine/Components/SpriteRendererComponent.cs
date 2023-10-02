@@ -19,10 +19,10 @@ public class SpriteRendererComponent : Component
 
     }
 
-    public void LoadSpriteData(Matrix transform, Vector2 size, Texture2D colorTexture, float depth = 0, Texture2D? normalTexture = null, int shader = 0, bool isOccluder = true)
+    public void LoadSpriteData(Matrix transform, Vector2 size, Texture2D colorTexture, float depth = 0.5f, Texture2D? normalTexture = null, int shader = 0, bool isOccluder = true, bool isLit = true)
     {
         re = this.app.Services.GetService<ILeviathanEngineService>();
-        sprite = new(this.app, transform, 0, size,shader, colorTexture, normalTexture, isOccluder, depth);
+        sprite = new(this.app, transform, 0, size,shader, colorTexture, normalTexture, isOccluder, depth,isLit);
         re.addSprite(sprite);
     }
 

@@ -21,6 +21,8 @@ namespace LD54.AsteroidGame.GameObjects
         RigidBodyComponent rb;
         SpriteRendererComponent src;
 
+        int light;
+
         #region PARAMS
         // PLEASE DO NOT EDIT THESE, ONE THING CHANGES AND EVERYTHING NEEDS TO BE ADJUSTED - ASK SAM
         private const float moveForce = 30f;
@@ -65,6 +67,8 @@ namespace LD54.AsteroidGame.GameObjects
             rb.Mass = 0;
             rb.Velocity += new Vector3(0, -80, 0);
             this.AddComponent(rb);
+
+            light = renderer.AddLight(this.GetGlobalPosition().SwizzleXY(), new Vector3(0, 0, 0));
         }
 
         public override void Update(GameTime gameTime)
@@ -164,6 +168,8 @@ namespace LD54.AsteroidGame.GameObjects
 
             base.Update(gameTime);
             src.Rotation = Rotation;
+
+            renderer.SetLightPosition(light, this.GetGlobalPosition().SwizzleXY());
         }
 
         private void RotateLeft(GameTime gameTime)

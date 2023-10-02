@@ -17,6 +17,7 @@ float2 lightPositions[64];
 sampler colorSampler : register(s0);
 sampler normalSampler : register(s1);
 sampler occluderSampler : register(s2);
+sampler unlitSampler : register(s3);
 
 struct VertexInput
 {
@@ -46,19 +47,22 @@ float4 SpritePixelShader(PixelInput p) : SV_TARGET
 {
     float4 diffuse = tex2D(colorSampler, p.TexCoord.xy);
     float4 normal = tex2D(normalSampler, p.TexCoord.xy)*2 -1;
-    float3 lighting = float3(0.2, 0.2, 0.2);
+    float3 lighting = float3(1, 1, 1);
     float2 screenCords = float2(p.Position.x, p.Position.y);
-    for (int i = 0; i < 64; i++)
+    if (tex2D(unlitSampler, p.TexCoord.xy).r != 0)
     {
-        if (dot(lightColors[i], float3(1, 1, 1)) > 0)
+        lighting = float3(0.1, 0.1, 0.1);
+        for (int i = 0; i < 64; i++)
         {
-            float2 translatedPos = lightPositions[i] + translation;
-            float2 distAxis = screenCords - translatedPos;
-            float distSquared = distAxis.x * distAxis.x + distAxis.y * distAxis.y;
+            if (dot(lightColors[i], float3(1, 1, 1)) > 0)
+            {
+                float2 translatedPos = lightPositions[i] + translation;
+                float2 distAxis = screenCords - translatedPos;
+                float distSquared = distAxis.x * distAxis.x + distAxis.y * distAxis.y;
 
-            float2 marchVector = -normalize(distAxis) * 3; //-?
-            float2 marchPos = screenCords;
-            float3 shadowFactor = float3(1, 1, 1);
+                float2 marchVector = -normalize(distAxis) * 3; //-?
+                float2 marchPos = screenCords;
+                float3 shadowFactor = float3(1, 1, 1);
 
             //if (i == 0)
             //{
@@ -85,7 +89,8 @@ float4 SpritePixelShader(PixelInput p) : SV_TARGET
             //        marchPos += marchVector;
             //    }
             //}
-            lighting += (lightColors[i] / distSquared) * max(dot(normal.xyz, normalize(float3(-distAxis.x, distAxis.y, 100))), 0) * shadowFactor; // not technically correct
+                lighting += (lightColors[i] / distSquared) * max(dot(normal.xyz, normalize(float3(-distAxis.x, distAxis.y, 100))), 0) * shadowFactor; // not technically correct
+            }
         }
     }
     return diffuse * float4(lighting, 1.0);

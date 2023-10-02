@@ -31,7 +31,7 @@ public class StaticSprite : GameObject
     {
         re = this.app.Services.GetService<ILeviathanEngineService>();
         sr = new SpriteRendererComponent("spriteRenderer",this.app);
-        sr.LoadSpriteData(Matrix.CreateTranslation(position.X, position.Y, 0), this.size, texture, 0f, normal, 2,false);
+        sr.LoadSpriteData(Matrix.CreateTranslation(position.X, position.Y, 0), this.size, texture, 0.0f, normal, 2,false,false);
         this.AddComponent(sr);
     }
     public override void Update(GameTime gameTime)

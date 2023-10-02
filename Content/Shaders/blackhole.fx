@@ -71,12 +71,13 @@ float4 SpritePixelShader(PixelInput p) : SV_TARGET
     else
     {
         float2 centerToPixel = normalize(p.TexCoord.xy - float2(0.5, 0.5));
-        float cosine = acos(dot(centerToPixel, float2(cos(time), sin(time)))) * 0.003;
+        float cosine = acos(dot(centerToPixel, float2(cos(time*2), sin(time*2)))) * 0.003;
+
         if (lengthSq < pow(tex2D(colorSampler, p.TexCoord.xy * 0.1 + float2((time * 0.01) % 0.25, (time * 0.01) % 0.25)).r, 2) * 0.2 + tex2D(colorSampler, float2(lengthSq + (time * 0.01) % 1, cosine + (time * 0.01) % 0.5)).r * 0.06)
         {
-            float3 fac = float3(0.01 / lengthSq, 0.01 / lengthSq, 0.01 / lengthSq);
+            float3 fac = float3(1 / lengthSq, 1 / lengthSq, 1 / lengthSq) * 0.002 * float3(1, 0.3, 0.8) * (dot(float3(centerToPixel, 10), tex2D(colorSampler, p.TexCoord.xy + float2(cosine * 5 + sin(p.TexCoord.x) * 0.1, cosine * 5 + sin(p.TexCoord.y) * 0.1) * 2).xyz) / 2 + 1);
             float f = tex2D(colorSampler, float2(lengthSq + (time * 0.01) % 1, cosine + (time * 0.01) % 0.5)).r * tex2D(colorSampler, (p.TexCoord.xy*0.5 + float2((time * 0.02), (time * 0.02)))%1).r;
-            float g = pow(tex2D(colorSampler, float2(lengthSq + (time * 0.01) % 1, cosine + (time * 0.01) % 0.5)).r * tex2D(colorSampler, (p.TexCoord.xy * 0.5 + float2((time * 0.02), (time * 0.02))) % 1).r, 1) * pow(fac.r, 0.3) * 2;
+            float g = pow(tex2D(colorSampler, float2(lengthSq + (time * 0.01) % 1, cosine + (time * 0.01) % 0.5)).r * tex2D(colorSampler, (p.TexCoord.xy * 0.5 + float2((time * 0.02), (time * 0.02))) % 1).r*4, 4) * 0.2;
 
             float alpha = 0;
             if (f < 0.28 || g>0.5)
@@ -87,10 +88,10 @@ float4 SpritePixelShader(PixelInput p) : SV_TARGET
            
             if (g > 0.5)
             {
-                fac = float3(g*10, 0.6, 1);
+                fac = fac *10;
             }
 
-            col = float4(fac.r, fac.b, fac.g, alpha);
+            col = float4(fac.r, fac.g, fac.b, alpha);
         }
     }
     

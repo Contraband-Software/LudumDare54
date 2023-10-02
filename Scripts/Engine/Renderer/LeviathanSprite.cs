@@ -16,8 +16,9 @@ public class LeviathanSprite
     public int shader = 0;
     public float rotation = 0;
     private float layer = 0;
+    public bool isLit = true;
 
-    public LeviathanSprite(Game game, Matrix transform, float rotation, Vector2 size, Texture2D colorTexture, Texture2D? normalTexture = null, bool isOccluder = true, float layer = 0)
+    public LeviathanSprite(Game game, Matrix transform, float rotation, Vector2 size, Texture2D colorTexture, Texture2D? normalTexture = null, bool isOccluder = true, float layer = 0, bool isLit = true)
     {
         this.color = colorTexture;
         this.normal = normalTexture;
@@ -28,8 +29,9 @@ public class LeviathanSprite
         this.isOccluder = isOccluder;
         this.rotation = rotation;
         this.layer = layer;
+        this.isLit = isLit;
     }
-    public LeviathanSprite(Game game, Matrix transform,float rotation, Vector2 size, int shader, Texture2D colorTexture, bool isOccluder = true, float layer = 0)
+    public LeviathanSprite(Game game, Matrix transform,float rotation, Vector2 size, int shader, Texture2D colorTexture, bool isOccluder = true, float layer = 0, bool isLit = true)
     {
         this.color = colorTexture;
         this.transform = transform;
@@ -39,8 +41,9 @@ public class LeviathanSprite
         this.shader = shader;
         this.rotation = rotation;
         this.layer = layer;
+        this.isLit = isLit;
     }
-    public LeviathanSprite(Game game, Matrix transform, float rotation, Vector2 size, int shader, Texture2D colorTexture, Texture2D? normalTexture = null, bool isOccluder = true, float layer = 0)
+    public LeviathanSprite(Game game, Matrix transform, float rotation, Vector2 size, int shader, Texture2D colorTexture, Texture2D? normalTexture = null, bool isOccluder = true, float layer = 0, bool isLit = true)
     {
         this.color = colorTexture;
         this.normal = normalTexture;
@@ -52,6 +55,7 @@ public class LeviathanSprite
         this.shader = shader;
         this.rotation = rotation;
         this.layer = layer;
+        this.isLit = isLit;
     }
 
     public void SetColorTexture(Texture2D color)

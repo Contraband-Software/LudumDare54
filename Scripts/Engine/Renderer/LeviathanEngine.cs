@@ -95,6 +95,7 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
     RenderTarget2D normalTarget;
     RenderTarget2D shadowTarget;
     RenderTarget2D litTarget;
+    RenderTarget2D unlitTarget;
     RenderTarget2D postProcessTarget;
     private bool pingpong = false;
 
@@ -129,6 +130,9 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
             game.GraphicsDevice.PresentationParameters.BackBufferWidth,
             game.GraphicsDevice.PresentationParameters.BackBufferHeight);
         postProcessTarget = new RenderTarget2D(game.GraphicsDevice,
+            game.GraphicsDevice.PresentationParameters.BackBufferWidth,
+            game.GraphicsDevice.PresentationParameters.BackBufferHeight);
+        unlitTarget = new RenderTarget2D(game.GraphicsDevice,
             game.GraphicsDevice.PresentationParameters.BackBufferWidth,
             game.GraphicsDevice.PresentationParameters.BackBufferHeight);
 
@@ -214,6 +218,7 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
                 shaders[i - 1].shader.Parameters["time"]?.SetValue((float)gameTime.TotalGameTime.TotalSeconds);
                 shaders[i - 1].shader.Parameters["width"]?.SetValue(width);
                 shaders[i - 1].shader.Parameters["height"]?.SetValue(height);
+                shaders[i - 1].shader.Parameters["cpos"]?.SetValue(cameraPosition);
                 shaders[i - 1].SetAllParams();
                 spriteBatch.Begin(sortMode: SpriteSortMode.BackToFront, transformMatrix: view, effect: shaders[i-1].shader) ;
             }
@@ -227,7 +232,21 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
             }
             spriteBatch.End();
         }
-
+        game.GraphicsDevice.SetRenderTarget(unlitTarget);
+        game.GraphicsDevice.Clear(Color.White);
+        spriteBatch.Begin(sortMode: SpriteSortMode.FrontToBack, transformMatrix: view);
+        foreach (LeviathanSprite sprite in sprites)
+        {
+            if (!sprite.isLit)
+            {
+                spriteBatch.Draw(sprite.color, new Rectangle(sprite.GetPositionXY().ToPoint() + (sprite.size / 2f).ToPoint(), sprite.size.ToPoint()), null, Color.Black, sprite.rotation, new Vector2(sprite.color.Width / 2, sprite.color.Height / 2), SpriteEffects.None, sprite.getDepth());
+            }
+            else
+            {
+                spriteBatch.Draw(sprite.color, new Rectangle(sprite.GetPositionXY().ToPoint() + (sprite.size / 2f).ToPoint(), sprite.size.ToPoint()), null, Color.White, sprite.rotation, new Vector2(sprite.color.Width / 2, sprite.color.Height / 2), SpriteEffects.None, sprite.getDepth());
+            }
+        }
+        spriteBatch.End();
 
         game.GraphicsDevice.SetRenderTarget(normalTarget);
         game.GraphicsDevice.Clear(new Color(0.5f, 0.5f, 1f));
@@ -235,7 +254,7 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
 
         foreach (LeviathanSprite sprite in sprites)
         {
-            if (sprite.useNormal)
+            if (sprite.useNormal && sprite.isLit)
             {
                 spriteBatch.Draw(sprite.normal, new Rectangle(sprite.GetPositionXY().ToPoint() + (sprite.size / 2f).ToPoint(), sprite.size.ToPoint()), null, Color.White, sprite.rotation, new Vector2(sprite.normal.Width / 2, sprite.normal.Height / 2), SpriteEffects.None, sprite.getDepth());
             }
@@ -270,6 +289,8 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
         lightingShader.Parameters["lightPositions"]?.SetValue(lightPositions);
         lightingShader.Parameters["normalSampler"]?.SetValue(normalTarget);
         lightingShader.Parameters["occluderSampler"]?.SetValue(shadowTarget);
+        lightingShader.Parameters["unlitSampler"]?.SetValue(unlitTarget);
+
 
 
         game.GraphicsDevice.SetRenderTarget(litTarget);

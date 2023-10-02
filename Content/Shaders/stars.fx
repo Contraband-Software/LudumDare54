@@ -14,6 +14,7 @@ float height;
 float strength;
 float blackholeX;
 float blackholeY;
+float2 cpos;
 sampler colorSampler : register(s0);
 
 struct VertexInput
@@ -46,7 +47,14 @@ float4 SpritePixelShader(PixelInput p) : SV_TARGET
     float2 screenCords = float2(p.Position.x, p.Position.y);
     float2 diff = screenCords - blackholePos;
     float2 distortion = -normalize(diff) * (strength / (diff.x*diff.x+diff.y*diff.y));
-    float4 col = tex2D(colorSampler, p.TexCoord.xy+distortion);
+    float2 texdistort = p.TexCoord.xy + distortion;
+    float4 col = float4(0, 0.9, 1, 1); /*= tex2D(colorSampler, texdistort);*/
+
+    float2 texparalax = texdistort + cpos * 0.0002;
+    if (!((abs(texparalax.x % 0.05) < 0.0005) || (abs(texparalax.y % 0.05) < 0.0005)))
+    {
+        col = tex2D(colorSampler, texdistort);
+    }
     
     return col;
 }
