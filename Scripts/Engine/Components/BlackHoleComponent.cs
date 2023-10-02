@@ -39,7 +39,7 @@ public class BlackHoleComponent : Component
     public override void Update(GameTime gameTime)
     {
         base.Update(gameTime);
-        //bh.rotation -= 0.01f;
+        bh.rotation -= 0.01f;
         bh.SetTransform(gameObject.GetGlobalTransform() * Offset);
         re.SetLightPosition(light, new Vector2(gameObject.GetGlobalPosition().X, gameObject.GetGlobalPosition().Y));
     }

@@ -13,33 +13,12 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin Fonts/EditUndoBrk.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:PremultiplyAlpha=True
-/processorParam:TextureFormat=Compressed
-/build:Fonts/EditUndoBrk.spritefont
-
-#begin Fonts/EditUndoLineBrk.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:PremultiplyAlpha=True
-/processorParam:TextureFormat=Compressed
-/build:Fonts/EditUndoLineBrk.spritefont
-
 #begin Fonts/main.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:Fonts/main.spritefont
-
-#begin Fonts/TitleFont.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:PremultiplyAlpha=True
-/processorParam:TextureFormat=Compressed
-/build:Fonts/TitleFont.spritefont
 
 #begin Shaders/abberation.fx
 /importer:EffectImporter
@@ -197,7 +176,7 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/image.png
 
-#begin Sprites/nebula.jpg
+#begin Sprites/nebula.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -207,7 +186,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sprites/nebula.jpg
+/build:Sprites/nebula.png
 
 #begin Sprites/noiseTexture.png
 /importer:TextureImporter

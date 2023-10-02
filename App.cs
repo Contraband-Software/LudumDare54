@@ -25,7 +25,7 @@ public class App : Game
         this.graphics = new GraphicsDeviceManager(this);
 
         #region VIDEO_MODE_SELECTION
-        bool debugVideoMode = true;
+        bool debugVideoMode = false;
         if (debugVideoMode)
         {
             this.graphics.PreferredBackBufferWidth = 1200;
@@ -46,6 +46,7 @@ public class App : Game
             this.graphics.PreferredBackBufferWidth = preferredMode.Width;
             this.graphics.PreferredBackBufferHeight = preferredMode.Height;
             this.graphics.ToggleFullScreen();
+            PrintLn(preferredMode.ToString());
         }
         #endregion
 

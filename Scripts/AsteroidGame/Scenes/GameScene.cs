@@ -231,7 +231,7 @@ public class GameScene : Scene
         re.addPostProcess(crt);
 
         LeviathanShader abberation2 = new LeviathanShader(this.app, "Shaders/abberation");
-        abberation2.AddParam("strength", 0.002f);
+        abberation2.AddParam("strength", 0.001f);
         re.addPostProcess(abberation2);
 
         // simple scene-wide illumination
