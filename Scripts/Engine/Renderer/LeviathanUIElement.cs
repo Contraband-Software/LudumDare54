@@ -7,7 +7,7 @@ public class LeviathanUIElement
 {
     public Texture2D color;
     private Matrix transform;
-    public Point size;
+    public Vector2 size;
     private Game game;
     public bool isEnabled;
     public bool isText = false;
@@ -15,7 +15,7 @@ public class LeviathanUIElement
     public SpriteFont font;
     public Color textColor;
 
-    public LeviathanUIElement(Game game, Matrix transform, Point size, Texture2D colorTexture, bool isEnabled = true)
+    public LeviathanUIElement(Game game, Matrix transform, Vector2 size, Texture2D colorTexture, bool isEnabled = true)
     {
         this.color = colorTexture;
         this.transform = transform;
@@ -24,7 +24,7 @@ public class LeviathanUIElement
         this.isEnabled = isEnabled;
     }
 
-    public LeviathanUIElement(Game game, Matrix transform, Point size, string text, SpriteFont font,Color color, bool isEnabled = true)
+    public LeviathanUIElement(Game game, Matrix transform, Vector2 size, string text, SpriteFont font,Color color, bool isEnabled = true)
     {
         isText = true;
         this.text = text;

@@ -349,11 +349,11 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
             {
                 if (uISprite.isText)
                 {
-                    spriteBatch.DrawString(uISprite.font, uISprite.text,uISprite.GetPositionXY(),uISprite.textColor,0,new Vector2(0),uISprite.size.ToVector2(),SpriteEffects.None,0);
+                    spriteBatch.DrawString(uISprite.font, uISprite.text,uISprite.GetPositionXY(),uISprite.textColor,0,new Vector2(0),uISprite.size,SpriteEffects.None,0);
                 }
                 else
                 {
-                    spriteBatch.Draw(uISprite.color, new Rectangle(uISprite.GetPositionXY().ToPoint(), uISprite.size), Color.White);
+                    spriteBatch.Draw(uISprite.color, new Rectangle(uISprite.GetPositionXY().ToPoint(), new Point((int)uISprite.size.X, (int)uISprite.size.X)), Color.White);
                     //spriteBatch.Draw(uISprite.color, new Rectangle(uISprite.GetPositionXY().ToPoint(), uISprite.size), null, Color.White, 0.05f, new Vector2(uISprite.size.X / 2, uISprite.size.Y / 2)+ uISprite.GetPositionXY(), SpriteEffects.None, 0);
                 }
             }
