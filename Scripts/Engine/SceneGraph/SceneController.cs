@@ -80,7 +80,7 @@ public class SceneController : GameComponent, ISceneControllerService
 
     public void DestroyObject(GameObject gameObject)
     {
-        PrintLn("Destroyed object: " + gameObject.GetName());
+        //PrintLn("Destroyed object: " + gameObject.GetName());
         gameObject.OnUnload();
         this.UnloadChildren(gameObject);
         gameObject.GetParent().RemoveChild(gameObject);

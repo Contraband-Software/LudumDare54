@@ -5,6 +5,16 @@ using Microsoft.Xna.Framework;
 
 public static class Math
 {
+    public static bool IsFinite(Vector2 vector2)
+    {
+        return float.IsFinite(vector2.X) && float.IsFinite(vector2.Y);
+    }
+
+    public static bool IsFinite(Vector3 vector3)
+    {
+        return float.IsFinite(vector3.X) && float.IsFinite(vector3.Y) && float.IsFinite(vector3.Z);
+    }
+
     public static Vector2 RNormalize(this Vector2 vector2)
     {
         vector2.Normalize();

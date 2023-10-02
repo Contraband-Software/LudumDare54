@@ -117,7 +117,7 @@ public class GameScene : Scene
         countdownToAsteroidSpawn -= (gameTime.ElapsedGameTime.Milliseconds / 1000f);
         if(countdownToAsteroidSpawn < 0)
         {
-            PrintLn("SPAWNING ASTEROID");
+            // PrintLn("SPAWNING ASTEROID");
             //reset countdown timer
             Random rnd = new Random();
             countdownToAsteroidSpawn = 1f + (rnd.NextSingle() * (MAX_ASTEROID_SPAWN_INVERVAL - 1f));

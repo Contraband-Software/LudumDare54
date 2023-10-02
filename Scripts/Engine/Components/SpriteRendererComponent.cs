@@ -43,7 +43,7 @@ public class SpriteRendererComponent : Component
     public override void OnUnload()
     {
         this.app.Services.GetService<ILeviathanEngineService>().removeSprite(sprite);
-        PrintLn("OnUnload: SpriteRendererComponent");
+        // PrintLn("OnUnload: SpriteRendererComponent");
     }
 
     public void SetSprite(Texture2D texture)

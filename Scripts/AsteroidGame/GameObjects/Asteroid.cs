@@ -71,7 +71,7 @@ namespace LD54.Scripts.AsteroidGame.GameObjects
                 0);
 
 
-            PrintLn(this.rotationSpeed.ToString());
+            // PrintLn(this.rotationSpeed.ToString());
             collider = new CircleColliderComponent(colliderDimensions.X / 2, Vector3.Zero, "asteroidCollider", this.app);
             collider.isTrigger = true;
             this.collider.DebugMode = true;
@@ -110,11 +110,11 @@ namespace LD54.Scripts.AsteroidGame.GameObjects
         {
             if(state == State.ALIVE)
             {
-                PrintLn("starting DEATH sequence for asteroid");
+                // PrintLn("starting DEATH sequence for asteroid");
                 state = State.DYING;
                 rotationSpeed = 0;
                 src.SetSprite(brokenTexture);
-            }    
+            }
         }
     }
 }

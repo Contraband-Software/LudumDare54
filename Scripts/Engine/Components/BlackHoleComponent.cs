@@ -47,6 +47,6 @@ public class BlackHoleComponent : Component
     public override void OnUnload()
     {
         this.app.Services.GetService<ILeviathanEngineService>().removeSprite(bh);
-        PrintLn("OnUnload: SpriteRendererComponent");
+        //PrintLn("OnUnload: SpriteRendererComponent");
     }
 }

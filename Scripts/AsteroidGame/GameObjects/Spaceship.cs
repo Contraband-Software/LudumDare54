@@ -7,12 +7,8 @@ namespace LD54.AsteroidGame.GameObjects
     using Microsoft.Xna.Framework.Input;
     using Microsoft.Xna.Framework;
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using LD54.AsteroidGame.GameObjects;
     using LD54.Scripts.AsteroidGame.GameObjects;
+    using Math = Engine.Math;
 
     public class Spaceship : GameObject
     {
@@ -57,12 +53,12 @@ namespace LD54.AsteroidGame.GameObjects
                 );
             this.AddComponent(src);
 
-            Vector3 colliderDimensions = new Vector3(this.texture.Width, this.texture.Height, 0);
-            collider = new CircleColliderComponent(colliderDimensions.X/2, Vector3.Zero, "playerCollider", this.app);
-            collider.isTrigger = true;
-            this.collider.DebugMode = true;
-            collider.TriggerEvent += OnTriggerEnter;
-            this.AddComponent(collider);
+            // Vector3 colliderDimensions = new Vector3(this.texture.Width, this.texture.Height, 0);
+            // collider = new CircleColliderComponent(colliderDimensions.X/2, Vector3.Zero, "playerCollider", this.app);
+            // collider.isTrigger = true;
+            // this.collider.DebugMode = true;
+            // collider.TriggerEvent += OnTriggerEnter;
+            // this.AddComponent(collider);
 
             rb = new RigidBodyComponent("rbPlayer", app);
             rb.Mass = 0;
@@ -108,7 +104,9 @@ namespace LD54.AsteroidGame.GameObjects
                         (b * b + c * c - (a * a)) / (2 * b * c)
                     );
 
-                    this.Rotation += totalRotation * MathF.Sign(tangentVelocity) * -1;
+                    float rot = totalRotation * MathF.Sign(tangentVelocity) * -1;
+
+                    if (float.IsFinite(rot)) this.Rotation += rot;
                 }
                 #endregion
 
@@ -117,18 +115,25 @@ namespace LD54.AsteroidGame.GameObjects
                 finalAbsoluteVelocity += new Vector3(-orbitNormal, 0) * boostFactor * speedAbs;
 
                 // Always being pulled in
-                finalAbsoluteVelocity += new Vector3(orbitNormal, 0)  * fallFactor * (1 / (speedAbs            < 0.1f ? 0.0000001f : MathF.Pow(speedAbs, 0.9f)));
-                finalAbsoluteVelocity += new Vector3(orbitTangent, 0) * fallFactor * (1 / (distanceToBlackHole < 0.1f ? 0.0000001f : MathF.Pow(distanceToBlackHole, 0.9f)));
+                finalAbsoluteVelocity += new Vector3(orbitNormal, 0) * fallFactor * MathF.Abs(speedAbs == 0f ? 1f : (1 / MathF.Pow(speedAbs, 0.9f)));
+                // finalAbsoluteVelocity -= new Vector3(orbitTangent, 0) * fallFactor * (1 / (distanceToBlackHole < 0.1f ? 0.0000001f : MathF.Pow(distanceToBlackHole, 0.9f)));
 
                 if (speedAbs < deathSpeed)
                 {
-                    finalAbsoluteVelocity += new Vector3(orbitNormal, 0) * 20;
+                    // finalAbsoluteVelocity += new Vector3(orbitNormal, 0) * maxVelocityFactor;
                 }
 
-                this.rb.Velocity = finalAbsoluteVelocity;
+                if (Math.IsFinite(finalAbsoluteVelocity))
+                {
+                    this.rb.Velocity = finalAbsoluteVelocity;
+                }
+                else
+                {
+                    PrintLn("nan");
+                }
 
                 // Debug stuff, no more math after here
-                Vector2 overlapOffset = new Vector2(1, 1) * 10;
+                // Vector2 overlapOffset = new Vector2(1, 1) * 10;
                 float velScale = 50;
                 render.DebugDrawCircle(new Vector2(blackHolePosition.X, blackHolePosition.Y), r, Color.Lime);
 
@@ -139,14 +144,14 @@ namespace LD54.AsteroidGame.GameObjects
                 render.DebugDrawLine(this.GetGlobalPosition().SwizzleXY(), this.GetGlobalPosition().SwizzleXY() + tangentVelocity * velScale * orbitTangent, Color.Cyan);
                 // render.DebugDrawLine(this.GetGlobalPosition().SwizzleXY(), this.GetGlobalPosition().SwizzleXY() + tangent, Color.Cyan);
                 // render.DebugDrawLine(this.GetGlobalPosition().SwizzleXY() + overlapOffset, this.GetGlobalPosition().SwizzleXY() + overlapOffset + positionDelta * 140, Color.Lime);
-                render.DebugDrawLine(this.GetGlobalPosition().SwizzleXY() + overlapOffset * 2, this.GetGlobalPosition().SwizzleXY() + overlapOffset * 2 + this.rb.Velocity.SwizzleXY() * velScale, Color.Yellow);
+                render.DebugDrawLine(this.GetGlobalPosition().SwizzleXY() , this.GetGlobalPosition().SwizzleXY() + this.rb.Velocity.SwizzleXY() * velScale, Color.Yellow);
             }
             #endregion
             Vector2 movementVector = Move(gameTime);
             //limit velocity
             if (rb.Velocity.Length() > maxVelocityFactor) //(1 - 1 / (d == 0 ? 1 : d)) *
             {
-                rb.Velocity *= velocityDamping;
+                rb.Velocity = rb.Velocity.RNormalize() * maxVelocityFactor;
             }
             #region TOY_ORBIT_PHYSICS_CONT
             {

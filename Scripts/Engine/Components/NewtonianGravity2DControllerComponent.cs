@@ -30,7 +30,7 @@ public class NewtonianGravity2DControllerComponent : Component
 
         this.gameObject.ChildAttachedEvent += (gameObject) =>
         {
-            PrintLn("NewtonianGravity2DControllerComponent: new object added to newtonian sim.");
+            // PrintLn("NewtonianGravity2DControllerComponent: new object added to newtonian sim.");
             this.RegisterSystemRigidBodies();
         };
     }
