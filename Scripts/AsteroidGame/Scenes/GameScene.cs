@@ -254,9 +254,12 @@ public class GameScene : Scene
         );
 
         #region PLAYER_INITIALIZATION
+        // within a radius around
+
+
         Texture2D shipTexture = this.contentManager.Load<Texture2D>("Sprites/arrow");
         Spaceship player = new Spaceship(blackHole as BlackHole, shipTexture, "player", app);
-        player.SetLocalPosition(new Vector2(-300, 150));
+        player.SetLocalPosition(new Vector2(-400, 150));
         parentObject.AddChild(player);
         #endregion
     }
@@ -289,6 +292,6 @@ public class GameScene : Scene
 
     public override void OnUnload()
     {
-        this.app.Services.GetService<ILeviathanEngineService>().removeLight(this.sunLight);
+        // this.app.Services.GetService<ILeviathanEngineService>().removeLight(this.sunLight);
     }
 }
