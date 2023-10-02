@@ -100,7 +100,8 @@ public class SamScene : Scene
         blackHole.SetLocalPosition(blackHolePosition);
 
         Texture2D shipTexture = this.contentManager.Load<Texture2D>("Sprites/arrow");
-        Spaceship player = new Spaceship(blackHole as BlackHole, shipTexture, "player", app);
+        Texture2D shipTextureBoost = this.contentManager.Load<Texture2D>("Sprites/arrow");
+        Spaceship player = new Spaceship(blackHole as BlackHole, shipTexture, shipTextureBoost,"player", app);
         player.SetLocalPosition(new Vector2(-300, 150));
         parentObject.AddChild(player);
 

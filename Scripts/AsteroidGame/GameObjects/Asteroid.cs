@@ -50,7 +50,7 @@ namespace LD54.AsteroidGame.GameObjects
 
 
             Random rnd = new Random();
-            this.scale = 0.4f + (rnd.NextSingle() * 0.7f);
+            this.scale = 0.8f + (rnd.NextSingle() * 0.2f);
 
             rotationSpeed = (0.1f + (rnd.NextSingle() * 0.8f)) * (MathF.Sign(rnd.NextSingle()-0.5f));
         }

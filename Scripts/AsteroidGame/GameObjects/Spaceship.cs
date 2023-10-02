@@ -16,6 +16,7 @@ namespace LD54.AsteroidGame.GameObjects
         private ILeviathanEngineService renderer;
 
         Texture2D texture;
+        Texture2D texture_boost;
 
         CircleColliderComponent collider;
         RigidBodyComponent rb;
@@ -37,10 +38,11 @@ namespace LD54.AsteroidGame.GameObjects
         // private float
         #endregion
 
-        public Spaceship(BlackHole blackHole, Texture2D texture, string name, Game appCtx) : base(name, appCtx)
+        public Spaceship(BlackHole blackHole, Texture2D texture, Texture2D boost, string name, Game appCtx) : base(name, appCtx)
         {
             this.blackHole = blackHole;
             this.texture = texture;
+            this.texture_boost = boost;
         }
 
         public override void OnLoad(GameObject? parentObject)
@@ -230,16 +232,18 @@ namespace LD54.AsteroidGame.GameObjects
                             0);
 
                         float dotProduct = Vector3.Dot(asteroidVel, posDelta);
-                        if (dotProduct > 0)
+                        /*if (dotProduct > 0)
                         {
-                            rb.Velocity = asteroidVel;
+                            rb.Velocity = asteroidVel * 5f;
                         }
 
                         //otherwise, damp current velocity
                         else
                         {
                             rb.Velocity *= 0.0f;
-                        }
+                        }*/
+                        posDelta.Normalize();
+                        rb.Velocity += posDelta * 500f;
                     }
                 }
             }
@@ -276,10 +280,12 @@ namespace LD54.AsteroidGame.GameObjects
             if (Keyboard.GetState().IsKeyDown(Keys.W))
             {
                 MoveInForwardDirection(gameTime);
+                src.SetSprite(texture_boost);
             }
             else
             {
                 this.enginePower = 0;
+                src.SetSprite(texture);
             }
             if (Keyboard.GetState().IsKeyDown(Keys.A))
             {

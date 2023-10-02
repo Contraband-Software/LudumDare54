@@ -24,7 +24,7 @@ public class GameScene : Scene
     public const float GRAVITATIONAL_CONSTANT = 43f;
 
     public const float BLACK_HOLE_MASS = 100;   // no need to edit, GRAVITATIONAL_CONSTANT is already directly proportional (Satellites are massless)
-    public const int SATELLITES = 120;
+    public const int SATELLITES = 40;
     public const float SPEED_MULT = 15f;
 
     public const float MAP_SIZE = 2f;
@@ -159,7 +159,7 @@ public class GameScene : Scene
             direction.Normalize();
 
             //make random velocity
-            float speed = 1f + (rnd.NextSingle() * 3f);
+            float speed = 3f + (rnd.NextSingle() * 3f);
             Vector2 startVelocity = direction * speed;
 
             //spawn asteroid
@@ -278,7 +278,8 @@ public class GameScene : Scene
 
 
         Texture2D shipTexture = this.contentManager.Load<Texture2D>("Sprites/spaceship");
-        Spaceship player = new Spaceship(blackHole as BlackHole, shipTexture, "player", app);
+        Texture2D shipTextureBoost = this.contentManager.Load<Texture2D>("Sprites/spaceship_thrust");
+        Spaceship player = new Spaceship(blackHole as BlackHole, shipTexture, shipTextureBoost, "player", app);
         player.SetLocalPosition(new Vector2(-400, 150));
         parentObject.AddChild(player);
         #endregion
