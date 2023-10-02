@@ -134,13 +134,17 @@ namespace LD54.AsteroidGame.GameObjects
             }
             #endregion
 
-            Move(gameTime);
-
+            readonly Vector2 movementVectorMove(gameTime);
             //limit velocity
-            if (rb.Velocity.Length() > this.maxVelocityFactor)//(1 - 1 / (d == 0 ? 1 : d)) *
+            if (rb.Velocity.Length() > this.maxVelocityFactor) //(1 - 1 / (d == 0 ? 1 : d)) *
             {
                 rb.Velocity = (rb.Velocity / rb.Velocity.Length()) * this.maxVelocityFactor;
             }
+            #region TOY_ORBIT_PHYSICS_CONT
+            {
+
+            }
+            #endregion
 
             renderer.SetCameraPosition(
                 new Vector2(
@@ -174,23 +178,22 @@ namespace LD54.AsteroidGame.GameObjects
             return directionVector;
         }
 
-        // private Vector3 enginePower = Vector3.Zero;
-        // private float max
-        private void MoveInForwardDirection(GameTime gameTime)
+        private float warmupFactor = 0;
+        private Vector2 MoveInForwardDirection(GameTime gameTime)
         {
             Vector2 directionVector = ForwardVector();
             Vector2 forceVector = directionVector * moveForce * (gameTime.ElapsedGameTime.Milliseconds / 1000f);
 
-            // enginePower += new Vector3(forceVector, 0);
-            // if (enginePower.Length() > this.maxVelocityFactor) //(1 - 1 / (d == 0 ? 1 : d)) *
-            // {
-            //     rb.Velocity = (rb.Velocity / rb.Velocity.Length()) * this.maxVelocityFactor;
-            // }
-            rb.Velocity += new Vector3(forceVector, 0);
+            this.warmupFactor += (1 - this.warmupFactor) / 45;
+            PrintLn(this.warmupFactor.ToString());
+            rb.Velocity += new Vector3(forceVector, 0) * this.warmupFactor;
+
+            return forceVector;
         }
 
-        private void Move(GameTime gameTime)
+        private Vector2 Move(GameTime gameTime)
         {
+            Vector2 forceVector = Vector2.Zero;
             if (Keyboard.GetState().IsKeyDown(Keys.W))
             {
                 MoveInForwardDirection(gameTime);
@@ -207,6 +210,8 @@ namespace LD54.AsteroidGame.GameObjects
             // {
             //     //rb.Velocity.Y += Speed;
             // }
+
+            return forceVector;
         }
     }
 }
