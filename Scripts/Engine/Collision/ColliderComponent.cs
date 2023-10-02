@@ -94,7 +94,7 @@ public class CircleColliderComponent : ColliderComponent
         }
         RecalculateCentre();
 
-        ShowBoundsIfDebug();
+        //ShowBoundsIfDebug();
     }
 
     public override void OnUnload()

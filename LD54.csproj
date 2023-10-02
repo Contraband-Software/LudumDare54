@@ -17,7 +17,7 @@
 
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
-    <ApplicationIcon>Content/Program/Icon.ico</ApplicationIcon>
+    <ApplicationIcon>eventhorison.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Content/Program/Icon.ico" />
@@ -25,7 +25,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Program\Icon.bmp" />
-    <Content Include="Content\Program\Icon.ico" />
+    <Content Include="eventhorison.ico" />
   </ItemGroup>
 
   <ItemGroup>
