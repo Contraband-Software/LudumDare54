@@ -28,11 +28,11 @@ namespace LD54.AsteroidGame.GameObjects
         public float MaxRotationSpeed = 3.5f;
         private float velocityDamping = 0.98f;
 
-        private float maxVelocityFactor = 5f;
+        private float maxVelocityFactor = 8f;
 
         private const float forceConstant = 0.001f;
-        private const float boostFactor = 0.1f;
-        private const float fallFactor = 0.5f;
+        private const float boostFactor = 0.4f;
+        private const float fallFactor = 14f;
 
         public Spaceship(BlackHole blackHole, Texture2D texture, string name, Game appCtx) : base(name, appCtx)
         {
@@ -87,18 +87,37 @@ namespace LD54.AsteroidGame.GameObjects
                 Vector2 orbitTangent = positionDelta.PerpendicularCounterClockwise();
                 float tangentVelocity = Vector2.Dot(this.rb.Velocity.SwizzleXY(), orbitTangent) / orbitTangent.Length();
 
-                Vector2 orbitNormal = positionDelta.RNormalize(); // positionDelta would become the orbit normal
-                Vector3 accelerationToCenter = new Vector3(orbitNormal * MathF.Abs(tangentVelocity) * r * (gameTime.ElapsedGameTime.Milliseconds / 1000f), 0) * forceConstant;
+                Vector2 orbitNormal = positionDelta.RNormalize();
+                Vector3 accelerationToCenter = new Vector3(
+                    orbitNormal * MathF.Abs(tangentVelocity) * r * (gameTime.ElapsedGameTime.Milliseconds / 1000f), 0) * forceConstant;
 
                 orbitTangent.Normalize();
                 Vector3 finalAbsoluteVelocity = accelerationToCenter + new Vector3((tangentVelocity) * orbitTangent, 0);
+
+                #region ROTATION
+                {
+                    Vector2 positionC = this.GetGlobalPosition().SwizzleXY();
+                    Vector2 positionB = positionC + finalAbsoluteVelocity.SwizzleXY();
+                    Vector2 positionA = blackHolePosition.SwizzleXY();
+
+                    float a = finalAbsoluteVelocity.SwizzleXY().Length();
+                    float b = r;
+                    float c = r;
+
+                    float totalRotation = MathF.Acos(
+                        (b * b + c * c - (a * a)) / (2 * b * c)
+                    );
+
+                    this.Rotation += totalRotation * MathF.Sign(tangentVelocity) * -1;
+                }
+                #endregion
 
                 // More speed = more radius increase per frame
                 float speedAbs = this.rb.Velocity.Copy().Length();
                 finalAbsoluteVelocity += new Vector3(-orbitNormal, 0) * boostFactor * speedAbs;
 
                 // Always being pulled in
-                finalAbsoluteVelocity += new Vector3(orbitNormal, 0) * fallFactor;
+                finalAbsoluteVelocity += new Vector3(orbitNormal, 0) * fallFactor * (1 / (speedAbs < 0.1f ? 0.0000001f : MathF.Pow(speedAbs, 0.9f)));
                 this.rb.Velocity = finalAbsoluteVelocity;
 
                 // Debug stuff, no more math after here
@@ -114,37 +133,36 @@ namespace LD54.AsteroidGame.GameObjects
                 // render.DebugDrawLine(this.GetGlobalPosition().SwizzleXY(), this.GetGlobalPosition().SwizzleXY() + tangent, Color.Cyan);
                 // render.DebugDrawLine(this.GetGlobalPosition().SwizzleXY() + overlapOffset, this.GetGlobalPosition().SwizzleXY() + overlapOffset + positionDelta * 140, Color.Lime);
                 render.DebugDrawLine(this.GetGlobalPosition().SwizzleXY() + overlapOffset * 2, this.GetGlobalPosition().SwizzleXY() + overlapOffset * 2 + this.rb.Velocity.SwizzleXY() * velScale, Color.Yellow);
+
             }
             #endregion
 
             Move(gameTime);
 
             //limit velocity
-            if (rb.Velocity.Length() > distanceToBlackHole * this.maxVelocityFactor)
+            if (rb.Velocity.Length() > this.maxVelocityFactor)//(1 - 1 / (d == 0 ? 1 : d)) *
             {
                 rb.Velocity = (rb.Velocity / rb.Velocity.Length()) * this.maxVelocityFactor;
             }
 
             renderer.SetCameraPosition(
                 new Vector2(
-                    this.GetGlobalPosition().X + texture.Width  / 2,
+                    this.GetGlobalPosition().X + texture.Width / 2,
                     this.GetGlobalPosition().Y + texture.Height / 2
                     ) - renderer.getWindowSize() / 2
                 );
 
             base.Update(gameTime);
+            src.Rotation = Rotation;
         }
 
         private void RotateLeft(GameTime gameTime)
         {
             Rotation -= MaxRotationSpeed * (gameTime.ElapsedGameTime.Milliseconds / 1000f);
-            src.Rotation = Rotation;
-
         }
         private void RotateRight(GameTime gameTime)
         {
             Rotation += MaxRotationSpeed * (gameTime.ElapsedGameTime.Milliseconds / 1000f);
-            src.Rotation = Rotation;
         }
 
         /// <summary>

@@ -41,7 +41,6 @@ public class GameScene : Scene
 
         for (int i = 0; i < GameScene.SATELLITES; i++)
         {
-
             Vector2 startPosition = new Vector2(
                 rnd.Next((int)boundsOffset.X, (int)boundsDimensions.X),
                 rnd.Next((int)boundsOffset.Y, (int)boundsDimensions.Y));

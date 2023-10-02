@@ -41,6 +41,7 @@ public class App_Sam : Game
     public App_Sam()
     {
         this.graphics = new GraphicsDeviceManager(this);
+        // this.graphics.ToggleFullScreen();
         this.graphics.PreferredBackBufferHeight = 1000;
         this.graphics.PreferredBackBufferWidth = 1600;
         this.Content.RootDirectory = "Content";
