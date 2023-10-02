@@ -8,6 +8,7 @@ namespace LD54.AsteroidGame.GameObjects
     using Microsoft.Xna.Framework;
     using System;
     using Math = Engine.Math;
+    using LD54.AsteroidGame.Scenes;
 
     public class Spaceship : GameObject
     {

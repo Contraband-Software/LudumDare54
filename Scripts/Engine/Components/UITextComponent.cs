@@ -22,7 +22,11 @@ namespace LD54.Scripts.Engine.Components
 
         public UITextComponent(string name, Game appCtx) : base(name, appCtx)
         {
-            
+
+        }
+        ~UITextComponent()
+        {
+            PrintLn("UITextComponent destroyed");
         }
 
         public void LoadTextElementData(
