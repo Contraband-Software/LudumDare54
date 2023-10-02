@@ -26,6 +26,8 @@ public class GameScene : Scene
     public const float SPEED_MULT = 15f;
 
     public const float MAP_SIZE = 2f;
+
+    public const float MAX_ASTEROID_SPAWN_INVERVAL = 0.01f;
     #endregion
 
     private int sunLight = -1;
@@ -34,6 +36,11 @@ public class GameScene : Scene
 
     List<Texture2D> asteroidTextures;
     private Texture2D asteroidTexture_broken;
+    private float countdownToAsteroidSpawn = MAX_ASTEROID_SPAWN_INVERVAL;
+
+    Vector2 windowSize;
+    NewtonianSystemObject newtonianSystem;
+    GameObject blackHole;
 
     public GameScene(Game appCtx) : base("GameScene", appCtx)
     {
@@ -100,16 +107,70 @@ public class GameScene : Scene
         }
     }
 
+    public void SpawnAsteroidsTowardsHole(
+        GameTime gameTime,
+        GameObject parent,
+        Vector2 boundsOffset,
+        Vector2 boundsDimensions,
+        Vector2 blackHole)
+    {
+        countdownToAsteroidSpawn -= (gameTime.ElapsedGameTime.Milliseconds / 1000f);
+        if(countdownToAsteroidSpawn < 0)
+        {
+            PrintLn("SPAWNING ASTEROID");
+            //reset countdown timer
+            Random rnd = new Random();
+            countdownToAsteroidSpawn = 1f + (rnd.NextSingle() * (MAX_ASTEROID_SPAWN_INVERVAL - 1f));
+
+            //spawn asteroid heading towards black hole
+            //choose random position
+            // Generate a random angle in radians
+            float angleInRadians = rnd.NextSingle() * 2 * MathF.PI;
+            float distAway = 2000f;
+            float ranX = distAway * MathF.Cos(angleInRadians);
+            float ranY = distAway * MathF.Sin(angleInRadians);
+
+            Vector2 startPosition = new Vector2(ranX, ranY);
+
+            //apply random offset to blackhole position
+            float offsetX = rnd.NextSingle() - 0.5f;
+            float offsetY = rnd.NextSingle() - 0.5f;
+            Vector2 targetPos = blackHole + new Vector2(offsetX, offsetY);
+
+            //find direction from start pos to target pos
+            Vector2 direction = (targetPos - startPosition);
+            direction.Normalize();
+
+            //make random velocity
+            float speed = 1f + (rnd.NextSingle() * 3f);
+            Vector2 startVelocity = direction * speed;
+
+            //spawn asteroid
+            GameObject newAst = new Asteroid(
+                0,
+                new Vector3(startVelocity, 0),
+                asteroidTextures[rnd.Next(0, 3)],
+                asteroidTexture_broken,
+                "shooting_asteroidObject_",
+                this.app
+            );
+
+            parent.AddChild(newAst);
+            newAst.SetLocalPosition(startPosition);
+        }
+    }
+
+
     public override void OnLoad(GameObject? parentObject)
     {
-        Vector2 windowSize = this.app.Services.GetService<ILeviathanEngineService>().getWindowSize();
+        windowSize = this.app.Services.GetService<ILeviathanEngineService>().getWindowSize();
         PrintLn("Screen resolution: " + windowSize);
 
         // simple scene-wide illumination
         sunLight = this.app.Services.GetService<ILeviathanEngineService>().AddLight(new Vector2(200, 200), new Vector3(10000000, 10000000, 10000000));
 
         // sim set up
-        NewtonianSystemObject newtonianSystem = new NewtonianSystemObject(
+        newtonianSystem = new NewtonianSystemObject(
             GameScene.GRAVITATIONAL_CONSTANT,
             "GravitySimulationObject",
             this.app);
@@ -120,6 +181,7 @@ public class GameScene : Scene
         Texture2D asteroidTexture1 = this.contentManager.Load<Texture2D>("Sprites/asteroid_1");
         Texture2D asteroidTexture2 = this.contentManager.Load<Texture2D>("Sprites/asteroid_2");
         Texture2D asteroidTexture3 = this.contentManager.Load<Texture2D>("Sprites/asteroid_3");
+        asteroidTexture_broken = this.contentManager.Load<Texture2D>("Sprites/asteroid_broken");
 
         asteroidTextures = new List<Texture2D>() { asteroidTexture1, asteroidTexture2, asteroidTexture3 };
 
@@ -131,7 +193,7 @@ public class GameScene : Scene
 
         // black hole
         Vector2 blackHolePosition = new Vector2(0, 0);
-        GameObject blackHole = new BlackHole(
+        blackHole = new BlackHole(
             BLACK_HOLE_MASS,
             testObjectTexture,
             "BlackHole",
@@ -169,6 +231,20 @@ public class GameScene : Scene
             printed = true;
             this.app.Services.GetService<ISceneControllerService>().DebugPrintGraph();
         }
+
+        Vector3 bhPosGlobal = blackHole.GetGlobalPosition();
+        Vector2 blackholePosition = new Vector2(bhPosGlobal.X, bhPosGlobal.Y);
+        SpawnAsteroidsTowardsHole(
+            gameTime,
+            this.newtonianSystem,
+            new Vector2(
+                windowSize.X * -MAP_SIZE / 2,
+                windowSize.Y * -MAP_SIZE / 2
+            ) + blackholePosition,
+            new Vector2(
+                windowSize.X * MAP_SIZE,
+                windowSize.Y * MAP_SIZE
+            ), blackholePosition);
     }
 
     public override void OnUnload()

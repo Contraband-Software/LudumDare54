@@ -20,6 +20,8 @@ public class App : Game
     public App()
     {
         this.graphics = new GraphicsDeviceManager(this);
+        this.graphics.PreferredBackBufferWidth = 1200;
+        this.graphics.PreferredBackBufferHeight = 800;
 
         this.Content.RootDirectory = "Content";
         this.IsMouseVisible = true;

@@ -12,6 +12,7 @@ namespace LD54.AsteroidGame.GameObjects
     using System.Text;
     using System.Threading.Tasks;
     using LD54.AsteroidGame.GameObjects;
+    using LD54.Scripts.AsteroidGame.GameObjects;
 
     public class Spaceship : GameObject
     {
@@ -58,6 +59,7 @@ namespace LD54.AsteroidGame.GameObjects
             collider = new CircleColliderComponent(colliderDimensions.X/2, Vector3.Zero, "playerCollider", this.app);
             collider.isTrigger = true;
             this.collider.DebugMode = true;
+            collider.TriggerEvent += OnTriggerEnter;
             this.AddComponent(collider);
 
             rb = new RigidBodyComponent("rbPlayer", app);
@@ -164,6 +166,47 @@ namespace LD54.AsteroidGame.GameObjects
             Rotation += MaxRotationSpeed * (gameTime.ElapsedGameTime.Milliseconds / 1000f);
         }
 
+        private void OnTriggerEnter(ColliderComponent other)
+        {
+            PrintLn("TRIGGERED ON: " + other.GetName());
+
+            //see if gameobject collided with is of type Asteroid
+            //if so, start its death countdown
+            if (other.GetGameObject() is Asteroid)
+            {
+                Asteroid asteroid = (Asteroid)other.GetGameObject();
+                if (asteroid != null)
+                {
+                    if (asteroid.state == Asteroid.State.ALIVE)
+                    {
+                        asteroid.StartDeathCountdown();
+                        //get velocity of asteroid
+                        Vector3 asteroidVel = ((RigidBodyComponent)asteroid.GetComponent<RigidBodyComponent>()).Velocity;
+
+                        //get position delta from asteroid to player
+                        Vector3 asteroidPos = asteroid.GetGlobalPosition();
+                        Vector3 thisPos = GetGlobalPosition();
+                        Vector3 posDelta = new Vector3(
+                            thisPos.X - asteroidPos.X,
+                            thisPos.Y - asteroidPos.Y,
+                            0);
+
+                        float dotProduct = Vector3.Dot(asteroidVel, posDelta);
+                        if (dotProduct > 0)
+                        {
+                            rb.Velocity = asteroidVel;
+                        }
+
+                        //otherwise, damp current velocity
+                        else
+                        {
+                            rb.Velocity *= 0.0f;
+                        }
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// Calculate and return the direction this object is facing in
         /// </summary>
@@ -183,7 +226,7 @@ namespace LD54.AsteroidGame.GameObjects
             Vector2 forceVector = directionVector * moveForce * (gameTime.ElapsedGameTime.Milliseconds / 1000f);
 
             this.warmupFactor += (1 - this.warmupFactor) / 45;
-            PrintLn(this.warmupFactor.ToString());
+            //PrintLn(this.warmupFactor.ToString());
             rb.Velocity += new Vector3(forceVector, 0) * this.warmupFactor;
 
             return forceVector;

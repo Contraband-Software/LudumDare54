@@ -152,6 +152,8 @@ class PlayerBlock : GameObject
                     {
                         rb.Velocity += asteroidVel;
                     }
+
+                    //otherwise, damp current velocity
                 }
             }
         }

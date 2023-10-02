@@ -101,11 +101,6 @@ public class CollisionSystem : GameComponent, ICollisionSystemService
 
         //if it has a rigidbody, allow resolution, if not, it is forced to be a trigger
         //also wont resolve if its a static
-        if (requestingColliderRb == null || requestingColliderRb.Static || requestingCollider.isTrigger)
-        {
-            //invoke triggerEnter
-            return;
-        }
 
         foreach(Collision col in collisions)
         {
@@ -118,6 +113,12 @@ public class CollisionSystem : GameComponent, ICollisionSystemService
             }
             //otherwise collided with collider.
             requestingCollider.InvokeCollideEvent(col.collider);
+
+            //dont resolve if marked as static or a trigger
+            if (requestingColliderRb == null || requestingCollider.isTrigger || requestingColliderRb.Static)
+            {
+                return;
+            }
 
             //this ensures that the other collider is not moved
             if (requestingColliderRb.Velocity.Length() == 0f)
