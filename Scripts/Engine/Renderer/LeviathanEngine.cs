@@ -47,6 +47,8 @@ interface ILeviathanEngineService
     public void DebugDrawCircle(Vector2 position, float radius, Color color);
 
     public void DebugDrawLine(Vector2 start, Vector2 end, Color color);
+
+    public void UnbindShaders();
 }
 
 public struct DebugCircle
@@ -140,6 +142,12 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
         lightingShader = game.Content.Load<Effect>("Shaders/lighting");
         blankNormal = game.Content.Load<Texture2D>("Sprites/blank");
     }
+    public void UnbindShaders()
+    {
+        shaders.Clear();
+        postProcessShaders.Clear();
+    }
+
 
     public void DebugDrawCircle(Vector2 position, float radius, Color color)
     {

@@ -28,11 +28,12 @@ namespace LD54.AsteroidGame.GameObjects
         private const float MaxRotationSpeed = 3.5f;
         private const float velocityDamping = 0.88f;
         private const float maxVelocityFactor = 10f;
-        private const float warmupFactor = 38;
+        private const float warmupFactor = 29;
         private const float forceConstant = 0.001f;
         private const float boostFactor = 0.4f;
         private const float fallFactor = 14f;
         private const float deathSpeed = 3;
+        // private float
         #endregion
 
         public Spaceship(BlackHole blackHole, Texture2D texture, string name, Game appCtx) : base(name, appCtx)
@@ -133,17 +134,16 @@ namespace LD54.AsteroidGame.GameObjects
                 // Debug stuff, no more math after here
                 // Vector2 overlapOffset = new Vector2(1, 1) * 10;
                 float velScale = 50;
-                render.DebugDrawCircle(new Vector2(blackHolePosition.X, blackHolePosition.Y), r, Color.Lime);
 
+                render.DebugDrawCircle(new Vector2(blackHolePosition.X, blackHolePosition.Y), r, Color.Lime);
+                render.DebugDrawLine(this.GetGlobalPosition().SwizzleXY(), this.GetGlobalPosition().SwizzleXY()  + orbitNormal                  * 100, Color.Crimson);
+                render.DebugDrawLine(this.GetGlobalPosition().SwizzleXY() , this.GetGlobalPosition().SwizzleXY() + this.rb.Velocity.SwizzleXY() * velScale, Color.Cyan);
                 // render.DebugDrawLine(this.GetGlobalPosition().SwizzleXY(), this.GetGlobalPosition().SwizzleXY() + positionDelta, Color.Pink);
                 // render.DebugDrawLine(this.GetGlobalPosition().SwizzleXY(), this.GetGlobalPosition().SwizzleXY() + slowdown.SwizzleXY() * velScale * 100, Color.Pink);
-
-                render.DebugDrawLine(this.GetGlobalPosition().SwizzleXY(), this.GetGlobalPosition().SwizzleXY() + orbitNormal * 100, Color.Crimson);
                 // render.DebugDrawLine(this.GetGlobalPosition().SwizzleXY(), this.GetGlobalPosition().SwizzleXY() + finalAbsoluteVelocity.SwizzleXY(), Color.Pink);
-                render.DebugDrawLine(this.GetGlobalPosition().SwizzleXY(), this.GetGlobalPosition().SwizzleXY() + tangentVelocity * velScale * orbitTangent, Color.Cyan);
+                // render.DebugDrawLine(this.GetGlobalPosition().SwizzleXY(), this.GetGlobalPosition().SwizzleXY() + tangentVelocity * velScale * orbitTangent, Color.Cyan);
                 // render.DebugDrawLine(this.GetGlobalPosition().SwizzleXY(), this.GetGlobalPosition().SwizzleXY() + tangent, Color.Cyan);
                 // render.DebugDrawLine(this.GetGlobalPosition().SwizzleXY() + overlapOffset, this.GetGlobalPosition().SwizzleXY() + overlapOffset + positionDelta * 140, Color.Lime);
-                render.DebugDrawLine(this.GetGlobalPosition().SwizzleXY() , this.GetGlobalPosition().SwizzleXY() + this.rb.Velocity.SwizzleXY() * velScale, Color.Yellow);
             }
             #endregion
             Vector2 movementVector = Move(gameTime);
@@ -265,10 +265,11 @@ namespace LD54.AsteroidGame.GameObjects
             {
                 RotateRight(gameTime);
             }
-            // if (Keyboard.GetState().IsKeyDown(Keys.S))
-            // {
-            //     //rb.Velocity.Y += Speed;
-            // }
+            if (Keyboard.GetState().IsKeyDown(Keys.S))
+            {
+                //rb.Velocity.Y += Speed;
+                // this.app.Services.GetService<ISceneControllerService>().ReloadCurrentScene();
+            }
 
             return forceVector;
         }

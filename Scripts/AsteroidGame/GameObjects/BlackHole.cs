@@ -42,11 +42,14 @@ public class BlackHole : GameObject
         rb.Static = true;
         this.AddComponent(rb);
 
-        collider = new CircleColliderComponent(textureSize.X / 2, textureSize / -2f, "BlackHoleCollider", this.app);
-        this.collider.isTrigger = true;
-        this.collider.TriggerEvent += this.EatIt;
-        this.collider.DebugMode = true;
-        this.AddComponent(collider);
+        {
+            float radius = textureSize.X / 0.9f;
+            collider = new CircleColliderComponent(radius, textureSize / -2f - new Vector3(radius / 2), "BlackHoleCollider", this.app);
+            this.collider.isTrigger = true;
+            this.collider.TriggerEvent += this.EatIt;
+            this.collider.DebugMode = true;
+            this.AddComponent(collider);
+        }
 
         BlackHoleComponent bh = new BlackHoleComponent("BlackHoleDrawing", this.app);
         this.AddComponent(bh);

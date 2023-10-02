@@ -244,13 +244,13 @@ public class GameScene : Scene
         re.addPostProcess(crt);
 
         LeviathanShader abberation2 = new LeviathanShader(this.app, "Shaders/abberation");
-        abberation2.AddParam("strength", 0.002f);
+        abberation2.AddParam("strength", 0.001f);
         re.addPostProcess(abberation2);
 
         // simple scene-wide illumination
         //re.AddLight(new Vector2(2000, -300), new Vector3(4000000, 40000000, 80000000));
 
-        StaticSprite background = new StaticSprite(blackHole, backgroundShader, this.contentManager.Load<Texture2D>("Sprites/nebula"), new Vector2(0), new Vector2(2000), "background", this.app);
+        StaticSprite background = new StaticSprite(blackHole, backgroundShader, this.contentManager.Load<Texture2D>("Sprites/nebula"), new Vector2(0), new Vector2(6000), "background", this.app);
         parentObject.AddChild(background);
 
         // some testing space junk spawning
@@ -267,9 +267,12 @@ public class GameScene : Scene
         );
 
         #region PLAYER_INITIALIZATION
+        // within a radius around
+
+
         Texture2D shipTexture = this.contentManager.Load<Texture2D>("Sprites/arrow");
         Spaceship player = new Spaceship(blackHole as BlackHole, shipTexture, "player", app);
-        player.SetLocalPosition(new Vector2(-300, 150));
+        player.SetLocalPosition(new Vector2(-400, 150));
         parentObject.AddChild(player);
         #endregion
     }
@@ -302,6 +305,6 @@ public class GameScene : Scene
 
     public override void OnUnload()
     {
-        this.app.Services.GetService<ILeviathanEngineService>().removeLight(this.sunLight);
+        this.app.Services.GetService<ILeviathanEngineService>().UnbindShaders();
     }
 }

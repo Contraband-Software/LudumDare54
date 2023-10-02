@@ -46,6 +46,7 @@ public class App : Game
             this.graphics.PreferredBackBufferWidth = preferredMode.Width;
             this.graphics.PreferredBackBufferHeight = preferredMode.Height;
             this.graphics.ToggleFullScreen();
+            PrintLn(preferredMode.ToString());
         }
         #endregion
 

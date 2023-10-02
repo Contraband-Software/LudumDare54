@@ -64,9 +64,13 @@ float4 SpritePixelShader(PixelInput p) : SV_TARGET
     dist = min(pow(dist, 60), 1);
     dc *= dc;
 
-    if (hash(uv.y + time))
+    if (hash(floor(uv.y * 30)/30 + time) > 0.96)
     {
         uv = float2(uv.x + hash(time + uv.y) * 0.003, uv.y);
+    }
+    else
+    {
+        uv = float2(uv.x + hash(time + uv.y) * 0.0008, uv.y);
     }
     
     uv.x -= 0.5;
@@ -84,7 +88,7 @@ float4 SpritePixelShader(PixelInput p) : SV_TARGET
     else
     {
         float apply = abs(sin(col.y) * 0.5 * scan);
-        col = float4(tex2D(colorSampler, uv).rgb * clamp(sin(uv.y*1000) / 2 + 1,0.4,1)*dist, 1.0);
+        col = float4(tex2D(colorSampler, uv).rgb * (clamp(sin(uv.y * 1000) / 2 + 1, 0.4, 1)) * dist, 1.0);
     }
     return col;
 }
