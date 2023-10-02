@@ -349,7 +349,7 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
             {
                 if (uISprite.isText)
                 {
-                    spriteBatch.DrawString(uISprite.font, uISprite.text,uISprite.GetPositionXY(),uISprite.textColor);
+                    spriteBatch.DrawString(uISprite.font, uISprite.text,uISprite.GetPositionXY(),uISprite.textColor,0,new Vector2(0),uISprite.size.ToVector2(),SpriteEffects.None,0);
                 }
                 else
                 {

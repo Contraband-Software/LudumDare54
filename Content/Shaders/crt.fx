@@ -27,6 +27,20 @@ struct PixelInput
     float4 TexCoord : TEXCOORD0;
 };
 
+float hash(float p)
+{
+    p = frac(p * .1031);
+    p *= p + 33.33;
+    p *= p + p;
+    return frac(p);
+}
+float hash12(float2 p)
+{
+    float3 p3 = frac(float3(p.xyx) * .1031);
+    p3 += dot(p3, p3.yzx + 33.33);
+    return frac((p3.x + p3.y) * p3.z);
+}
+
 
 PixelInput SpriteVertexShader(VertexInput v)
 {
@@ -40,14 +54,38 @@ PixelInput SpriteVertexShader(VertexInput v)
 }
 float4 SpritePixelShader(PixelInput p) : SV_TARGET
 {
-    float2 dist = abs(p.TexCoord.xy - 0.5);
-    float2 warpedUV = float2(0.1 + p.TexCoord.x / dist.x, 0.1 + p.TexCoord.y / dist.y);
-    float4 col = float4(1, 1, 1, 1);
-    if (warpedUV.x > 1 || warpedUV.x < 0 || warpedUV.y > 1 || warpedUV.y < 0)
-    {
-        col = tex2D(colorSampler, warpedUV);
-    }
+    float4 col = float4(0, 0, 0, 1);
 
+    float warp = 0.5;
+    float scan = 0.75;
+    float2 uv = p.TexCoord.xy;
+    float2 dc = abs(0.5 - p.TexCoord.xy);
+    float dist = 1.075- length(float2(dc.x * 0.15, dc.y * 0.2));
+    dist = min(pow(dist, 60), 1);
+    dc *= dc;
+
+    if (hash(uv.y + time))
+    {
+        uv = float2(uv.x + hash(time + uv.y) * 0.003, uv.y);
+    }
+    
+    uv.x -= 0.5;
+    uv.x *= 1.0 + (dc.y * (0.3 * warp));
+    uv.x += 0.5;
+    uv.y -= 0.5;
+    uv.y *= 1.0 + (dc.x * (0.4 * warp));
+    uv.y += 0.5;
+
+    
+        if (uv.y > 1.0 || uv.x < 0.0 || uv.x > 1.0 || uv.y < 0.0)
+    {
+        col = float4(0.0, 0.0, 0.0, 1.0);
+    }
+    else
+    {
+        float apply = abs(sin(col.y) * 0.5 * scan);
+        col = float4(tex2D(colorSampler, uv).rgb * clamp(sin(uv.y*1000) / 2 + 1,0.4,1)*dist, 1.0);
+    }
     return col;
 }
 

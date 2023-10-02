@@ -224,6 +224,14 @@ public class GameScene : Scene
         abberation.AddParam("strength", 0.001f);
         re.addPostProcess(abberation);
 
+        LeviathanShader crt = new LeviathanShader(this.app, "Shaders/crt");
+        abberation.AddParam("strength", 0.001f);
+        re.addPostProcess(crt);
+
+        LeviathanShader abberation2 = new LeviathanShader(this.app, "Shaders/abberation");
+        abberation2.AddParam("strength", 0.002f);
+        re.addPostProcess(abberation2);
+
         // simple scene-wide illumination
         //re.AddLight(new Vector2(2000, -300), new Vector3(4000000, 40000000, 80000000));
 
