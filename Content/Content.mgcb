@@ -38,6 +38,12 @@
 /processorParam:DebugMode=Auto
 /build:Shaders/bloom.fx
 
+#begin Shaders/crt.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/crt.fx
+
 #begin Shaders/lighting.fx
 /importer:EffectImporter
 /processor:EffectProcessor
