@@ -96,8 +96,6 @@ public class App : Game
             this.Exit();
         }
 
-
-
         base.Update(gameTime);
     }
 

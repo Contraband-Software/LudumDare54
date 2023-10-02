@@ -34,10 +34,24 @@ public class StartScene : Scene
 
         timeShowed += gameTime.TotalGameTime.Seconds;
 
-        if (this.timeShowed > this.showTime)
-        {
-            this.scene.ChangeScene("GameScene");
-        }
+        float increment = this.showTime / 4;
+
+        // if (this.timeShowed > increment && !showedTitle)
+        // {
+        //     showedTitle = true;
+        // } else if (this.timeShowed > increment * 2 && !showedStudio)
+        // {
+        //     showedStudio = true;
+        //
+        // } else if (this.timeShowed > increment * 3 && !showedEngine)
+        // {
+        //     showedEngine = true;
+        //
+        // } else if (this.timeShowed > increment * 4)
+        // {
+        //     this.scene.ChangeScene("GameScene");
+        // }
+        this.scene.ChangeScene("GameScene");
     }
 
     public override void OnUnload()
