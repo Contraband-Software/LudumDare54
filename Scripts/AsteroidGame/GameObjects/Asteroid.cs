@@ -1,4 +1,4 @@
-namespace LD54.Scripts.AsteroidGame.GameObjects
+namespace LD54.AsteroidGame.GameObjects
 {
     using LD54.AsteroidGame.GameObjects;
     using LD54.Engine.Collision;

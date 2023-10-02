@@ -13,7 +13,6 @@ using Engine.Components;
 using AsteroidGame.GameObjects;
 using Engine;
 using LD54.AsteroidGame.GameObjects;
-using LD54.Scripts.AsteroidGame.GameObjects;
 
 public class GameScene : Scene
 {
