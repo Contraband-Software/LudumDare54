@@ -46,7 +46,7 @@ float4 SpritePixelShader(PixelInput p) : SV_TARGET
 {
     float4 diffuse = tex2D(colorSampler, p.TexCoord.xy);
     float4 normal = tex2D(normalSampler, p.TexCoord.xy)*2 -1;
-    float3 lighting = float3(0, 0, 0);
+    float3 lighting = float3(0.2, 0.2, 0.2);
     float2 screenCords = float2(p.Position.x, p.Position.y);
     for (int i = 0; i < 64; i++)
     {

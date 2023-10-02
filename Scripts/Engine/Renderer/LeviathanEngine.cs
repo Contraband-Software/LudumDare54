@@ -19,6 +19,9 @@ interface ILeviathanEngineService
 
     public void setLightColor(int id, Color color);
 
+    public void SetLightPosition(int id, Vector2 position);
+
+
     public Vector3 getLightColor(int id);
 
     public Vector2 getLightPosition(int id);
@@ -216,7 +219,7 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
             }
             else
             {
-                spriteBatch.Draw(blankNormal, new Rectangle(sprite.GetPositionXY().ToPoint() + (sprite.size / 2f).ToPoint(), sprite.size.ToPoint()), null, Color.White, sprite.rotation, new Vector2(blankNormal.Width / 2, blankNormal.Height / 2), SpriteEffects.None, sprite.getDepth());
+                //spriteBatch.Draw(blankNormal, new Rectangle(sprite.GetPositionXY().ToPoint() + (sprite.size / 2f).ToPoint(), sprite.size.ToPoint()), null, Color.White, sprite.rotation, new Vector2(blankNormal.Width / 2, blankNormal.Height / 2), SpriteEffects.None, sprite.getDepth());
             }
         }
 
@@ -343,7 +346,7 @@ public class LeviathanEngine : DrawableGameComponent, ILeviathanEngineService
     {
         lightColors[id] = color.ToVector3();
     }
-    public void setLightPosition(int id, Vector2 position)
+    public void SetLightPosition(int id, Vector2 position)
     {
         lightPositions[id] = position;
     }
