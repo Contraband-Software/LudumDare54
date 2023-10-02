@@ -7,9 +7,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b177c274-5f29-4dd6-aecd-1ee6a42ae4d6" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Scripts/AsteroidGame/GameObjects/Spaceship.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/AsteroidGame/GameObjects/Spaceship.cs" afterDir="false" />
-    </list>
+    <list default="true" id="b177c274-5f29-4dd6-aecd-1ee6a42ae4d6" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -98,6 +96,7 @@
       <workItem from="1696104022872" duration="27532000" />
       <workItem from="1696158508716" duration="3992000" />
       <workItem from="1696215502465" duration="29000" />
+      <workItem from="1696215739375" duration="320000" />
     </task>
     <servers />
   </component>

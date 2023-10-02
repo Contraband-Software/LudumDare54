@@ -196,6 +196,10 @@ namespace LD54.AsteroidGame.GameObjects
             {
                 MoveInForwardDirection(gameTime);
             }
+            else
+            {
+                warmupFactor = 0;
+            }
             if (Keyboard.GetState().IsKeyDown(Keys.A))
             {
                 RotateLeft(gameTime);
