@@ -23,7 +23,7 @@ jobs:
     - name: Install wine
       run: sudo apt install wine64 p7zip-full
     - name: Install shader compiler script for mgcb
-      run: wget -qO- https://raw.githubusercontent.com/MonoGame/MonoGame/master/Tools/MonoGame.Effect.Compiler/mgfxc_wine_setup.sh | bash
+      run: bash Development/SetupMGCBUbuntu.sh
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
