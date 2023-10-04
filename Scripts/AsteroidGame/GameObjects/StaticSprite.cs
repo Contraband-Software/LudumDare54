@@ -43,6 +43,6 @@ public class StaticSprite : GameObject
         this.shader.UpdateParam("blackholeY", pos.Y);
 
         base.Update(gameTime);
-        sr.Offset = new Vector3(re.GetCameraPosition().X-2000, re.GetCameraPosition().Y-2000, 0);
+        sr.Offset = new Vector3(re.GetCameraPosition().X-0, re.GetCameraPosition().Y-0, 0);
     }
 }
