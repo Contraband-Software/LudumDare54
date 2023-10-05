@@ -101,6 +101,10 @@ namespace LD54.AsteroidGame.GameObjects
                     this.app.Services.GetService<ISceneControllerService>().DestroyObject(this);
                 }
             }
+
+            if(GetGlobalPosition().Length()  > 4000) {
+                this.app.Services.GetService<ISceneControllerService>().DestroyObject(this);
+            }
         }
 
         /// <summary>

@@ -10,21 +10,19 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using AsteroidGame.GameObjects;
 using Engine.Components;
-using AsteroidGame.GameObjects;
 using Engine;
-using LD54.AsteroidGame.GameObjects;
-using LD54.Scripts.AsteroidGame.GameObjects;
 using LD54.Engine.Collision;
 using Microsoft.Xna.Framework.Input;
+using System.Linq;
 
 public class GameScene : Scene
 {
     #region PARAMS
-    public const float FORCE_LAW = 2.4f;
+    public const float FORCE_LAW = 2.2f;
     public const float GRAVITATIONAL_CONSTANT = 43f;
 
-    public const float BLACK_HOLE_MASS = 100;   // no need to edit, GRAVITATIONAL_CONSTANT is already directly proportional (Satellites are massless)
-    public const int SATELLITES = 40;
+    public const float BLACK_HOLE_MASS = 600;   // no need to edit, GRAVITATIONAL_CONSTANT is already directly proportional (Satellites are massless)
+    public const int SATELLITES = 100;
     public const float SPEED_MULT = 15f;
 
     public const float MAP_SIZE = 2f;
@@ -55,41 +53,14 @@ public class GameScene : Scene
 
     SpriteFont gameUIFont;
     SpriteFont bigFont;
+    public Spaceship player;
+    public HighscoreHolder highscore;
 
     public enum GameState { PLAYING, GAMEOVER};
     public GameState gameState = GameState.PLAYING;
 
     public GameScene(Game appCtx) : base("GameScene", appCtx)
     {
-    }
-
-    public void SpawnAccretionDisk(GameObject parent, Vector2 boundsOffset, Vector2 boundsDimensions, Vector2 blackHole)
-    {
-        Random rnd = new Random();
-
-        for (int i = 0; i < GameScene.SATELLITES; i++)
-        {
-            Vector2 startPosition = new Vector2(
-                rnd.Next((int)boundsOffset.X, (int)boundsDimensions.X),
-                rnd.Next((int)boundsOffset.Y, (int)boundsDimensions.Y));
-
-            Vector2 separation = startPosition - blackHole;
-            Vector2 perpendicular = separation.PerpendicularClockwise();
-            perpendicular.Normalize();
-
-            // PrintLn(perpendicular.ToString());
-
-            GameObject newSat = new SatelliteObject(
-                0,
-                new Vector3(perpendicular.X, perpendicular.Y, 0.76f) * GameScene.SPEED_MULT * (1 / MathF.Sqrt(separation.Magnitude())),
-                testObjectTexture,
-                "satelliteObject_" + i,
-                this.app
-            );
-
-            parent.AddChild(newSat);
-            newSat.SetLocalPosition(startPosition);
-        }
     }
 
     public void SpawnAsteroidDisk(GameObject parent, Vector2 boundsOffset, Vector2 boundsDimensions, Vector2 blackHole)
@@ -103,16 +74,15 @@ public class GameScene : Scene
                 rnd.Next((int)boundsOffset.Y, (int)boundsDimensions.Y));
 
             Vector2 separation = startPosition - blackHole;
-            Vector2 perpendicular = separation.PerpendicularClockwise();
-            perpendicular.Normalize();
+            Vector2 orbitTangent = separation.PerpendicularCounterClockwise();
+            orbitTangent.Normalize();
 
             // PrintLn(perpendicular.ToString());
 
             GameObject newAst = new Asteroid(
                 0,
                 new Vector3(
-                    perpendicular.X,
-                    perpendicular.Y, 0.76f) * GameScene.SPEED_MULT * (1 / MathF.Sqrt(separation.Magnitude())),
+                    orbitTangent, 0.76f) * GameScene.SPEED_MULT * 4f * (1 / MathF.Sqrt(separation.Magnitude())),
                 asteroidTextures[rnd.Next(0, 3)],
                 asteroidTexture_broken,
                 "asteroidObject_" + i,
@@ -159,7 +129,7 @@ public class GameScene : Scene
             direction.Normalize();
 
             //make random velocity
-            float speed = 3f + (rnd.NextSingle() * 3f);
+            float speed = 5f + (rnd.NextSingle() * 9f);
             Vector2 startVelocity = direction * speed;
 
             //spawn asteroid
@@ -180,6 +150,16 @@ public class GameScene : Scene
 
     public override void OnLoad(GameObject? parentObject)
     {
+        ISceneControllerService scene = this.app.Services.GetService<ISceneControllerService>();
+        if (scene.GetPersistentGameObject().GetChildren().ToList().Where(g => g.GetName() == "HighScoreContainer").Count() == 0)
+        {
+            highscore = new HighscoreHolder(this.app);
+            scene.GetPersistentGameObject().AddChild(highscore);
+        } else
+        {
+            highscore = scene.GetPersistentGameObject().GetChildren().ToList().Where(g => g.GetName() == "HighScoreContainer").First() as HighscoreHolder;
+        }
+
         gameState = GameState.PLAYING;
         GameOverEvent += OnGameOver;
 
@@ -194,7 +174,7 @@ public class GameScene : Scene
             "GravitySimulationObject",
             this.app);
         parentObject.AddChild(newtonianSystem);
-        newtonianSystem.SetLocalPosition(new Vector2(150, 150));
+        newtonianSystem.SetLocalPosition(new Vector2(0, 0));
 
         testObjectTexture = this.contentManager.Load<Texture2D>("Sprites/circle");
         Texture2D asteroidTexture1 = this.contentManager.Load<Texture2D>("Sprites/asteroid_1");
@@ -279,22 +259,15 @@ public class GameScene : Scene
 
         Texture2D shipTexture = this.contentManager.Load<Texture2D>("Sprites/spaceship");
         Texture2D shipTextureBoost = this.contentManager.Load<Texture2D>("Sprites/spaceship_thrust");
-        Spaceship player = new Spaceship(blackHole as BlackHole, shipTexture, shipTextureBoost, "player", app);
+        player = new Spaceship(blackHole as BlackHole, shipTexture, shipTextureBoost, "player", app);
         player.SetLocalPosition(new Vector2(-400, 150));
         parentObject.AddChild(player);
         #endregion
     }
 
-    private bool printed = false;
     public override void Update(GameTime gameTime)
     {
         base.Update(gameTime);
-
-        if (!printed)
-        {
-            printed = true;
-            this.app.Services.GetService<ISceneControllerService>().DebugPrintGraph();
-        }
 
         Vector3 bhPosGlobal = blackHole.GetGlobalPosition();
         Vector2 blackholePosition = new Vector2(bhPosGlobal.X, bhPosGlobal.Y);
@@ -310,7 +283,6 @@ public class GameScene : Scene
                 windowSize.Y * MAP_SIZE
             ), blackholePosition);
 
-        //
         if (Keyboard.GetState().IsKeyDown(Keys.R))
         {
             if (gameState == GameState.GAMEOVER)

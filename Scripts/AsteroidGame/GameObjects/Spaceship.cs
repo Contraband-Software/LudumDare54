@@ -22,6 +22,11 @@ namespace LD54.AsteroidGame.GameObjects
         RigidBodyComponent rb;
         SpriteRendererComponent src;
 
+        public delegate void AsteroidHit();
+        public AsteroidHit AsteroidHitEvent;
+
+        public float BlackHoleOrbitRadius { get; protected set; } = 0;
+
         int light;
 
         #region PARAMS
@@ -30,11 +35,12 @@ namespace LD54.AsteroidGame.GameObjects
         private const float MaxRotationSpeed = 3.5f;
         private const float velocityDamping = 0.88f;
         private const float maxVelocityFactor = 10f;
-        private const float warmupFactor = 29;
+        private float warmupFactor = 29;
         private const float forceConstant = 0.001f;
         private const float boostFactor = 0.4f;
         private const float fallFactor = 14f;
         private const float deathSpeed = 3;
+        public const float MaxRadius = 1000;
         // private float
         #endregion
 
@@ -91,6 +97,7 @@ namespace LD54.AsteroidGame.GameObjects
                 );
                 float r = positionDelta.Magnitude();
                 distanceToBlackHole = r;
+                BlackHoleOrbitRadius = r;
 
                 Vector2 orbitTangent = positionDelta.PerpendicularCounterClockwise();
                 float tangentVelocity = Vector2.Dot(this.rb.Velocity.SwizzleXY(), orbitTangent) / orbitTangent.Length();
@@ -150,7 +157,6 @@ namespace LD54.AsteroidGame.GameObjects
 
 
                 {
-                    float maxRadius = 500;
 
                     Vector3 blackHolePosition2 = blackHole.GetGlobalPosition();
                     Vector3 shipPosition2 = this.GetGlobalPosition();
@@ -162,9 +168,9 @@ namespace LD54.AsteroidGame.GameObjects
                     );
                     float r2 = positionDelta.Magnitude();
 
-                    if (r2 > maxRadius)
+                    if (r2 > MaxRadius)
                     {
-                        this.SetLocalPosition(this.GetLocalPosition() + new Vector3(positionDelta.RNormalize() * (r2 - maxRadius), 0));
+                        this.SetLocalPosition(this.GetLocalPosition() + new Vector3(positionDelta.RNormalize() * (r2 - MaxRadius), 0));
                     }
                 }
             }
@@ -244,6 +250,9 @@ namespace LD54.AsteroidGame.GameObjects
                         }*/
                         posDelta.Normalize();
                         rb.Velocity += posDelta * 500f;
+                        enginePower = 0;
+                        warmupFactor += 15f;
+                        AsteroidHitEvent();
                     }
                 }
             }

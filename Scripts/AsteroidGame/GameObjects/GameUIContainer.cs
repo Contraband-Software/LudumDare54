@@ -1,5 +1,7 @@
-namespace LD54.Scripts.AsteroidGame.GameObjects
+namespace LD54.AsteroidGame.GameObjects
 {
+    using LD54.AsteroidGame.GameObjects;
+    using LD54.AsteroidGame.Scenes;
     using LD54.Scripts.Engine.Components;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
@@ -11,13 +13,18 @@ namespace LD54.Scripts.AsteroidGame.GameObjects
 
     public class GameUIContainer : GameObject
     {
-        float timeElapsed;
         UITextComponent scoreText;
+        UITextComponent hitCounter;
         UITextComponent gameOverText;
         UITextComponent finalScore;
+        UITextComponent highscoreText;
         List<SpriteFont> fonts;
         private enum UIState { PLAYER_ALIVE, PLAYER_DEAD};
         private UIState state = UIState.PLAYER_ALIVE;
+        private int hitsTaken = 0;
+
+        GameScene gameScene;
+        private float score = 0;
         public GameUIContainer(List<SpriteFont> gameUI, string name, Game appCtx) : base(name, appCtx)
         {
             fonts = gameUI;
@@ -31,16 +38,38 @@ namespace LD54.Scripts.AsteroidGame.GameObjects
                 new Color(255, 255, 255));
             this.AddComponent(scoreText);
             scoreText.PositionXAtRightEdge(new Vector2(-20, 10));
+
+            fonts = gameUI;
+            hitCounter = new UITextComponent("ui", app);
+            hitCounter.LoadTextElementData(
+                app,
+                this.GetGlobalTransform(),
+                new Vector2(1, 1),
+                "HITS TAKEN: 0",
+                fonts[0],
+                Color.Crimson);
+            this.AddComponent(hitCounter);
+            hitCounter.PositionBottomRight(new Vector2(0,0));
         }
 
         public override void OnLoad(GameObject? parentObject)
         {
             this.SetLocalPosition(new Vector2(0,0));
 
+            gameScene = this.app.Services.GetService<ISceneControllerService>().GetCurrentScene() as GameScene;
+            if(gameScene != null)
+            {
+                gameScene.player.AsteroidHitEvent += IncreaseHitCounter; 
+            }
 
-
-            timeElapsed = 0;
             state = UIState.PLAYER_ALIVE;
+        }
+
+        private void IncreaseHitCounter()
+        {
+            hitsTaken++;
+            hitCounter.SetText("HITS TAKEN: " + hitsTaken.ToString());
+            hitCounter.PositionBottomRight(new Vector2(0, 0));
         }
 
         public override void Update(GameTime gameTime)
@@ -49,7 +78,10 @@ namespace LD54.Scripts.AsteroidGame.GameObjects
 
             if(state == UIState.PLAYER_ALIVE)
             {
-                UpdateTimer(gameTime);
+                score += ((float)gameTime.ElapsedGameTime.Milliseconds / 1000f) *
+                    MathF.Pow(1 - gameScene.player.BlackHoleOrbitRadius / Spaceship.MaxRadius, 2) * 12f;
+
+                UpdateScore(gameTime);
             }
         }
 
@@ -60,6 +92,11 @@ namespace LD54.Scripts.AsteroidGame.GameObjects
                 return;
             }
             PrintLn("GAAAAAAME OVERRRRRRRRRRRRRRRRR");
+            if(score > gameScene.highscore.highScore)
+            {
+                gameScene.highscore.highScore = (int)score;
+            }
+            PrintLn("HIGHSCOREL::::" +  gameScene.highscore.highScore.ToString());
             state = UIState.PLAYER_DEAD;
 
             gameOverText = new UITextComponent("ui", app);
@@ -77,6 +114,19 @@ namespace LD54.Scripts.AsteroidGame.GameObjects
 
             //========================================
 
+            highscoreText = new UITextComponent("ui", app);
+            highscoreText.LoadTextElementData(
+                app,
+                this.GetGlobalTransform(),
+                new Vector2(1, 1),
+                "HIGHSCORE:" + " " + gameScene.highscore.highScore.ToString(),
+                fonts[0],
+                Color.Crimson,
+                true);
+            this.AddComponent(highscoreText);
+            highscoreText.PositionXAtScreenCentre();
+            highscoreText.PositionYAtScreenCentre(new Vector2(0, 100));
+
             finalScore = new UITextComponent("ui", app);
             finalScore.LoadTextElementData(
                 app,
@@ -84,27 +134,14 @@ namespace LD54.Scripts.AsteroidGame.GameObjects
                 new Vector2(1, 1),
                 "FINAL SCORE",
                 fonts[0],
-                Color.White,
+                Color.Crimson,
                 true);
             this.AddComponent(finalScore);
 
-            int totalSeconds = (int)MathF.Round(timeElapsed);
-            int minutes = totalSeconds / 60;
-            int seconds = totalSeconds % 60;
+            finalScore.SetText("SCORE: " + ((int)score).ToString());
 
-            string minutesText = (minutes > 9) ? minutes.ToString() : "0" + minutes.ToString();
-            string secondsText = (seconds > 9) ? seconds.ToString() : "0" + seconds.ToString();
-
-            if (minutes > 0)
-            {
-                finalScore.SetText("Time Survived= " + minutesText + ":" + secondsText);
-            }
-            else
-            {
-                finalScore.SetText("Time Survived= 00:" + secondsText);
-            }
             finalScore.PositionXAtScreenCentre();
-            finalScore.PositionYAtScreenCentre(new Vector2(0,100));
+            finalScore.PositionYAtScreenCentre(new Vector2(0,150));
 
             //============================
             UITextComponent restartText = new UITextComponent("ui", app);
@@ -121,28 +158,9 @@ namespace LD54.Scripts.AsteroidGame.GameObjects
             restartText.PositionYAtScreenCentre(new Vector2(0, 200));
         }
 
-        private void UpdateTimer(GameTime gameTime)
+        private void UpdateScore(GameTime gameTime)
         {
-            //update time score thingy
-            //reposition text sprite to be on right top corner
-            timeElapsed += (gameTime.ElapsedGameTime.Milliseconds / 1000f);
-            int totalSeconds = (int)MathF.Round(timeElapsed);
-            int minutes = totalSeconds / 60;
-            int seconds = totalSeconds % 60;
-
-            string minutesText = (minutes > 9) ? minutes.ToString() : "0" + minutes.ToString();
-            string secondsText = (seconds > 9) ? seconds.ToString() : "0" + seconds.ToString();
-
-
-            if (minutes > 0)
-            {
-                scoreText.SetText("T=t+ " + minutesText + ":" + secondsText);
-            }
-            else
-            {
-                scoreText.SetText("T=t+ 00:" + secondsText);
-            }
-
+            scoreText.SetText("SCORE= " + ((int)score).ToString());
             scoreText.PositionXAtRightEdge(new Vector2(-20, 10));
         }
     }

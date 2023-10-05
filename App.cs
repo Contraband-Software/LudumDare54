@@ -70,7 +70,7 @@ public class App : Game
 
         PrintLn("App: Game systems initialized.");
 
-        this.sc.AddScene(new StartScene(6, this));
+        this.sc.AddScene(new StartScene(0, this));//6
         this.sc.AddScene(new GameScene(this));
 
         PrintLn("App: Scenes loaded.");

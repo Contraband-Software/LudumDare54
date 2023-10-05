@@ -92,6 +92,17 @@ namespace LD54.Scripts.Engine.Components
             textSprite.SetPosition(new Vector3(posX, currY, 0));
         }
 
+        public void PositionBottomRight(Vector2 offset)
+        {
+            CalculateTextDimensions();
+
+            float screenWidth = re.getWindowSize().X;
+            float screenHeight = re.getWindowSize().Y;
+            float posX = screenWidth - textWidth + offset.X;
+            float posY = screenHeight - textHeight + offset.Y;
+            textSprite.SetPosition(new Vector3(posX, posY, 0));
+        }
+
         public void SetText(string s)
         {
             this.text = s;
