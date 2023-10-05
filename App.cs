@@ -49,6 +49,8 @@ public class App : Game
             this.graphics.ToggleFullScreen();
             // PrintLn(preferredMode.ToString());
         }
+
+        PrintLn(this.GraphicsDevice.Viewport.Width + " " + this.GraphicsDevice.Viewport.Height);
         #endregion
 
         this.Content.RootDirectory = "Content";
