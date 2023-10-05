@@ -1,4 +1,4 @@
-#define JULIUS
+#define APP
 
 // ReSharper disable once ClassNeverInstantiated.Global
 public class Entry
@@ -7,10 +7,6 @@ public class Entry
     {
 #if SAM
         var game = new LD54.App_Sam();
-
-        game.Run();
-#elif JULIUS
-        var game = new LD54.App_Julius();
 
         game.Run();
 #elif JAKUB
