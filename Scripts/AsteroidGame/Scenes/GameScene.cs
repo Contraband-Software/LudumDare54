@@ -299,7 +299,7 @@ public class GameScene : Scene
 
     private void OnGameOver()
     {
-        PrintLn("GAME STATE IS GAMEOVER");
+        // PrintLn("GAME STATE IS GAMEOVER");
         this.gameState = GameState.GAMEOVER;
     }
 }

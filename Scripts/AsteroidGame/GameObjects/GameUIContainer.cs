@@ -59,7 +59,7 @@ namespace LD54.AsteroidGame.GameObjects
             gameScene = this.app.Services.GetService<ISceneControllerService>().GetCurrentScene() as GameScene;
             if(gameScene != null)
             {
-                gameScene.player.AsteroidHitEvent += IncreaseHitCounter; 
+                gameScene.player.AsteroidHitEvent += IncreaseHitCounter;
             }
 
             state = UIState.PLAYER_ALIVE;
@@ -96,7 +96,7 @@ namespace LD54.AsteroidGame.GameObjects
             {
                 gameScene.highscore.highScore = (int)score;
             }
-            PrintLn("HIGHSCOREL::::" +  gameScene.highscore.highScore.ToString());
+            // PrintLn("HIGHSCOREL::::" +  gameScene.highscore.highScore.ToString());
             state = UIState.PLAYER_DEAD;
 
             gameOverText = new UITextComponent("ui", app);

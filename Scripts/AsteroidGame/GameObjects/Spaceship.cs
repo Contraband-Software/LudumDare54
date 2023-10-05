@@ -214,7 +214,7 @@ namespace LD54.AsteroidGame.GameObjects
 
         private void OnTriggerEnter(ColliderComponent other)
         {
-            PrintLn("TRIGGERED ON: " + other.GetName());
+            // PrintLn("TRIGGERED ON: " + other.GetName());
 
             //see if gameobject collided with is of type Asteroid
             //if so, start its death countdown

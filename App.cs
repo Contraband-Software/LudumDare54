@@ -34,19 +34,20 @@ public class App : Game
         else
         {
             float largestResolution = 0;
-            DisplayMode preferredMode = null;
+            DisplayMode? preferredMode = null;
             foreach (DisplayMode mode in GraphicsAdapter.DefaultAdapter.SupportedDisplayModes)
             {
                 float size = mode.Width * mode.Height;
                 if (size > largestResolution)
                 {
+                    largestResolution = size;
                     preferredMode = mode;
                 }
             }
             this.graphics.PreferredBackBufferWidth = preferredMode.Width;
             this.graphics.PreferredBackBufferHeight = preferredMode.Height;
             this.graphics.ToggleFullScreen();
-            PrintLn(preferredMode.ToString());
+            // PrintLn(preferredMode.ToString());
         }
         #endregion
 
@@ -70,7 +71,7 @@ public class App : Game
 
         PrintLn("App: Game systems initialized.");
 
-        this.sc.AddScene(new StartScene(0, this));//6
+        this.sc.AddScene(new StartScene(6, this));//6
         this.sc.AddScene(new GameScene(this));
 
         PrintLn("App: Scenes loaded.");
