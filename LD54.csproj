@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <OutputType>Exe</OutputType>
+        <OutputType>WinExe</OutputType>
         <TargetFramework>net6.0</TargetFramework>
         <StartupObject>Entry</StartupObject>
 
@@ -15,22 +15,19 @@
 
         <PublishTrimmed>true</PublishTrimmed>
         <TrimMode>partial</TrimMode>
-
         <SuppressTrimAnalysisWarnings>false</SuppressTrimAnalysisWarnings>
         <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
         <TrimmerSingleWarn>false</TrimmerSingleWarn>
     </PropertyGroup>
     <ItemGroup>
-        <TrimmerRootDescriptor Include="TrimmerRoots.xml" />
+        <TrimmerRootDescriptor Include="TrimmerRoots.xml"/>
         <TrimmerRootAssembly Include="MonoGame.Framework"/>
     </ItemGroup>
-
 
     <PropertyGroup Condition="'$(Configuration)'=='Release'">
         <DebugSymbols>False</DebugSymbols>
         <DebugType>None</DebugType>
     </PropertyGroup>
-
 
     <PropertyGroup>
         <ApplicationManifest>app.manifest</ApplicationManifest>
