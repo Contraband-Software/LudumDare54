@@ -8,9 +8,37 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b177c274-5f29-4dd6-aecd-1ee6a42ae4d6" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Content/Sound/Music/Intro.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Sound/Music/Intro2.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Sound/Music/Intro3.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Sound/SFX/Engine.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Sound/SFX/GameOver.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Sound/SFX/Hit.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Sound/SFX/Intro1.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Sound/SFX/Intro2.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Sound/SFX/Intro3.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Development/Assets/Engine.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Development/Assets/GameOver.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Development/Assets/Hit.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Development/Assets/Intro1.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Development/Assets/Intro2.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Development/Assets/Intro3.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Development/Assets/Sound/Samples/Basic 808 Clap.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Development/Assets/Sound/Samples/Basic 808 HiHat.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Development/Assets/Sound/Samples/Basic 808 Kick.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Development/Assets/Sound/Samples/Basic 808 Snare.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Development/Assets/Sound/Sound.flp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TrimmerRoots.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.LD54.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.LD54.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App.cs" beforeDir="false" afterPath="$PROJECT_DIR$/App.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App.Sam.cs" beforeDir="false" afterPath="$PROJECT_DIR$/App.Sam.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Content.mgcb" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Content.mgcb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/LD54.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/LD54.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scripts/AsteroidGame/GameObjects/GameUIContainer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/AsteroidGame/GameObjects/GameUIContainer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scripts/AsteroidGame/GameObjects/Spaceship.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/AsteroidGame/GameObjects/Spaceship.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scripts/AsteroidGame/GameObjects/TitleScreenSystem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/AsteroidGame/GameObjects/TitleScreenSystem.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scripts/AsteroidGame/Scenes/GameScene.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/AsteroidGame/Scenes/GameScene.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scripts/AsteroidGame/Scenes/SamScene.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/AsteroidGame/Scenes/SamScene.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scripts/AsteroidGame/Scenes/StartScene.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/AsteroidGame/Scenes/StartScene.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -113,6 +141,7 @@
       <workItem from="1696268273312" duration="18979000" />
       <workItem from="1696326938501" duration="183000" />
       <workItem from="1696548013157" duration="1674000" />
+      <workItem from="1696691762108" duration="6457000" />
     </task>
     <servers />
   </component>

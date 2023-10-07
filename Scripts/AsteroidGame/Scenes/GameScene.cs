@@ -14,9 +14,18 @@ using Engine;
 using LD54.Engine.Collision;
 using Microsoft.Xna.Framework.Input;
 using System.Linq;
+using Microsoft.Xna.Framework.Audio;
 
 public class GameScene : Scene
 {
+    public enum GAME_SFX : int
+    {
+        ENGINE = 0,
+        HIT = 1,
+        GAME_OVER = 2,
+        COUNT
+    }
+
     #region PARAMS
     public const float FORCE_LAW = 2.2f;
     public const float GRAVITATIONAL_CONSTANT = 43f;
@@ -58,6 +67,8 @@ public class GameScene : Scene
 
     public enum GameState { PLAYING, GAMEOVER};
     public GameState gameState = GameState.PLAYING;
+
+    private SoundEffect[] gameSceneSFX = new SoundEffect[(int)GAME_SFX.COUNT];
 
     public GameScene(Game appCtx) : base("GameScene", appCtx)
     {
@@ -150,14 +161,18 @@ public class GameScene : Scene
 
     public override void OnLoad(GameObject? parentObject)
     {
+        gameSceneSFX[(int)GAME_SFX.ENGINE]    = this.contentManager.Load<SoundEffect>("Sound/SFX/Engine");
+        gameSceneSFX[(int)GAME_SFX.HIT]       = this.contentManager.Load<SoundEffect>("Sound/SFX/Hit");
+        gameSceneSFX[(int)GAME_SFX.GAME_OVER] = this.contentManager.Load<SoundEffect>("Sound/SFX/GameOver");
+
         ISceneControllerService scene = this.app.Services.GetService<ISceneControllerService>();
-        if (scene.GetPersistentGameObject().GetChildren().ToList().Where(g => g.GetName() == "HighScoreContainer").Count() == 0)
+        if (scene.GetPersistentGameObject().GetChildren().ToList().All(g => g.GetName() != "HighScoreContainer"))
         {
             highscore = new HighscoreHolder(this.app);
             scene.GetPersistentGameObject().AddChild(highscore);
         } else
         {
-            highscore = scene.GetPersistentGameObject().GetChildren().ToList().Where(g => g.GetName() == "HighScoreContainer").First() as HighscoreHolder;
+            highscore = scene.GetPersistentGameObject().GetChildren().ToList().First(g => g.GetName() == "HighScoreContainer") as HighscoreHolder ?? throw new InvalidOperationException("Dont destroy on load is busted: high scores");
         }
 
         gameState = GameState.PLAYING;
@@ -184,7 +199,7 @@ public class GameScene : Scene
 
         gameUIFont = this.contentManager.Load<SpriteFont>("Fonts/UIFont");
         bigFont = this.contentManager.Load<SpriteFont>("Fonts/GameOverFont");
-        GameUIContainer gameUI = new GameUIContainer(new List<SpriteFont>() { gameUIFont, bigFont }, "gameUI", app);
+        GameUIContainer gameUI = new GameUIContainer(new List<SpriteFont>() { gameUIFont, bigFont }, this.gameSceneSFX[(int)GAME_SFX.GAME_OVER], "gameUI", app);
         parentObject.AddChild(gameUI);
         GameOverEvent += gameUI.OnGameOver;
 
@@ -259,7 +274,7 @@ public class GameScene : Scene
 
         Texture2D shipTexture = this.contentManager.Load<Texture2D>("Sprites/spaceship");
         Texture2D shipTextureBoost = this.contentManager.Load<Texture2D>("Sprites/spaceship_thrust");
-        player = new Spaceship(blackHole as BlackHole, shipTexture, shipTextureBoost, "player", app);
+        player = new Spaceship(blackHole as BlackHole, gameSceneSFX, shipTexture, shipTextureBoost, "player", app);
         player.SetLocalPosition(new Vector2(-400, 150));
         parentObject.AddChild(player);
         #endregion

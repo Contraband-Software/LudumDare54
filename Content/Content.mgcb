@@ -98,6 +98,42 @@
 /processorParam:DebugMode=Auto
 /build:Shaders/stars.fx
 
+#begin Sound/SFX/Engine.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/SFX/Engine.ogg
+
+#begin Sound/SFX/GameOver.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/SFX/GameOver.ogg
+
+#begin Sound/SFX/Hit.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/SFX/Hit.ogg
+
+#begin Sound/SFX/Intro1.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/SFX/Intro1.ogg
+
+#begin Sound/SFX/Intro2.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/SFX/Intro2.ogg
+
+#begin Sound/SFX/Intro3.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/SFX/Intro3.ogg
+
 #begin Sprites/arrow.png
 /importer:TextureImporter
 /processor:TextureProcessor

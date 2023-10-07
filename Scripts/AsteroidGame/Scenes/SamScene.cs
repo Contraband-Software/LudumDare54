@@ -1,3 +1,5 @@
+#if SAM
+
 global using LD54.Engine;
 
 namespace LD54.AsteroidGame.Scenes;
@@ -136,3 +138,4 @@ public class SamScene : Scene
         this.app.Services.GetService<ILeviathanEngineService>().removeLight(this.sunLight);
     }
 }
+#endif

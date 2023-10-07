@@ -2,7 +2,9 @@ namespace LD54.AsteroidGame.GameObjects;
 
 using Engine.Leviathan;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
+using Scenes;
 
 public class TitleScreenSystem : GameObject
 {
@@ -15,12 +17,15 @@ public class TitleScreenSystem : GameObject
     private readonly int showTime = 0;
     private float timeShowed = 0;
 
-    public TitleScreenSystem(int showTime, SpriteFont titleFont, SpriteFont subtitleFont, Texture2D rock, Game appCtx) : base("TitleScreenObject", appCtx)
+    private SoundEffect[] sfx = new SoundEffect[(int)StartScene.START_SFX.COUNT];
+
+    public TitleScreenSystem(int showTime, SoundEffect[] sfx, SpriteFont titleFont, SpriteFont subtitleFont, Texture2D rock, Game appCtx) : base("TitleScreenObject", appCtx)
     {
         this.titleFont = titleFont;
         this.subTitleFont = subtitleFont;
         this.showTime = showTime;
         this.rock = rock;
+        this.sfx = sfx;
     }
 
     private LeviathanUIElement gameTitle;
@@ -34,29 +39,29 @@ public class TitleScreenSystem : GameObject
         Vector2 offset = new Vector2(0, -300);
 
         {
-            Matrix fuckingTitlePosition = this.GetGlobalTransform();
+            Matrix titlePosition = this.GetGlobalTransform();
 
             Vector2 titlePos = this.render.getWindowSize() / 2f;
             string titleText = "EVENT HORIZON";
             float titleScale = 1;
-            fuckingTitlePosition.Translation += new Vector3(titlePos - titleFont.MeasureString(titleText) / 2 * titleScale + offset, 0);
-            gameTitle = new LeviathanUIElement(this.app, fuckingTitlePosition, new Vector2(titleScale), titleText, this.titleFont, Color.White);
+            titlePosition.Translation += new Vector3(titlePos - titleFont.MeasureString(titleText) / 2 * titleScale + offset, 0);
+            gameTitle = new LeviathanUIElement(this.app, titlePosition, new Vector2(titleScale), titleText, this.titleFont, Color.White);
         }
         {
-            Matrix fuckingTitlePosition = this.GetGlobalTransform();
+            Matrix titlePosition = this.GetGlobalTransform();
 
             Vector2 subTitle1Pos = this.render.getWindowSize() / 2f + new Vector2(0, 100);
             string subTitle1Text = "By Contraband Studio, 2023, for Ludum Dare";
-            fuckingTitlePosition.Translation += new Vector3(subTitle1Pos - subTitleFont.MeasureString(subTitle1Text) / 2 + offset, 0);
-            gameSubtitle1 = new LeviathanUIElement(this.app, fuckingTitlePosition, new Vector2(1), subTitle1Text, this.subTitleFont, Color.White);
+            titlePosition.Translation += new Vector3(subTitle1Pos - subTitleFont.MeasureString(subTitle1Text) / 2 + offset, 0);
+            gameSubtitle1 = new LeviathanUIElement(this.app, titlePosition, new Vector2(1), subTitle1Text, this.subTitleFont, Color.White);
         }
         {
-            Matrix fuckingTitlePosition = this.GetGlobalTransform();
+            Matrix titlePosition = this.GetGlobalTransform();
 
             Vector2 subTitle1Pos = this.render.getWindowSize() / 2f + new Vector2(0, 200);
             string subTitle1Text = "Made with the GreenRock Engine";
-            fuckingTitlePosition.Translation += new Vector3(subTitle1Pos - subTitleFont.MeasureString(subTitle1Text) / 2 + offset, 0);
-            gameSubtitle2 = new LeviathanUIElement(this.app, fuckingTitlePosition, new Vector2(1), subTitle1Text, this.subTitleFont, Color.White);
+            titlePosition.Translation += new Vector3(subTitle1Pos - subTitleFont.MeasureString(subTitle1Text) / 2 + offset, 0);
+            gameSubtitle2 = new LeviathanUIElement(this.app, titlePosition, new Vector2(1), subTitle1Text, this.subTitleFont, Color.White);
         }
         {
             Matrix fuckingTitlePosition = this.GetGlobalTransform();
@@ -83,16 +88,25 @@ public class TitleScreenSystem : GameObject
         {
             showedTitle = true;
             this.render.addUISprite(gameTitle);
+
+            SoundEffectInstance intro1 = sfx[(int)StartScene.START_SFX.INTRO1].CreateInstance();
+            intro1.Play();
         } else if (this.timeShowed > increment * 2 && !showedStudio)
         {
             showedStudio = true;
             this.render.addUISprite(gameSubtitle1);
+
+            SoundEffectInstance intro2 = sfx[(int)StartScene.START_SFX.INTRO2].CreateInstance();
+            intro2.Play();
 
         } else if (this.timeShowed > increment * 3 && !showedEngine)
         {
             showedEngine = true;
             this.render.addUISprite(gameSubtitle2);
             this.render.addUISprite(this.rockIcon);
+
+            SoundEffectInstance intro3 = sfx[(int)StartScene.START_SFX.INTRO3].CreateInstance();
+            intro3.Play();
         } else if (this.timeShowed > increment * 4)
         {
             this.app.Services.GetService<ISceneControllerService>().ChangeScene("GameScene");

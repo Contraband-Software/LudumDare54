@@ -10,6 +10,7 @@ namespace LD54.AsteroidGame.GameObjects
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+    using Microsoft.Xna.Framework.Audio;
 
     public class GameUIContainer : GameObject
     {
@@ -25,15 +26,20 @@ namespace LD54.AsteroidGame.GameObjects
 
         GameScene gameScene;
         private float score = 0;
-        public GameUIContainer(List<SpriteFont> gameUI, string name, Game appCtx) : base(name, appCtx)
+
+        private SoundEffect gameOver;
+
+        public GameUIContainer(List<SpriteFont> gameUI, SoundEffect gameOver, string name, Game appCtx) : base(name, appCtx)
         {
+            this.gameOver = gameOver;
+
             fonts = gameUI;
             scoreText = new UITextComponent("ui", app);
             scoreText.LoadTextElementData(
                 app,
                 this.GetGlobalTransform(),
                 new Vector2(1, 1),
-                "SCORE SCORE",
+                "SCORE: 0",
                 fonts[0],
                 new Color(255, 255, 255));
             this.AddComponent(scoreText);
@@ -91,12 +97,13 @@ namespace LD54.AsteroidGame.GameObjects
             {
                 return;
             }
-            PrintLn("GAAAAAAME OVERRRRRRRRRRRRRRRRR");
+            this.gameOver.Play();
+            PrintLn("Game Over");
             if(score > gameScene.highscore.highScore)
             {
                 gameScene.highscore.highScore = (int)score;
             }
-            // PrintLn("HIGHSCOREL::::" +  gameScene.highscore.highScore.ToString());
+
             state = UIState.PLAYER_DEAD;
 
             gameOverText = new UITextComponent("ui", app);
@@ -149,7 +156,7 @@ namespace LD54.AsteroidGame.GameObjects
                 app,
                 this.GetGlobalTransform(),
                 new Vector2(1, 1),
-                "PRESS [R] TO [R]ESTART",
+                "PRESS [R] TO RESTART",
                 fonts[0],
                 Color.White,
                 true);
@@ -160,7 +167,7 @@ namespace LD54.AsteroidGame.GameObjects
 
         private void UpdateScore(GameTime gameTime)
         {
-            scoreText.SetText("SCORE= " + ((int)score).ToString());
+            scoreText.SetText("SCORE: " + ((int)score).ToString());
             scoreText.PositionXAtRightEdge(new Vector2(-20, 10));
         }
     }

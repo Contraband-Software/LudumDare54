@@ -1,3 +1,5 @@
+#if SAM
+
 global using static LD54.Engine.Dev.EngineDebug;
 
 namespace LD54;
@@ -105,3 +107,4 @@ public class App_Sam : Game
         base.Draw(gameTime);
     }
 }
+#endif

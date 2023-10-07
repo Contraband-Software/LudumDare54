@@ -9,6 +9,7 @@ namespace LD54.AsteroidGame.GameObjects
     using System;
     using Math = Engine.Math;
     using LD54.AsteroidGame.Scenes;
+    using Microsoft.Xna.Framework.Audio;
 
     public class Spaceship : GameObject
     {
@@ -29,6 +30,9 @@ namespace LD54.AsteroidGame.GameObjects
 
         int light;
 
+        private SoundEffect[] sfx;
+        private bool isBoosting = false;
+
         #region PARAMS
         // PLEASE DO NOT EDIT THESE, ONE THING CHANGES AND EVERYTHING NEEDS TO BE ADJUSTED - ASK SAM
         private const float moveForce = 30f;
@@ -44,11 +48,12 @@ namespace LD54.AsteroidGame.GameObjects
         // private float
         #endregion
 
-        public Spaceship(BlackHole blackHole, Texture2D texture, Texture2D boost, string name, Game appCtx) : base(name, appCtx)
+        public Spaceship(BlackHole blackHole, SoundEffect[] sfx, Texture2D texture, Texture2D boost, string name, Game appCtx) : base(name, appCtx)
         {
             this.blackHole = blackHole;
             this.texture = texture;
             this.texture_boost = boost;
+            this.sfx = sfx;
         }
 
         public override void OnLoad(GameObject? parentObject)
@@ -82,6 +87,17 @@ namespace LD54.AsteroidGame.GameObjects
 
         public override void Update(GameTime gameTime)
         {
+            if (this.isBoosting)
+            {
+                if ((int)gameTime.TotalGameTime.TotalMilliseconds % 40 == 0)
+                {
+                    SoundEffectInstance? eSFX = this.sfx[(int)GameScene.GAME_SFX.ENGINE].CreateInstance();
+                    eSFX.Volume = 0.3f;
+                    eSFX.Play();
+                }
+            }
+
+
             #region TOY_ORBIT_PHYSICS
             float distanceToBlackHole = 0;
             {
@@ -252,6 +268,8 @@ namespace LD54.AsteroidGame.GameObjects
                         rb.Velocity += posDelta * 500f;
                         enginePower = 0;
                         warmupFactor += 15f;
+                        this.sfx[(int)GameScene.GAME_SFX.HIT].Play();
+                        this.isBoosting = false;
                         AsteroidHitEvent();
                     }
                 }
@@ -290,11 +308,15 @@ namespace LD54.AsteroidGame.GameObjects
             {
                 MoveInForwardDirection(gameTime);
                 src.SetSprite(texture_boost);
+
+                this.isBoosting = true;
             }
             else
             {
                 this.enginePower = 0;
                 src.SetSprite(texture);
+
+                this.isBoosting = false;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.A))
             {
