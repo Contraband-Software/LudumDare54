@@ -1,4 +1,4 @@
-# LD54
+# LD54 - Event Horizon
 
 ## Style
 
