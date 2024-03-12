@@ -11,6 +11,8 @@
 - Graphics: 299th (4.068 average from 24 ratings)
 - Mood: 582nd (3.5 average from 23 ratings)
 
+Total Jam submissions: 1597
+
 ## Game Leaflet
 
 ![cover.png](/Development/cover.png)
