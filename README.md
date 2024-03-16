@@ -1,5 +1,7 @@
 # [LD54 - Event Horizon](https://ldjam.com/events/ludum-dare/54/event-horizon)
 
+Our first game made in a custom engine, using Monogame.
+
 [Download](https://github.com/Contraband-Software/LudumDare54/releases/tag/1.1) it on MacOS, Windows, and Linux.
 
 ## Placements
